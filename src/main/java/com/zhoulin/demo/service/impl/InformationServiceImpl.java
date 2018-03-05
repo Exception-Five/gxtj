@@ -1,12 +1,16 @@
 package com.zhoulin.demo.service.impl;
 
 import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.mapper.InformationMapper;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.search.SearchService;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InformationServiceImpl implements InformationService {
@@ -19,6 +23,12 @@ public class InformationServiceImpl implements InformationService {
 
     @Autowired
     private VerificationUtils verificationUtils;
+
+    @Override
+    public InfoSearch getInitInfo(InfoSearch infoSearch) {
+
+        return null;
+    }
 
     @Override
     public Information getInfoByInfoId(long infoId){
@@ -69,5 +79,18 @@ public class InformationServiceImpl implements InformationService {
             return delStatus;
         }
 
+    }
+
+    @Override
+    public List<Information> findAll() {
+
+        List<Information> infoList = new ArrayList<>();
+        try {
+            infoList = informationMapper.findAll();
+            return infoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

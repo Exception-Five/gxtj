@@ -8,6 +8,10 @@ import java.util.Map;
  */
 public class InfoSearch {
 
+    private int start = 0;
+
+    private int size = 5;
+
     private String titleSearch;
 
     private String authorSearch;
@@ -15,6 +19,8 @@ public class InfoSearch {
     private String description;
 
     private String sourceSiteSearch;
+
+    private String keyWords;
 
     private Integer readsSearch;
 
@@ -26,7 +32,7 @@ public class InfoSearch {
 
     private String sort;    //前端table表sortName属性定义的分类Id
 
-    private String order;   //升序或倒序
+    private String order = "desc";   //升序或倒序
 
     private int total;
 
@@ -41,6 +47,35 @@ public class InfoSearch {
         return map;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public String getKeyWords() {
+        return keyWords;
+    }
+
+    public void setKeyWords(String keyWords) {
+        this.keyWords = keyWords;
+    }
+
+    public int getSize() {
+        if (this.size < 1) {
+            return 5;
+        } else if (this.size > 100) {
+            return 100;
+        } else {
+            return this.size;
+        }
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     public int getOffset() {
         return offset;

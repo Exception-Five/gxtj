@@ -1,17 +1,24 @@
 package com.zhoulin.demo.service.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.primitives.Longs;
+import com.zhoulin.demo.bean.InfoSort;
+import com.zhoulin.demo.bean.form.InfoSearch;
+import com.zhoulin.demo.bean.form.ServiceMultiResult;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.modelmapper.ModelMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -19,7 +26,13 @@ import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.service.InformationService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SearchServiceImpl implements SearchService{
@@ -29,6 +42,9 @@ public class SearchServiceImpl implements SearchService{
     private static final String INDEX_NAME = "information";
 
     private static final String INDEX_TYPE = "information";
+
+    //kafka监听的主题
+    private static final String INDEX_TOPIC = "information";
 
     @Autowired
     private InformationService informationService;
@@ -42,8 +58,35 @@ public class SearchServiceImpl implements SearchService{
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Override
-    public boolean index(long id) {
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
+
+    @KafkaListener(topics = INDEX_TOPIC)
+    private void handleMessage(String content){
+        try {
+            //ObjectMapper: 将java对象转化成json格式
+            InformationIndexMessage message = objectMapper.readValue(content, InformationIndexMessage.class);
+
+            switch (message.getOperation()){
+                case InformationIndexMessage.INDEX:
+                    this.createOrUpdateIndex(message);
+                    break;
+                case InformationIndexMessage.REMOVE:
+                    this.removeIndex(message);
+                    break;
+                default:
+                    logger.warn("不支持处理该信息操作", content);
+                    break;
+            }
+
+        } catch (IOException e) {
+            logger.error("转化json格式失败", content, e);
+        }
+    }
+
+    private void createOrUpdateIndex(InformationIndexMessage message){
+
+        Long id = message.getInfoId();
 
         Information information = new Information();
 
@@ -52,7 +95,8 @@ public class SearchServiceImpl implements SearchService{
 
             if(information==null){
                 logger.error("无对应id的资讯", id);
-                return false;
+                this.index(id, message.getRetry() + 1);
+                return;
             }
 
             InformationIndexTemplate indexTemplate = new InformationIndexTemplate();
@@ -84,11 +128,50 @@ public class SearchServiceImpl implements SearchService{
                 logger.debug("执行成功的资讯" + id);
             }
 
-            return isSuccess;
 
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+        }
+    }
+
+    private void removeIndex(InformationIndexMessage message){
+
+        long id = message.getInfoId();
+
+        DeleteByQueryRequestBuilder builder = DeleteByQueryAction.INSTANCE
+                .newRequestBuilder(esClient)
+                .filter(QueryBuilders.termQuery(InformationIndexKey.ID, id))
+                .source(INDEX_NAME);
+
+        logger.debug("Delete by query for info:" + builder);
+
+        BulkByScrollResponse response = builder.get();
+        long deleted = response.getDeleted();
+        logger.debug("Delete total: " + deleted);
+
+        if(deleted<=0){
+            this.remove(id, message.getRetry() + 1);
+        }
+
+    }
+
+    @Override
+    public void index(long id) {
+        this.index(id, 0);
+    }
+
+    private void index(long id, Integer retry){
+        if(retry > InformationIndexMessage.MAX_RETRY){
+            logger.error("超过最大请求索引次数" + id );
+            return;
+        }
+
+        InformationIndexMessage message = new InformationIndexMessage(id, InformationIndexMessage.INDEX, retry);
+
+        try {
+            kafkaTemplate.send(INDEX_TOPIC, objectMapper.writeValueAsString(message));
+        } catch (JsonProcessingException e) {
+            logger.error("json转换错误 " + message, e);
         }
 
     }
@@ -162,15 +245,80 @@ public class SearchServiceImpl implements SearchService{
 
     @Override
     public void remove(long id) {
-        DeleteByQueryRequestBuilder builder = DeleteByQueryAction.INSTANCE
-                .newRequestBuilder(esClient)
-                .filter(QueryBuilders.termQuery(InformationIndexKey.ID, id))
-                .source(INDEX_NAME);
-
-        logger.debug("Delete by query for info:" + builder);
-
-        BulkByScrollResponse response = builder.get();
-        long deleted = response.getDeleted();
-        logger.debug("Delete total: " + deleted);
+        //retry 传递给kafka
+        this.remove(id, 0);
     }
+
+    @Override
+    public ServiceMultiResult<Long> query(InfoSearch infoSearch) {
+        //布尔查询
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.filter(
+                QueryBuilders.termQuery(InformationIndexKey.TITLE, infoSearch.getTitleSearch())
+        );
+
+        //!"*".equals(xxx) 检索xxx不为null 防止敲空格
+        if(infoSearch.getSourceSiteSearch() != null && !"*".equals(infoSearch.getSourceSiteSearch())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.SOURCE_SITE, infoSearch.getSourceSiteSearch())
+            );
+
+        }
+
+        if(infoSearch.getDescription() != null && !"*".equals(infoSearch.getDescription())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.DESCRIPTION, infoSearch.getDescription())
+            );
+
+        }
+
+        SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
+                .setTypes(INDEX_TYPE)
+                .setQuery(boolQueryBuilder)
+                .addSort(
+                        InfoSort.getSortKey(infoSearch.getSort()),
+                        SortOrder.fromString(infoSearch.getOrder())
+                )
+                .setFrom(infoSearch.getStart())
+                .setSize(infoSearch.getSize())
+                .setFetchSource(InformationIndexKey.ID, null);
+
+        logger.debug(requestBuilder.toString());
+
+        List<Long> infoIds = new ArrayList<>();
+
+        SearchResponse searchResponse = requestBuilder.get();
+
+        if(searchResponse.status() != RestStatus.OK){
+            logger.warn("Search status is no ok for " + requestBuilder);
+            return new ServiceMultiResult<>(0, infoIds);
+        }
+
+        for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug(String.valueOf(hit.getSource()));
+            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+        }
+
+        return new ServiceMultiResult<>(searchResponse.getHits().totalHits, infoIds);
+    }
+
+    private void remove(long id, Integer retry){
+        if(retry > InformationIndexMessage.MAX_RETRY){
+            logger.error("超过最大请求索引次数" + id );
+            return;
+        }
+
+        InformationIndexMessage message = new InformationIndexMessage(id, InformationIndexMessage.REMOVE, retry);
+
+        try {
+            //传递给kafka 使得kafka消费掉
+            kafkaTemplate.send(INDEX_TOPIC, objectMapper.writeValueAsString(message));
+        } catch (JsonProcessingException e) {
+            logger.error("json转换错误 " + message, e);
+        }
+    }
+
+
 }
