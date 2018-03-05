@@ -138,8 +138,9 @@
                  </div>
         		<div class="screen-tu" id="screen"></div>
 			</div>
-		</div>
-    	<div id="cd-signup"> <!-- 注册表单 -->
+		</div> 
+        <!-- 注册表单 -->
+    	<div id="cd-signup">
 			<div class="modal-alert-title">极速注册</div>
        	    <div class="user-register-box">
 				<div class="login-form sms-box">
@@ -164,7 +165,8 @@
 			<a href="#0" class="cd-close-form ">关闭</a>
 	</div>
 </div>
-<div id="cd-signup"> <!-- 注册表单 -->
+<!-- 注册表单 -->
+<!-- <div id="cd-signup"> 
 	<div class="modal-alert-title">极速注册</div>
     <div class="user-register-box">
 		<div class="login-form sms-box">
@@ -186,7 +188,7 @@
 		</div>
 		<div class="js-user-login register-text">已有账号，立即登录</div>
     </div>
-</div>
+</div> -->
 </header>
 <div class="placeholder-height"></div>
 <div class="container per_center_body" id="per_center">
