@@ -1,17 +1,24 @@
 package com.zhoulin.demo.service.search;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.primitives.Longs;
+import com.zhoulin.demo.bean.InfoSort;
+import com.zhoulin.demo.bean.form.InfoSearch;
+import com.zhoulin.demo.bean.form.ServiceMultiResult;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.sort.SortOrder;
 import org.modelmapper.ModelMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -24,6 +31,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SearchServiceImpl implements SearchService{
@@ -240,6 +249,61 @@ public class SearchServiceImpl implements SearchService{
         this.remove(id, 0);
     }
 
+    @Override
+    public ServiceMultiResult<Long> query(InfoSearch infoSearch) {
+        //布尔查询
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.filter(
+                QueryBuilders.termQuery(InformationIndexKey.TITLE, infoSearch.getTitleSearch())
+        );
+
+        //!"*".equals(xxx) 检索xxx不为null 防止敲空格
+        if(infoSearch.getSourceSiteSearch() != null && !"*".equals(infoSearch.getSourceSiteSearch())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.SOURCE_SITE, infoSearch.getSourceSiteSearch())
+            );
+
+        }
+
+        if(infoSearch.getDescription() != null && !"*".equals(infoSearch.getDescription())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.DESCRIPTION, infoSearch.getDescription())
+            );
+
+        }
+
+        SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
+                .setTypes(INDEX_TYPE)
+                .setQuery(boolQueryBuilder)
+                .addSort(
+                        InfoSort.getSortKey(infoSearch.getSort()),
+                        SortOrder.fromString(infoSearch.getOrder())
+                )
+                .setFrom(infoSearch.getStart())
+                .setSize(infoSearch.getSize())
+                .setFetchSource(InformationIndexKey.ID, null);
+
+        logger.debug(requestBuilder.toString());
+
+        List<Long> infoIds = new ArrayList<>();
+
+        SearchResponse searchResponse = requestBuilder.get();
+
+        if(searchResponse.status() != RestStatus.OK){
+            logger.warn("Search status is no ok for " + requestBuilder);
+            return new ServiceMultiResult<>(0, infoIds);
+        }
+
+        for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug(String.valueOf(hit.getSource()));
+            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+        }
+
+        return new ServiceMultiResult<>(searchResponse.getHits().totalHits, infoIds);
+    }
+
     private void remove(long id, Integer retry){
         if(retry > InformationIndexMessage.MAX_RETRY){
             logger.error("超过最大请求索引次数" + id );
@@ -255,4 +319,6 @@ public class SearchServiceImpl implements SearchService{
             logger.error("json转换错误 " + message, e);
         }
     }
+
+
 }
