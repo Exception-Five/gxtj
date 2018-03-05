@@ -1,0 +1,41 @@
+{
+  "settings": {
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "information": {
+      "dynamic": false,
+      "properties": {
+        "id": {
+          "type": "long"
+        },
+        "title": {
+          "type": "text",
+          "index": "true"
+        },
+        "author": {
+          "type": "keyword"
+        },
+        "description": {
+          "type": "text",
+          "index": "true"
+        },
+        "reads": {
+          "type": "integer"
+        },
+        "likes": {
+          "type": "integer"
+        },
+        "score": {
+          "type": "float"
+        },
+        "sourceUrl": {
+          "type": "text"
+        },
+        "sourceSite": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
