@@ -1,8 +1,12 @@
 package com.zhoulin.demo.utils;
 
+
+import org.springframework.stereotype.Component;
+
 /**
  * 删除/更新/判断操作使用
  */
+@Component
 public class VerificationUtils {
 
     public Integer verification(Integer status){
