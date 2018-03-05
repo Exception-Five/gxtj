@@ -9,7 +9,8 @@ public interface SearchService {
      * 索引目标资讯
      * @param id
      */
-    boolean index(long id);
+//    boolean index(long id);
+    void index(long id);
 
     /**
      * 移除资讯索引

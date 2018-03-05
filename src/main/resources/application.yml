@@ -40,6 +40,11 @@ spring:
     database: 0                       #默认是索引为0的数据库
     password:
     timeout: 0
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      group-id: gxtj
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
