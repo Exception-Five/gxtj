@@ -4,13 +4,14 @@ import HelloWorld from '@/components/HelloWorld'
 import Index from '@/views/Index'
 import Article from '@/views/Article'
 import Member from '@/views/Member'
+import RegisterSuccess from '@/views/RegisterSuccess'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/index',
       name: 'Index',
       component: Index
     },
@@ -23,6 +24,11 @@ export default new Router({
       path: '/member',
       name: 'Member',
       component: Member
+    },
+    {
+      path: '/success',
+      name: 'Success',
+      component: RegisterSuccess
     }
   ]
 })
