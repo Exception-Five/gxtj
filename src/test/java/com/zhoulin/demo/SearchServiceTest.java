@@ -9,6 +9,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -67,6 +70,30 @@ public class SearchServiceTest extends DemoApplicationTests {
 
 //        Assert.assertEquals(1, multiResult.getTotal());
         System.out.println("dasdasdasdasdas:      " + multiResult.getTotal());
+    }
+
+    @Test
+    public void testWord2Vec(){
+        String info = null;
+        try {
+            List<Information> informationList = informationService.findAll();
+            for (Information information: informationList) {
+                info = info + information.getDescription();
+            }
+            System.out.println(">>>>>>>" + info);
+
+            File writename = new File(".\\result\\en\\output.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
+            writename.createNewFile(); // 创建新文件
+            BufferedWriter out = new BufferedWriter(new FileWriter(writename));
+            out.write("我会写入文件啦\r\n"); // \r\n即为换行
+            out.flush(); // 把缓存区内容压入文件
+            out.close(); // 最后记得关闭文件
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
