@@ -3,9 +3,9 @@ import axios from 'axios';
 // user
 export const requestLogin = params => { return axios.post(`/public/login`, params).then(res => res.data); };
 
-export const requestRegister = params => { return axios.post(`/public/user/register`, params)};
+export const requestRegister = params => { return axios.post(`/public/user/register`, params).then(res => res.data);};
 
-export const activate = code => { return axios.post(`/public/user/activate/{code}`)};
+export const activate = code => { return axios.post(`/public/user/activate/${code}`).then(res => res.data)};
 
 export const updateUser = params => { return axios.post(`/api/user/updateUser`, params)};
 

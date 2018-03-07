@@ -26,7 +26,7 @@ export default new Router({
       component: Member
     },
     {
-      path: '/success',
+      path: '/success/:code',
       name: 'Success',
       component: RegisterSuccess
     }
