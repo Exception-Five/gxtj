@@ -85,12 +85,12 @@
                 <i class="icon icon-sm-phone"></i>APP下载<em class="guide-prompt"></em>
             </li>
             <li class="search-li js-show-search-box"><a><i class="icon icon-search "></i></a><span>搜索</span></li>
-            <li class="login-link-box" @click="login"><a class="cd-signin">登录</a></li>
-            <li ><a class="cd-signup" >注册</a></li>
+            <li class="login-link-box" @click="handleForm(0)"><a class="cd-signin">登录</a></li>
+            <li ><a class="cd-signup" @click="handleForm(1)">注册</a></li>
             <li><a class="cd-tougao">投稿</a></li>
         </ul>
     </div>
-<div class="cd-user-modal" :class="{'is-visible': isLoginShow}"> 
+<div class="cd-user-modal" :class="{'is-visible': isLoginShow || isRegisterShow}"> 
 	<div class="cd-user-modal-container">
 		<div id="cd-login" v-show="isLoginShow"> <!-- 登录表单 -->
 			<div class="modal-alert-title">登录虎嗅</div>
@@ -100,17 +100,17 @@
                 	<div class="login-form username-box " style="margin-top:52px;">
            				<a class="js-open-sms-login sms-text">短信快捷登录</a>
             			<label class="login-label transition" >
-                			<input id="login_username" class="login-input" placeholder="手机号／邮箱／虎嗅账号">
+                			<input id="login_username"  class="login-input" placeholder="手机号／邮箱／虎嗅账号" v-model="userInfo.username">
             			</label>
             			<label class="login-label">
-                			<input id="login_password" class="login-input password" type="password" placeholder="输入6～24位密码">
+                			<input id="login_password" class="login-input password" type="password" placeholder="输入6～24位密码" v-model="userInfo.password">
             			</label>
             			<a class="js-label-select label-select-box hide login-label-select text-center"><span class="js-country-user">+86</span><i class="icon-modal icon-l-caret"></i></a>
 						<div class="login-operation">
                 			<label><input id="autologin" type="checkbox">&nbsp;2周内自动登录</label>
                				<a href="/user/reset_password" class="js-forget-passward pull-right">忘记密码</a>
             			</div>
-            			<button class="js-btn-login btn-login">登&nbsp;录</button>
+            			<button class="js-btn-login btn-login" @click="loginConfirm">登&nbsp;录</button>
         			</div>
         			<div class="js-open-register register-text">极速注册</div>
         			<div class="third-box">
@@ -138,7 +138,7 @@
         		<div class="screen-tu" id="screen"></div>
 			</div>
 		</div>
-    	<div id="cd-signup"> <!-- 注册表单 -->
+    	<div id="cd-signup" v-show="isRegisterShow"> <!-- 注册表单 -->
 			<div class="modal-alert-title">极速注册</div>
        	    <div class="user-register-box">
 				<div class="login-form sms-box">
@@ -156,13 +156,13 @@
 					<label class="login-label captcha"><input id="sms_captcha" class="login-input" placeholder="输入6位验证码" maxlength="6">
 					<span class="js-btn-captcha btn-captcha">获取验证码</span></label>
 					<a class="js-label-select label-select-box text-center"><span class="js-country-sms">+86</span><i class="icon-modal icon-l-caret"></i></a>
-					<button class="js-btn-sms-login btn-login">注&nbsp;册</button>
+					<button class="js-btn-sms-login btn-login" @click="registerConfirm">注&nbsp;册</button>
 				</div>
 				<div class="js-user-login register-text">已有账号，立即登录</div></div>
     		</div>
-			<a href="#0" class="cd-close-form " @click="closeLogin">关闭</a>
+			<a href="#" class="cd-close-form " @click="closeForm">关闭</a>
 	</div>
-</div>
+</div> 
 <!-- 注册表单 -->
 <!-- <div id="cd-signup"> 
 	<div class="modal-alert-title">极速注册</div>
@@ -1354,18 +1354,56 @@
     </section>
 </template>
 <script>
+import {requestLogin, requestRegister, activate} from '../api/api.js'
 export default {
     data () {
         return {
-            isLoginShow: false
+            userInfo: {
+                "username": "",
+                "password": ""
+            },
+            isLoginShow: false,
+            isRegisterShow: false
         }
     },
     methods: {
-        login() {
-            this.isLoginShow = true
+        handleForm(flag) {
+            if(flag === 0){//点击登录
+                this.isLoginShow = true
+                this.isRegisterShow = false
+            }else if(flag === 1){//点击注册
+                this.isLoginShow = false
+                this.isRegisterShow = true
+            }
+            
         },
-        closeLogin() {
+        closeForm() {
             this.isLoginShow = false
+            this.isRegisterShow = false
+        },
+        loginConfirm () {
+            requestLogin(this.userInfo).then(res => {
+                console.log(requestLogin)
+                let userId = res.result.userId
+                if(userId > 0){
+                    this.isLoginShow = false
+                    alert("登录成功!")
+                }else{
+                    alert("用户名或密码错误!")
+                }
+            })
+        },
+        registerConfirm () {
+            let param = {
+                "username":"yjy",
+                "password":"123456",
+                "nickname":"dasds",
+                "userMail":"849723885@qq.com",
+                "userGroupId":1
+            }
+            requestRegister(param).then(res =>{
+                let code = res.result
+            })
         }
     }
   
