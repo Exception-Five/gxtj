@@ -26,7 +26,7 @@ public class SearchServiceTest extends DemoApplicationTests {
 
     @Test
     public void indexTest(){
-        long id = 4415L;
+        long id = 9271;
         searchService.index(id);
 //        Assert.assertTrue(isSuccess);
 }
@@ -44,7 +44,7 @@ public class SearchServiceTest extends DemoApplicationTests {
 
             for (Information information: infoList) {
                 long id = information.getId();
-//                boolean isSuccess = searchService.index(id);
+                searchService.index(id);
 //                Assert.assertTrue(isSuccess);
             }
 
@@ -78,14 +78,14 @@ public class SearchServiceTest extends DemoApplicationTests {
         try {
             List<Information> informationList = informationService.findAll();
             for (Information information: informationList) {
-                info = info + information.getDescription();
+                info = info + "\n" + information.getDescription();
             }
             System.out.println(">>>>>>>" + info);
 
-            File writename = new File(".\\result\\en\\output.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
+            File writename = new File("D:\\Java\\generator\\src\\main\\resources\\library\\word2vec.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
             writename.createNewFile(); // 创建新文件
             BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-            out.write("我会写入文件啦\r\n"); // \r\n即为换行
+            out.write(info); // \r\n即为换行
             out.flush(); // 把缓存区内容压入文件
             out.close(); // 最后记得关闭文件
 

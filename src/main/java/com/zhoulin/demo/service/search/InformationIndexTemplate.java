@@ -13,6 +13,8 @@ public class InformationIndexTemplate {
 
     private String description;
 
+    private String content;
+
     private Integer reads;
 
     private Integer likes;
@@ -22,6 +24,14 @@ public class InformationIndexTemplate {
     private String sourceUrl;
 
     private String sourceSite;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     public Long getId() {
         return id;

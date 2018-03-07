@@ -13,6 +13,8 @@ public class InformationIndexKey {
 
     public static final String DESCRIPTION = "description";
 
+    public static final String CONTENT = "content";
+
     public static final String READS = "reads";
 
     public static final String LIKES = "likes";

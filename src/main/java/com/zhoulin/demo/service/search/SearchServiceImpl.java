@@ -274,6 +274,14 @@ public class SearchServiceImpl implements SearchService{
 
         }
 
+        if(infoSearch.getContent() != null && !"*".equals(infoSearch.getContent())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.CONTENT, infoSearch.getContent())
+            );
+
+        }
+
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setQuery(boolQueryBuilder)
