@@ -93,6 +93,8 @@ public class SearchServiceImpl implements SearchService{
         try {
             information = informationService.getInfoByInfoId(id);
 
+            System.out.println(">>>>>"+information.getDescription());
+
             if(information==null){
                 logger.error("无对应id的资讯", id);
                 this.index(id, message.getRetry() + 1);
@@ -274,6 +276,14 @@ public class SearchServiceImpl implements SearchService{
 
         }
 
+        if(infoSearch.getContent() != null && !"*".equals(infoSearch.getContent())){
+
+            boolQueryBuilder.filter(
+                    QueryBuilders.termQuery(InformationIndexKey.CONTENT, infoSearch.getContent())
+            );
+
+        }
+
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setQuery(boolQueryBuilder)
@@ -302,6 +312,48 @@ public class SearchServiceImpl implements SearchService{
         }
 
         return new ServiceMultiResult<>(searchResponse.getHits().totalHits, infoIds);
+    }
+
+    @Override
+    public boolean indexPro(long id) {
+        Information information = new Information();
+        try {
+            information = informationService.getInfoByInfoId(id);
+            if(information==null){
+                logger.error("无对应id的资讯", id);
+                return false;
+            }
+            InformationIndexTemplate indexTemplate = new InformationIndexTemplate();
+            modelMapper.map(information, indexTemplate);
+            SearchRequestBuilder requestBuilder = this.esClient
+                    .prepareSearch(INDEX_NAME)
+                    .setTypes(INDEX_TYPE)
+                    .setQuery(QueryBuilders.termQuery(InformationIndexKey.ID, id));
+            logger.debug(requestBuilder.toString());
+
+            SearchResponse searchResponse = requestBuilder.get();
+
+            boolean isSuccess;
+
+            long totalHit = searchResponse.getHits().getTotalHits();
+
+            if(totalHit == 0){
+                isSuccess = create(indexTemplate);
+                }else if(totalHit == 1){
+                String esId = searchResponse.getHits().getAt(0).getId();
+                isSuccess = update(esId, indexTemplate);
+                }else {
+                isSuccess = deleteAndCreate(totalHit, indexTemplate);
+                }
+
+                if (isSuccess) {
+                logger.debug("执行成功的资讯" + id);
+                }
+                return isSuccess;
+            } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+            }
     }
 
     private void remove(long id, Integer retry){

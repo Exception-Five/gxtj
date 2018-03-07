@@ -15,7 +15,7 @@ import static com.ansj.vec.constants.Constants.ENCODING;
 public class Word2VEC {
 
 	public static void dataProcess() {
-		File commentFile = new File(Word2VEC.class.getResource("/library/comment12031715.txt").getPath());
+		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
 		long start = System.currentTimeMillis();
 		try {
 			StringBuilder vectorSB = new StringBuilder();
@@ -25,7 +25,7 @@ public class Word2VEC {
 				System.out.println("Parsing comment: " + line);
 			}
 
-			File file = new File("src/main/resource/library/comment/tokenizerResult.txt");
+			File file = new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\tokenizerResult.txt");
 			List<StringBuilder> list = new ArrayList<StringBuilder>();
 			list.add(vectorSB);
 			FileUtils.writeLines(file, list);
@@ -40,7 +40,7 @@ public class Word2VEC {
 
 
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-//		dataProcess();
+		dataProcess();
 
 
 		//train the model and save model
@@ -52,26 +52,26 @@ public class Word2VEC {
 		Word2VEC vec = new Word2VEC();
 						vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod");
 //
-		System.out.println("电影" + "\t" +
-		Arrays.toString(vec.getWordVector("电影")));
-
-		String str = "反感";
-		for (int i = 0; i < 20; i++) {
-			System.out.println(vec.distance(str));
-			;
-		}
+//		System.out.println("新闻" + "\t" +
+//		Arrays.toString(vec.getWordVector("新闻")));
+//
+//		String str = "金融";
+//		for (int i = 0; i < 20; i++) {
+//			System.out.println(vec.distance(str));
+//
+//		}
 
 		List<String> wordList = new ArrayList<String>();
-		wordList.add("烂片");
-		wordList.add("画面");
-		wordList.add("星");
-		wordList.add("幽默");
+		wordList.add("时尚");
+		wordList.add("经济");
+		wordList.add("电影");
+		wordList.add("计算机");
 		for (String word : wordList) {
 			System.out.println(word + "\t" +
 					vec.distance(word));
 		}
 
-		System.out.println(vec.analogy("男主角", "女主角", "演技"));
+		System.out.println(vec.analogy("计算机", "互联网", "谷歌"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();
