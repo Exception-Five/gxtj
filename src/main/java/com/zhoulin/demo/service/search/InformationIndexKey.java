@@ -25,4 +25,14 @@ public class InformationIndexKey {
 
     public static final String SOURCE_SITE = "sourceSite";
 
+    public static final String PUBLISH_DATE = "publish_date";
+
+    public static final String CONTENT_TIME = "content_time";
+
+    public static final String FEED_TIME = "feed_time";
+
+    public static final String USER_ADD_FLAG = "user_add_flag";
+
+    public static final String KEYWORD = "keyword";
+
 }

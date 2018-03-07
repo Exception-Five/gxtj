@@ -52,14 +52,14 @@ public class Word2VEC {
 		Word2VEC vec = new Word2VEC();
 						vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod");
 //
-		System.out.println("新闻" + "\t" +
-		Arrays.toString(vec.getWordVector("新闻")));
-
-		String str = "金融";
-		for (int i = 0; i < 20; i++) {
-			System.out.println(vec.distance(str));
-
-		}
+//		System.out.println("新闻" + "\t" +
+//		Arrays.toString(vec.getWordVector("新闻")));
+//
+//		String str = "金融";
+//		for (int i = 0; i < 20; i++) {
+//			System.out.println(vec.distance(str));
+//
+//		}
 
 		List<String> wordList = new ArrayList<String>();
 		wordList.add("时尚");

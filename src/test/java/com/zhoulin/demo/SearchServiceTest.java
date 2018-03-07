@@ -26,10 +26,21 @@ public class SearchServiceTest extends DemoApplicationTests {
 
     @Test
     public void indexTest(){
-        long id = 9271;
+        long id = 9310;
         searchService.index(id);
 //        Assert.assertTrue(isSuccess);
 }
+    @Test
+    public void infoTest(){
+        long id = 9310;
+        try {
+            Information information = informationService.getInfoByInfoId(id);
+            System.out.println(information.getDescription());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        Assert.assertTrue(isSuccess);
+    }
 
     @Test
     public void removeTest(){
@@ -44,7 +55,7 @@ public class SearchServiceTest extends DemoApplicationTests {
 
             for (Information information: infoList) {
                 long id = information.getId();
-                searchService.index(id);
+                searchService.indexPro(id);
 //                Assert.assertTrue(isSuccess);
             }
 
@@ -74,18 +85,21 @@ public class SearchServiceTest extends DemoApplicationTests {
 
     @Test
     public void testWord2Vec(){
-        String info = null;
+        String info = "";
+        String content = "";
         try {
             List<Information> informationList = informationService.findAll();
             for (Information information: informationList) {
                 info = info + "\n" + information.getDescription();
+                content = content + "\n" + information.getContent();
             }
             System.out.println(">>>>>>>" + info);
+            System.out.println("<<<<<<<" + content);
 
             File writename = new File("D:\\Java\\generator\\src\\main\\resources\\library\\word2vec.txt"); // 相对路径，如果没有则要建立一个新的output。txt文件
             writename.createNewFile(); // 创建新文件
             BufferedWriter out = new BufferedWriter(new FileWriter(writename));
-            out.write(info); // \r\n即为换行
+            out.write(info + content); // \r\n即为换行
             out.flush(); // 把缓存区内容压入文件
             out.close(); // 最后记得关闭文件
 

@@ -11,13 +11,21 @@
         },
         "title": {
           "type": "text",
-          "index": "true"
+          "index": "true",
+          "analyzer": "ik_smart",
+          "search_analyzer": "ik_smart"
         },
         "author": {
           "type": "keyword"
         },
         "description": {
           "type": "text",
+          "index": "true",
+          "analyzer": "ik_smart",
+          "search_analyzer": "ik_smart"
+        },
+        "keyword": {
+          "type": "keyword",
           "index": "true"
         },
         "content": {
@@ -37,6 +45,21 @@
           "type": "text"
         },
         "sourceSite": {
+          "type": "keyword"
+        },
+        "publishDate": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "contentTime": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "feedTime": {
+          "type": "date",
+          "format": "strict_date_optional_time||epoch_millis"
+        },
+        "userAddFlag": {
           "type": "keyword"
         }
       }

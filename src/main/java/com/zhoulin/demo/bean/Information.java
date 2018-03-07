@@ -1,5 +1,7 @@
 package com.zhoulin.demo.bean;
 
+import java.util.Date;
+
 public class Information {
 
     private Long id;
@@ -14,6 +16,8 @@ public class Information {
 
     private Integer likes;
 
+    private String keyword;
+
     private Integer score;
 
     private String content;
@@ -21,6 +25,54 @@ public class Information {
     private String sourceUrl;
 
     private String sourceSite;
+
+    private Date publishDate;
+
+    private Date contentTime;
+
+    private Date feedTime;
+
+    private String userAddFlag;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
+
+    public Date getContentTime() {
+        return contentTime;
+    }
+
+    public void setContentTime(Date contentTime) {
+        this.contentTime = contentTime;
+    }
+
+    public Date getFeedTime() {
+        return feedTime;
+    }
+
+    public void setFeedTime(Date feedTime) {
+        this.feedTime = feedTime;
+    }
+
+    public String getUserAddFlag() {
+        return userAddFlag;
+    }
+
+    public void setUserAddFlag(String userAddFlag) {
+        this.userAddFlag = userAddFlag;
+    }
 
     public String getContent() {
         return content;

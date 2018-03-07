@@ -8,12 +8,17 @@
         <result column="title" property="title"/>
         <result column="author" property="author"/>
         <result column="description" property="description"/>
+        <result column="keyword" property="keyword"/>
         <result column="reads" property="reads"/>
         <result column="likes" property="likes"/>
         <result column="score" property="score"/>
         <result column="content" property="content"/>
         <result column="source_url" property="sourceUrl"/>
         <result column="source_site" property="sourceSite"/>
+        <result column="publish_date" property="sourceSite"/>
+        <result column="content_time" property="sourceSite"/>
+        <result column="feed_time" property="sourceSite"/>
+        <result column="user_add_flag" property="userAddFlag"/>
     </resultMap>
 
     <select id="findAll" resultMap="InformationMap">
