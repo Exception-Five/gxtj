@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 推送功能
+ * 推送功能模块
  */
 @Component
 public class PushServiceImpl implements PushService {
