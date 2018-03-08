@@ -166,6 +166,12 @@
 			<version>2.5</version>
 		</dependency>
 
+		<!--TextRank关键词提取-->
+		<dependency>
+			<groupId>com.hankcs</groupId>
+			<artifactId>hanlp</artifactId>
+			<version>portable-1.1.5</version>
+		</dependency>
 
 	</dependencies>
 
