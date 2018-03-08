@@ -136,7 +136,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         Integer updateStatus = 0;
 
-        String key = "user_" + userInfo.getUserId();
+        String key = "userInfo_" + userInfo.getUserId();
         boolean hasKey = redisTemplate.hasKey(key);
 
         if (hasKey) {
@@ -171,7 +171,7 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         Integer delState = 0;
 
-        String key = "user_" + userId;
+        String key = "userInfo_" + userId;
         boolean hasKey = redisTemplate.hasKey(key);
 
         if(hasKey){
