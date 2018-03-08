@@ -287,6 +287,7 @@ public class SearchServiceImpl implements SearchService{
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setQuery(boolQueryBuilder)
+//                .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content"))
                 .addSort(
                         InfoSort.getSortKey(infoSearch.getSort()),
                         SortOrder.fromString(infoSearch.getOrder())
