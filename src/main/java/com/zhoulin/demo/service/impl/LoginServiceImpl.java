@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,9 @@ public class LoginServiceImpl implements LoginService {
 
                 String loginTimeMsg = null;
 
-                user.setLastLoginTime(loginTime);
+                Timestamp stamp = new Timestamp(loginTime.getTime());
+
+                user.setLastLoginTime(stamp);
 
                 try {
                     Integer loginStatus = userInfoService.updateUserInfo(user);

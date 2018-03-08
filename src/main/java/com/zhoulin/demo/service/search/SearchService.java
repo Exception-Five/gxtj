@@ -28,4 +28,6 @@ public interface SearchService {
      */
     ServiceMultiResult<Long> query(InfoSearch infoSearch);
 
+    boolean indexPro(long id);
+
 }

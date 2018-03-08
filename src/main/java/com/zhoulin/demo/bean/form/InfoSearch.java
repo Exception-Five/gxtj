@@ -18,6 +18,8 @@ public class InfoSearch {
 
     private String description;
 
+    private String content;
+
     private String sourceSiteSearch;
 
     private String keyWords;
@@ -45,6 +47,14 @@ public class InfoSearch {
         map.put("total",total);
         map.put("rows",rows);
         return map;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getStart() {
