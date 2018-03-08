@@ -10,7 +10,7 @@
         <result column="look_time" property="lookTime"/>
     </resultMap>
 
-    <select id="getLogInfoByUserId" parameterType="int" resultMap="InformationMap">
+    <select id="getLogInfoByUserId" parameterType="int" resultMap="LogInfoMap">
         SELECT * FROM log_info
         WHERE user_id = #{userId}
     </select>
