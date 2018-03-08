@@ -42,11 +42,21 @@ public class InfoSearch {
 
     private int infoId;
 
+    private String MutiContent;
+
     public Map result(){
         Map map = new HashMap();
         map.put("total",total);
         map.put("rows",rows);
         return map;
+    }
+
+    public String getMutiContent() {
+        return MutiContent;
+    }
+
+    public void setMutiContent(String mutiContent) {
+        MutiContent = mutiContent;
     }
 
     public String getContent() {
