@@ -40,7 +40,7 @@ public class Word2VEC {
 
 
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		dataProcess();
+//		dataProcess();
 
 
 		//train the model and save model
@@ -61,15 +61,15 @@ public class Word2VEC {
 //
 //		}
 
-		List<String> wordList = new ArrayList<String>();
-		wordList.add("时尚");
-		wordList.add("经济");
-		wordList.add("电影");
-		wordList.add("计算机");
-		for (String word : wordList) {
-			System.out.println(word + "\t" +
-					vec.distance(word));
-		}
+//		List<String> wordList = new ArrayList<String>();
+//		wordList.add("时尚");
+//		wordList.add("经济");
+//		wordList.add("电影");
+//		wordList.add("计算机");
+//		for (String word : wordList) {
+//			System.out.println(word + "\t" +
+//					vec.distance(word));
+//		}
 
 		System.out.println(vec.analogy("计算机", "互联网", "谷歌"));
 	}
