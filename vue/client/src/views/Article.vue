@@ -216,11 +216,11 @@
                 </ul>
             </div>
             <div class="article-wrap">
-                <h1 class="t-h1">闪送、小罐茶：将单一元素推向极致的创业给我们什么启发？</h1>
+                <h1 class="t-h1">{{information.title}}</h1>
                 <div class="article-author">
-                <span class="author-name"><a href="/member/1373658.html" target="_blank">判官</a></span>
+                <span class="author-name"><a href="/member/1373658.html" target="_blank">{{information.author}}</a></span>
                 <div class="column-link-box">
-                	<span class="article-time pull-left">2017-05-30 16:30</span>
+                	<span class="article-time pull-left"></span>
                     <span class="article-share pull-left">收藏87</span>
                     <span class="article-pl pull-left">评论16</span>
                     <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i>
@@ -547,7 +547,27 @@
 </template>
 
 <script>
+import {getInfoByInfoId} from '../api/api.js'
+
 export default {
+  data(){
+	  return{
+		information:{}
+	  }
+  },
+  mounted(){
+	let id  = this.$route.params.id
+	getInfoByInfoId(id).then(res=>{
+		console.log(res)
+		if(res.status === 1){
+			this.information = res.result
+		}
+	})
+  },
+  methods(){
+
+  },
+  
   
 }
 </script>

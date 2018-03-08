@@ -26,16 +26,16 @@ public class UserInfo implements Serializable {
 
     private Integer userStatus;
 
-    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
+//    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
     private Date lastLoginTime;
 
-    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
+//    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
     private Date lastLoginOutTime;
 
-    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
+//    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
     private Date gmtModified;
 
-    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
+//    @JsonDeserialize(using = CustomJsonDateDeserializer.class)
     private Date gmtCreate;
 
     private List<String> roles;

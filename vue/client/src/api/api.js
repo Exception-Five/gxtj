@@ -10,3 +10,7 @@ export const activate = code => { return axios.post(`/public/user/activate/${cod
 export const updateUser = params => { return axios.post(`/api/user/updateUser`, params)};
 
 export const addUser = params => { return axios.post(`/api/user/addUser`, params)};
+
+
+//information
+export const getInfoByInfoId = id => { return axios.get(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };

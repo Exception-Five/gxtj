@@ -40,7 +40,7 @@ public class LoginServiceImpl implements LoginService {
         if(user != null){
             if(userInfo.getPassword().equals(user.getPassword())&&userInfo.getUsername().equals(user.getUsername())){
 
-                UserGroup userGroup = userGroupMapper.getByUserId(user.getUserId());
+                UserGroup userGroup = userGroupMapper.getByUserId(user.getUserGroupId());
 
                 user.setUserGroup(userGroup);
 
