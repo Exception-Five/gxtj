@@ -546,26 +546,74 @@
 <div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
 <div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
 </footer>
+    <button type="button" name="button" @click="showTime">SHOW TIME</button>
+
+<VueToast ref='toast'></VueToast>
   </section>
 </template>
 
 <script>
-import {getInfoByInfoId} from '../api/api.js'
+import {getInfoByInfoId, getPushInfo} from '../api/api.js'
 import {formatDate} from '../utils/date.js';
+
+import 'vue-toast/dist/vue-toast.min.css';
+
+import VueToast from 'vue-toast'
+
 export default {
   data(){
 	  return{
-		information:{}
+		information:{},
+		maxToasts: 6,
+        position: 'bottom right',
+        theme: 'success',
+        timeLife: 3000,
+        closeBtn: true,
 	  }
   },
+  components: { VueToast },
+  watch: {
+      'delayOfJumps': 'resetOptions',
+      'maxToasts': 'resetOptions',
+      'position': 'resetOptions'
+   },
   mounted(){
+
 	let id  = this.$route.params.id
 	getInfoByInfoId(id).then(res=>{
-		console.log(res)
 		if(res.status === 1){
 			this.information = res.result
+			let param = new FormData()
+			param.append("id",id)
+			getPushInfo(param).then(res => {
+				console.log(res)
+				console.log("推送"+res.result.title)
+				this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a>`)
+				this.resetOptions()
+			})
+
+
 		}
 	})
+  },
+  methods:{
+	  resetOptions() {
+		this.$refs.toast.setOptions({
+		delayOfJumps: this.delayOfJumps,
+		maxToasts: this.maxToasts,
+		position: this.position
+		})
+	},
+	showTime(description) {
+		this.$refs.toast.showToast(description, {
+			theme: this.theme,
+			timeLife: this.timeLife,
+			closeBtn: this.closeBtn
+		})
+	},
+	closeAll() {
+		this.$refs.toast.closeAll()
+	}
   },
   metaInfo () {
 	  const title = "3123"
@@ -578,9 +626,6 @@ export default {
 		  }]
 	  }
   },
-  methods(){
-
-  },
   filters: {
         formatDate(time) {
             var date = new Date(time);
@@ -592,6 +637,7 @@ export default {
 </script>
 
 <style>
+
 @import '../assets/bootstrap/css/bootstrap.min.css';
 @import '../assets/css/build.css';
 @import '../assets/css/login.css';

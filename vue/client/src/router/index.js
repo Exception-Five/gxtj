@@ -5,6 +5,7 @@ import Index from '@/views/Index'
 import Article from '@/views/Article'
 import Member from '@/views/Member'
 import RegisterSuccess from '@/views/RegisterSuccess'
+import Test from '@/views/test/Test'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/success/:code',
       name: 'Success',
       component: RegisterSuccess
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
     }
   ]
 })
