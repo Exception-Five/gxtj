@@ -26,13 +26,13 @@ public class SearchServiceTest extends DemoApplicationTests {
 
     @Test
     public void indexTest(){
-        long id = 9310;
+        long id = 9380;
         searchService.index(id);
 //        Assert.assertTrue(isSuccess);
 }
     @Test
     public void infoTest(){
-        long id = 9310;
+        long id = 9380;
         try {
             Information information = informationService.getInfoByInfoId(id);
             System.out.println(information.getDescription());
@@ -71,9 +71,7 @@ public class SearchServiceTest extends DemoApplicationTests {
 
         InfoSearch infoSearch = new InfoSearch();
 
-        infoSearch.setTitleSearch("金");
-        infoSearch.setStart(0);
-        infoSearch.setSize(10);
+        infoSearch.setTitleSearch("美");
 
         searchService.query(infoSearch);
 
