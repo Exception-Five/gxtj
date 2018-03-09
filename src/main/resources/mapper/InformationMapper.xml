@@ -15,9 +15,9 @@
         <result column="content" property="content"/>
         <result column="source_url" property="sourceUrl"/>
         <result column="source_site" property="sourceSite"/>
-        <result column="publish_date" property="sourceSite"/>
-        <result column="content_time" property="sourceSite"/>
-        <result column="feed_time" property="sourceSite"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="content_time" property="contentTime"/>
+        <result column="feed_time" property="feedTime"/>
         <result column="user_add_flag" property="userAddFlag"/>
     </resultMap>
 

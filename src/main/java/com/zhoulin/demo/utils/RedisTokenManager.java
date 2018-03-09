@@ -27,7 +27,7 @@ public class RedisTokenManager {
         String token = UUID.randomUUID().toString();
         String value = JSONObject.toJSONString(userInfo);
         ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
-        operations.set(token, userInfo, 12, TimeUnit.HOURS);
+        operations.set(token, userInfo, 120, TimeUnit.SECONDS);
 //        redisTemplate.opsForValue().set(token, value);
 //        redisTemplate.expire(token, 12, TimeUnit.HOURS);
 //        redisTemplate.opsForValue().set(token, value, 24, TimeUnit.HOURS);

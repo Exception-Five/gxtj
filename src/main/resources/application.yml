@@ -63,7 +63,7 @@ com:
 jwt:
   secret: zhoulinSecret             #加密
   header: token
-  validity-time: 43200              #token有效时间
+  validity-time: 43200000              #token有效时间
 
 mail:
   fromMail:

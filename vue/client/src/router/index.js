@@ -5,18 +5,24 @@ import Index from '@/views/Index'
 import Article from '@/views/Article'
 import Member from '@/views/Member'
 import RegisterSuccess from '@/views/RegisterSuccess'
+import Test from '@/views/test/Test'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
+      path: '/',
+      name: 'Index',
+      component: Index
+    },
+    {
       path: '/index',
       name: 'Index',
       component: Index
     },
     {
-      path: '/article',
+      path: '/article/:id',
       name: 'Article',
       component: Article
     },
@@ -26,9 +32,14 @@ export default new Router({
       component: Member
     },
     {
-      path: '/success',
+      path: '/success/:code',
       name: 'Success',
       component: RegisterSuccess
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: Test
     }
   ]
 })

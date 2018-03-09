@@ -71,7 +71,9 @@ public class SearchServiceTest extends DemoApplicationTests {
 
         InfoSearch infoSearch = new InfoSearch();
 
-        infoSearch.setTitleSearch("美");
+        infoSearch.setTitleSearch("金");
+        infoSearch.setStart(0);
+        infoSearch.setSize(10);
 
         searchService.query(infoSearch);
 
