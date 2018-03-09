@@ -85,8 +85,9 @@
                 <i class="icon icon-sm-phone"></i>APP下载<em class="guide-prompt"></em>
             </li>
             <li class="search-li js-show-search-box"><a><i class="icon icon-search "></i></a><span>搜索</span></li>
-            <li class="login-link-box" @click="handleForm(0)"><a class="cd-signin">登录</a></li>
-            <li ><a class="cd-signup" @click="handleForm(1)">注册</a></li>
+            <li class="login-link-box" @click="handleForm(0)" v-show="!isLogined"><a class="cd-signin">登录</a></li>
+            <li ><a class="cd-signup" @click="handleForm(1)" v-show="!isLogined">注册</a></li>
+            <li v-show="isLogined">您好，{{userInfo.nickname}}<a @click="logout">&nbsp;&nbsp;&nbsp;退出</a></li>
             <li><a class="cd-tougao">投稿</a></li>
         </ul>
     </div>
@@ -112,7 +113,7 @@
             			</div>
             			<button class="js-btn-login btn-login" @click="loginConfirm">登&nbsp;录</button>
         			</div>
-        			<div class="js-open-register register-text">极速注册</div>
+        			<div class="js-open-register register-text" @click="handleForm(1)">极速注册</div>
         			<div class="third-box">
             			<div class="title"><span>第三方登录</span></div>
             			<a href="#"><i class="icon-modal icon-login-qq"></i></a>
@@ -142,23 +143,25 @@
 			<div class="modal-alert-title">极速注册</div>
        	    <div class="user-register-box">
 				<div class="login-form sms-box">
-					<label class="login-label col-xs-label transition"><input id="sms_username" class="login-input username" placeholder="手机号"></label>
-					<div class="geetest_login_sms_box" >
-						<div id="geetest_1496454436837" class="gt_holder gt_float" style="touch-action: none;">
-							<div class="gt_slider">
-								<div class="gt_guide_tip gt_show">按住左边滑块，拖动完成上方拼图</div>
-								<div class="gt_slider_knob gt_show" style="left: 0px;"></div>
-								<div class="gt_curtain_knob gt_hide">移动到此开始验证</div>
-								<div class="gt_ajax_tip gt_ready"></div>
-							</div>
-						</div>
-					</div>
-					<label class="login-label captcha"><input id="sms_captcha" class="login-input" placeholder="输入6位验证码" maxlength="6">
-					<span class="js-btn-captcha btn-captcha">获取验证码</span></label>
-					<a class="js-label-select label-select-box text-center"><span class="js-country-sms">+86</span><i class="icon-modal icon-l-caret"></i></a>
+                    <label class="login-label transition" >
+                        <input id="reg_username"  class="login-input" placeholder="用户名" v-model="userInfo.username">
+                    </label>
+                    <label class="login-label">
+                        <input id="reg_password" class="login-input password" type="password" placeholder="输入6～24位密码" v-model="userInfo.password">
+                    </label>
+                    <label class="login-label transition" >
+                        <input id="reg_nickname"  class="login-input" placeholder="昵称" v-model="userInfo.nickname">
+                    </label>
+                    <label class="login-label transition" >
+                        <input id="reg_userMail"  class="login-input" placeholder="邮箱" v-model="userInfo.userMail">
+                    </label>
+                    <a class="js-label-select label-select-box hide login-label-select text-center"><span class="js-country-user">+86</span><i class="icon-modal icon-l-caret"></i></a>
+                    <div class="login-operation">
+                        <a href="/user/reset_password" class="js-forget-passward pull-right">忘记密码</a>
+                    </div>
 					<button class="js-btn-sms-login btn-login" @click="registerConfirm">注&nbsp;册</button>
 				</div>
-				<div class="js-user-login register-text">已有账号，立即登录</div></div>
+				<div class="js-user-login register-text" @click="handleForm(0)">已有账号，立即登录</div></div>
     		</div>
 			<a href="#" class="cd-close-form " @click="closeForm">关闭</a>
 	</div>
@@ -304,43 +307,6 @@
                     <div class="mob-sub">公司纷纷看好人工智能技术潜力的同时，真正应用在自己业务中的并不算多</div>
                  </div>
             </div>    
-            <div class="mod-b mod-art mod-b-push ">
-                 <a class="transition" href="#" target="_blank" title="弯道超车的大业，怎么能靠政策呢？">
-                    <div class="mod-thumb ">
-                         <img class="lazy" src="../assets/sy-img/104239030071.jpg" alt="弯道超车的大业，怎么能靠政策呢？">
-                    </div>
-                 </a>
-                 <div class="column-link-box column-link-big-box">
-                    <a href="#" class="column-link" target="_blank">车与出行</a>
-                 </div>
-                 <div class="mob-ctt">
-                    <h2><a href="#" class="transition msubstr-row5" target="_blank">弯道超车的大业，怎么能靠政策呢？</a></h2>
-                    <div class="mob-author">
-                         <div class="author-face">
-                              <a href="#" target="_blank"><img class="lazy" src="../assets/sy-img/default.jpg"></a>
-                         </div>
-                         <a href="#" target="_blank">
-                              <span class="author-name">autocarweekly</span>
-                         </a>
-                         <a href="#" target="_blank"></a>
-                         <span class="time">5小时前</span>
-                    </div>
-					<div class="mob-sub">希望变失望、机会变门槛、黄金变铁皮</div>
-                </div>
-            </div>
-            <div class="mod-b mod-art promote">
-                 <a href="#" target="_blank" title="">
-                    <div class="mod-thumb">
-                         <img class="lazy" src="../assets/sy-img/233950517521.jpg">
-                    </div>
-                 </a>
-                 <div class="mob-ctt">
-                      <a href="#" target="_blank">实体商业转型</a>
-                      <span class="point">&bull;</span>
-                      <a href="#" target="_blank">实体空间在召唤，他们押宝了零售业态转型升级</a>
-                      <span class="span-mark-pro">推广</span>
-                 </div>
-            </div>
             <div class="mod-b mod-art" data-aid="213665">
             	 <div class="mod-angle">热</div>
                  <div class="mod-thumb ">
@@ -393,30 +359,6 @@
                     </div>
                     <div class="mob-sub">公司纷纷看好人工智能技术潜力的同时，真正应用在自己业务中的并不算多</div>
                  </div>
-            </div>
-            <div class="mod-b mod-art mod-b-push ">
-                 <a class="transition" href="#" target="_blank" title="弯道超车的大业，怎么能靠政策呢？">
-                    <div class="mod-thumb ">
-                         <img class="lazy" src="../assets/sy-img/104239030071.jpg" alt="弯道超车的大业，怎么能靠政策呢？">
-                    </div>
-                 </a>
-                 <div class="column-link-box column-link-big-box">
-                    <a href="#" class="column-link" target="_blank">车与出行</a>
-                 </div>
-                 <div class="mob-ctt">
-                    <h2><a href="#" class="transition msubstr-row5" target="_blank">弯道超车的大业，怎么能靠政策呢？</a></h2>
-                    <div class="mob-author">
-                         <div class="author-face">
-                              <a href="#" target="_blank"><img class="lazy" src="../assets/sy-img/default.jpg"></a>
-                         </div>
-                         <a href="#" target="_blank">
-                              <span class="author-name">autocarweekly</span>
-                         </a>
-                         <a href="#" target="_blank"></a>
-                         <span class="time">5小时前</span>
-                    </div>
-					<div class="mob-sub">希望变失望、机会变门槛、黄金变铁皮</div>
-                </div>
             </div>
             <div class="mod-b mod-art" data-aid="213665">
             	 <div class="mod-angle">热</div>
@@ -496,30 +438,6 @@
                     </div>
                     <div class="mob-sub">公司纷纷看好人工智能技术潜力的同时，真正应用在自己业务中的并不算多</div>
                  </div>
-            </div>
-            <div class="mod-b mod-art mod-b-push ">
-                 <a class="transition" href="#" target="_blank" title="弯道超车的大业，怎么能靠政策呢？">
-                    <div class="mod-thumb ">
-                         <img class="lazy" src="../assets/sy-img/104239030071.jpg" alt="弯道超车的大业，怎么能靠政策呢？">
-                    </div>
-                 </a>
-                 <div class="column-link-box column-link-big-box">
-                    <a href="#" class="column-link" target="_blank">车与出行</a>
-                 </div>
-                 <div class="mob-ctt">
-                    <h2><a href="#" class="transition msubstr-row5" target="_blank">弯道超车的大业，怎么能靠政策呢？</a></h2>
-                    <div class="mob-author">
-                         <div class="author-face">
-                              <a href="#" target="_blank"><img class="lazy" src="../assets/sy-img/default.jpg"></a>
-                         </div>
-                         <a href="#" target="_blank">
-                              <span class="author-name">autocarweekly</span>
-                         </a>
-                         <a href="#" target="_blank"></a>
-                         <span class="time">5小时前</span>
-                    </div>
-					<div class="mob-sub">希望变失望、机会变门槛、黄金变铁皮</div>
-                </div>
             </div>
             <div class="mod-b mod-art" data-aid="213665">
             	 <div class="mod-angle">热</div>
@@ -1354,14 +1272,18 @@
     </section>
 </template>
 <script>
-import {requestLogin, requestRegister, activate} from '../api/api.js'
+import {requestLogin, requestRegister} from '../api/api.js'
 export default {
     data () {
         return {
             userInfo: {
-                "username": "",
-                "password": ""
+                username: "",
+                password: "",
+                nickname: "",
+                userMail: "",
+                userGroupId: 1
             },
+            isLogined: false,
             isLoginShow: false,
             isRegisterShow: false
         }
@@ -1384,26 +1306,36 @@ export default {
         loginConfirm () {
             requestLogin(this.userInfo).then(res => {
                 console.log(requestLogin)
-                let userId = res.result.userId
-                if(userId > 0){
+                if(res.status === 1){
                     this.isLoginShow = false
+                    this.isLogined = true
+                    this.userInfo = res.result
                     alert("登录成功!")
-                }else{
-                    alert("用户名或密码错误!")
+                }else if(res.status === -1){
+                    alert("用户名不存在")
                 }
             })
         },
         registerConfirm () {
-            let param = {
-                "username":"yjy",
-                "password":"123456",
-                "nickname":"dasds",
-                "userMail":"849723885@qq.com",
-                "userGroupId":1
-            }
-            requestRegister(param).then(res =>{
-                let code = res.result
+            // let param = {
+            //     "username":"yjy",
+            //     "password":"123456",
+            //     "nickname":"dasds",
+            //     "userMail":"849723885@qq.com",
+            //     "userGroupId":1
+            // }
+            let param = this.userInfo
+            requestRegister(param).then(res => {
+                console.log(res)
+                if(res.status === 1){
+                    alert("已成功向您的邮箱发送帐号激活邮件,请确认")
+                }else{
+                    alert("发送邮件失败")
+                }
             })
+        },
+        logout () {
+            this.isLogined = false
         }
     }
   

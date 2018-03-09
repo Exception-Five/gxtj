@@ -216,23 +216,26 @@
                 </ul>
             </div>
             <div class="article-wrap">
-                <h1 class="t-h1">闪送、小罐茶：将单一元素推向极致的创业给我们什么启发？</h1>
+                <h1 class="t-h1">{{information.title}}</h1>
                 <div class="article-author">
-                <span class="author-name"><a href="/member/1373658.html" target="_blank">判官</a></span>
+                <span class="author-name"><a href="/member/1373658.html" target="_blank">{{information.author}}</a></span>
                 <div class="column-link-box">
-                	<span class="article-time pull-left">2017-05-30 16:30</span>
-                    <span class="article-share pull-left">收藏87</span>
-                    <span class="article-pl pull-left">评论16</span>
+                	<span class="article-time pull-left">{{information.publishDate | formatDate}}</span>
+                    <span class="article-share pull-left">阅读量{{information.reads}}</span>
+                    <span class="article-pl pull-left">点赞{{information.likes}}</span>
+					<span class="article-pl pull-left" style="margin-left:14px">评论10</span>
                     <a href="#" class="column-link" target="_blank">创业维艰</a> <i></i>
                 </div>                     
             </div>
 <!--管理员按钮-->
             <div class="article-manage-bar" id="article-manage-bar197460"></div>                                
-                                    <!--文章头图-->
-            <div class="article-img-box"><img src="https://img.huxiucdn.com/article/cover/201705/30/163018709897.jpg?imageView2/1/w/800/h/600/|imageMogr2/strip/interlace/1/quality/85/format/jpg" alt="闪送、小罐茶：将单一元素推向极致的创业给我们什么启发？"></div>
+            <!--文章头图-->
+            <div class="article-img-box">
+				<img src="https://img.huxiucdn.com/article/cover/201705/30/163018709897.jpg?imageView2/1/w/800/h/600/|imageMogr2/strip/interlace/1/quality/85/format/jpg" alt="闪送、小罐茶：将单一元素推向极致的创业给我们什么启发？">
+			</div>
             <div id="article_content197460" class="article-content-wrap">
-                 <p>有些人和企业的厉害之处，在于从一个看似成熟、红海的领域，硬生生拓展出一片蓝海市场来，而且生意做到风生水起。</p><p><br/></p><p>而这种闯出一片新天地的方法，最常见的一种，就是将原有的产品或服务模式中的某个元素，推向极致，拓展出新的用户场景和产品价值，自然就拓展出了新的市场。</p><p><br/></p><p>今天来分析三个例子，来看看这种"单一元素推向极致"的手段有多厉害。</p><p><br/></p><p><strong>第一个例子，是前段时间非常火爆的电话亭式KTV。</strong></p><p><br/></p><p>我不知道现在还有多少人经常去KTV唱歌。我能看到的是，在一线城市，传统的量贩式KTV市场一再萎缩，以钱柜、麦乐迪为代表的老企业日渐衰败，新的主打小户型的唱吧麦颂半死不活。长盛不衰此起彼伏的KTV也有，但那是俗称商K的夜总会式KTV，你懂的。</p><p><br/></p><p>究其原因，现在娱乐的个性化和小群体化趋势日益明显，以前那种成群结队去唱歌，还要忍受别人五音不全的唱腔的娱乐形式，显得不够与时俱进。</p><p><br/></p><p>但是，朋友情侣三两出行，还是有唱歌娱乐的需求的。电话亭式KTV应运而生。</p><p><br/></p><p>电话亭式KTV，把时间和空间两个元素推向极致。仅容纳两到三个人的私密空间，少至一首歌或者一刻钟的欢唱时间，充分利用碎片化时间和空间，让唱歌这件事不那么仪式感和处心积虑，随时兴起就可以来一发，多么愉快。何况，曲库、音响效果并不亚于传统的KTV，甚至还有所超越。</p>               
-                                                                <!--作者认证-->
+                 <!-- <p>有些人和企业的厉害之处，在于从一个看似成熟、红海的领域，硬生生拓展出一片蓝海市场来，而且生意做到风生水起。</p><p><br/></p><p>而这种闯出一片新天地的方法，最常见的一种，就是将原有的产品或服务模式中的某个元素，推向极致，拓展出新的用户场景和产品价值，自然就拓展出了新的市场。</p><p><br/></p><p>今天来分析三个例子，来看看这种"单一元素推向极致"的手段有多厉害。</p><p><br/></p><p><strong>第一个例子，是前段时间非常火爆的电话亭式KTV。</strong></p><p><br/></p><p>我不知道现在还有多少人经常去KTV唱歌。我能看到的是，在一线城市，传统的量贩式KTV市场一再萎缩，以钱柜、麦乐迪为代表的老企业日渐衰败，新的主打小户型的唱吧麦颂半死不活。长盛不衰此起彼伏的KTV也有，但那是俗称商K的夜总会式KTV，你懂的。</p><p><br/></p><p>究其原因，现在娱乐的个性化和小群体化趋势日益明显，以前那种成群结队去唱歌，还要忍受别人五音不全的唱腔的娱乐形式，显得不够与时俱进。</p><p><br/></p><p>但是，朋友情侣三两出行，还是有唱歌娱乐的需求的。电话亭式KTV应运而生。</p><p><br/></p><p>电话亭式KTV，把时间和空间两个元素推向极致。仅容纳两到三个人的私密空间，少至一首歌或者一刻钟的欢唱时间，充分利用碎片化时间和空间，让唱歌这件事不那么仪式感和处心积虑，随时兴起就可以来一发，多么愉快。何况，曲库、音响效果并不亚于传统的KTV，甚至还有所超越。</p>                -->
+				<div v-html="information.content"></div>
                  <div class="neirong-shouquan">
                       <span class="c2">*文章为作者独立观点，不代表虎嗅网立场<br></span>
                       <span>本文由 <a href="#" target="_blank">判官</a> 授权 <a href="/">虎嗅网</a> 发表，并经虎嗅网编辑。转载此文请于文首标明作者姓名，保持文章完整性（包括虎嗅注及其余作者身份信息），并请附上出处</span>
@@ -244,7 +247,7 @@
                  </div>
             </div>
 			<div class="Qr-code">
-                                                    <!--普通文章点赞-->
+                                                    
                  <div class="praise-box transition js-like-article pull-right " data-type="like">
                       <div class="praise-box-add"><i class="icon icon-article-zan-add"></i><span>+1</span></div>
                       <i class="icon icon-article-zan"></i><span class="num">32</span>
@@ -543,16 +546,98 @@
 <div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
 <div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
 </footer>
+    <button type="button" name="button" @click="showTime">SHOW TIME</button>
+
+<VueToast ref='toast'></VueToast>
   </section>
 </template>
 
 <script>
+import {getInfoByInfoId, getPushInfo} from '../api/api.js'
+import {formatDate} from '../utils/date.js';
+
+import 'vue-toast/dist/vue-toast.min.css';
+
+import VueToast from 'vue-toast'
+
 export default {
+  data(){
+	  return{
+		information:{},
+		maxToasts: 6,
+        position: 'bottom right',
+        theme: 'success',
+        timeLife: 3000,
+        closeBtn: true,
+	  }
+  },
+  components: { VueToast },
+  watch: {
+      'delayOfJumps': 'resetOptions',
+      'maxToasts': 'resetOptions',
+      'position': 'resetOptions'
+   },
+  mounted(){
+
+	let id  = this.$route.params.id
+	getInfoByInfoId(id).then(res=>{
+		if(res.status === 1){
+			this.information = res.result
+			let param = new FormData()
+			param.append("id",id)
+			getPushInfo(param).then(res => {
+				console.log(res)
+				console.log("推送"+res.result.title)
+				this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a>`)
+				this.resetOptions()
+			})
+
+
+		}
+	})
+  },
+  methods:{
+	  resetOptions() {
+		this.$refs.toast.setOptions({
+		delayOfJumps: this.delayOfJumps,
+		maxToasts: this.maxToasts,
+		position: this.position
+		})
+	},
+	showTime(description) {
+		this.$refs.toast.showToast(description, {
+			theme: this.theme,
+			timeLife: this.timeLife,
+			closeBtn: this.closeBtn
+		})
+	},
+	closeAll() {
+		this.$refs.toast.closeAll()
+	}
+  },
+  metaInfo () {
+	  const title = "3123"
+	  return {
+		  title: title+'132',
+		  meta:[{
+			  vmid: 'referrer',
+			  name: 'referrer',
+			  content: 'never'
+		  }]
+	  }
+  },
+  filters: {
+        formatDate(time) {
+            var date = new Date(time);
+            return formatDate(date, "yyyy-MM-dd");
+        }
+    }
   
 }
 </script>
 
 <style>
+
 @import '../assets/bootstrap/css/bootstrap.min.css';
 @import '../assets/css/build.css';
 @import '../assets/css/login.css';
