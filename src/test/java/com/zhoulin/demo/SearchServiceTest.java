@@ -26,13 +26,13 @@ public class SearchServiceTest extends DemoApplicationTests {
 
     @Test
     public void indexTest(){
-        long id = 9310;
+        long id = 18404;
         searchService.index(id);
 //        Assert.assertTrue(isSuccess);
 }
     @Test
     public void infoTest(){
-        long id = 9310;
+        long id = 18404;
         try {
             Information information = informationService.getInfoByInfoId(id);
             System.out.println(information.getDescription());
