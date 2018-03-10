@@ -38,8 +38,8 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public List<UserInfo> getAllUserInfo(){
 
-        // 从缓存中获取用户列表
-        String key = "userInfoList_" + new Date();
+        // 从缓存中获取用户列表 默认设置 1
+        String key = "userInfoList_" + 1;
         ValueOperations<String, List<UserInfo>> operations = redisTemplate.opsForValue();
 
         // 缓存存在

@@ -134,8 +134,8 @@ public class InformationServiceImpl implements InformationService {
 
         List<Information> infoAllList = new ArrayList<>();
 
-        // 从缓存中获取资讯列表
-        String key = "InfoAllList_" + new Date();
+        // 从缓存中获取资讯列表 默认设置为 1
+        String key = "infoAllList_" + 1;
         ValueOperations<String, List<Information>> operations = redisTemplate.opsForValue();
 
         boolean hasKey = redisTemplate.hasKey(key);
@@ -163,8 +163,8 @@ public class InformationServiceImpl implements InformationService {
 
         List<Information> dateInfoList = new ArrayList<>();
 
-        // 从缓存中获取资讯列表
-        String key = "dateInfoList" + new Date();
+        // 从缓存中获取资讯列表 默认设置 1
+        String key = "dateInfoList" + 1;
         ValueOperations<String, List<Information>> operations = redisTemplate.opsForValue();
 
         boolean hasKey = redisTemplate.hasKey(key);
