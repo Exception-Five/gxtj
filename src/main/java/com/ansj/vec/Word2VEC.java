@@ -44,20 +44,20 @@ public class Word2VEC {
 
 
 		//train the model and save model
-		Learn learn = new Learn();
-		learn.learnFile(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\tokenizerResult.txt"));
-		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod"));
+//		Learn learn = new Learn();
+//		learn.learnFile(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\tokenizerResult.txt"));
+//		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod"));
 
 		//use the trained model to analyze
 		Word2VEC vec = new Word2VEC();
 						vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod");
-//
+
 //		System.out.println("新闻" + "\t" +
 //		Arrays.toString(vec.getWordVector("新闻")));
 //
-//		String str = "金融";
+		String str = "金融";
 //		for (int i = 0; i < 20; i++) {
-//			System.out.println(vec.distance(str));
+			System.out.println(vec.distance(str));
 //
 //		}
 
@@ -71,7 +71,7 @@ public class Word2VEC {
 //					vec.distance(word));
 //		}
 
-		System.out.println(vec.analogy("计算机", "互联网", "谷歌"));
+//		System.out.println(vec.analogy("计算机", "互联网", "谷歌"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();

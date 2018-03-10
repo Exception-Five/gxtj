@@ -16,4 +16,6 @@ public interface InformationMapper {
 
     public List<Information> findAll() throws Exception;
 
+    public List<Information> findInfoByDate() throws Exception;
+
 }

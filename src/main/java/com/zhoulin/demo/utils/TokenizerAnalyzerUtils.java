@@ -21,7 +21,7 @@ public class TokenizerAnalyzerUtils {
 
 
     public static void main(String args[]) throws IOException {
-        String tokenizerResult = getAnalyzerResult("不同于计算机，人类一睁眼就能迅速看到和看明白一个场景，因为人的大脑皮层至少有一半以上海量神经元参与了视觉任务的完成。");
+        String tokenizerResult = getAnalyzerResult("调整 回落 上证 创业 反弹 提前 高点 ");
         System.out.println(tokenizerResult);
     }
 

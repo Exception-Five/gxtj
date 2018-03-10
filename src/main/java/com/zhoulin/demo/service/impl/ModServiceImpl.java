@@ -10,6 +10,7 @@ import com.zhoulin.demo.bean.form.ServiceMultiResult;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.ModService;
 import com.zhoulin.demo.service.search.InformationIndexKey;
+import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -63,18 +64,24 @@ public class ModServiceImpl implements ModService{
 
             information = informationService.getInfoByInfoId(id);
 
-            content = information.getContent() + information.getDescription() + information.getTitle();
+            content = information.getOnlyText() + information.getDescription() + information.getTitle();
 
-            summary = TextRankSummary.getTopSentenceList(content, 50);
+//            summary = TextRankSummary.getTopSentenceList(content, 100);
 
             //提取关键字
-            List<String> keywords = new TextRankKeyword().getKeyword("", String.valueOf(summary));
+            List<String> keywords = new TextRankKeyword().getKeyword("", content);
 
-            keyword = keywords.get(0) + "," + keywords.get(1) + "," + keywords.get(2) + "," + keywords.get(3) + "," + keywords.get(4)+ "," + keywords.get(2);
+            for (String kw : keywords) {
+                keyword = keyword + kw + ",";
+            }
 
-            logger.info("获取的关键词为 >>>>> " + keyword);
+            String tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
 
-            information.setKeyword(keyword);
+//            keyword = keywords.get(0) + "," + keywords.get(1) + "," + keywords.get(2) + "," + keywords.get(3) + "," + keywords.get(4)+ "," + keywords.get(5);
+
+            logger.info("获取的关键词为 >>>>> " + tokenizerResult);
+
+            information.setKeyword(tokenizerResult);
 
             status = informationService.updateInformation(information);
 

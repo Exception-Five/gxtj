@@ -34,6 +34,16 @@ public class Information {
 
     private String userAddFlag;
 
+    private String onlyText;
+
+    public String getOnlyText() {
+        return onlyText;
+    }
+
+    public void setOnlyText(String onlyText) {
+        this.onlyText = onlyText;
+    }
+
     public String getKeyword() {
         return keyword;
     }

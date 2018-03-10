@@ -52,7 +52,8 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         try {
             List<UserInfo> userInfoList = userInfoMapper.getAllUserInfo();
-            operations.set(key, userInfoList, 10, TimeUnit.SECONDS);
+            //Redis有效时间设置为6个小时
+            operations.set(key, userInfoList, 6, TimeUnit.HOURS);
             LOGGER.info("serInfoMapper.getAllUserInfo(): 用户列表插入缓存 >> " + userInfoList.toString());
             return userInfoList;
         } catch (Exception e) {
@@ -134,6 +135,8 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public Integer updateUserInfo(UserInfo userInfo) {
 
+        ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
+
         Integer updateStatus = 0;
 
         String key = "userInfo_" + userInfo.getUserId();
@@ -141,7 +144,6 @@ public class UserInfoServiceImpl implements UserInfoService{
 
         if (hasKey) {
             redisTemplate.delete(key);
-
             LOGGER.info("userInfoMapper.updateUserInfo() : 从缓存中删除用户信息 >> " + userInfo.toString());
         }
 
@@ -149,6 +151,8 @@ public class UserInfoServiceImpl implements UserInfoService{
             updateStatus = userInfoMapper.updateUserInfo(userInfo);
             if (updateStatus == 1){
                 updateStatus = 1;
+                operations.set(key, userInfo, 6, TimeUnit.HOURS);
+                LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
             }else if (updateStatus == 0){
                 updateStatus = 0;
             }
@@ -174,18 +178,15 @@ public class UserInfoServiceImpl implements UserInfoService{
         String key = "userInfo_" + userId;
         boolean hasKey = redisTemplate.hasKey(key);
 
-        if(hasKey){
-
-            redisTemplate.delete(key);
-
-            LOGGER.info("userInfoMapper.updateUserInfo() : 从缓存中删除用户信息 >> " + userId);
-
-        }
-
         try {
             delState = userInfoMapper.deleteUserInfoById(userId);
             if (delState == 1){
                 delState = 1;
+                if(hasKey){
+                    redisTemplate.delete(key);
+                    LOGGER.info("userInfoMapper.updateUserInfo() : 从缓存中删除用户信息 >> " + userId);
+
+                }
             }else if (delState == 0){
                 delState = 0;
             }

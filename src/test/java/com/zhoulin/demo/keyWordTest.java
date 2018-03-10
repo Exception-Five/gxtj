@@ -38,6 +38,18 @@ public class keyWordTest extends DemoApplicationTests{
             e.printStackTrace();
         }
 
+//        long id = 21316;
+//
+//        boolean isSuccess = false;
+//
+//        try {
+//            isSuccess = modService.modAnalyse(id);
+//
+//            Assert.assertTrue(isSuccess);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
     }
 
     @Test
