@@ -19,6 +19,7 @@
         <result column="content_time" property="contentTime"/>
         <result column="feed_time" property="feedTime"/>
         <result column="user_add_flag" property="userAddFlag"/>
+        <result column="only_text" property="onlyText"/>
     </resultMap>
 
     <select id="findAll" resultMap="InformationMap">
@@ -28,6 +29,12 @@
     <select id="getInfoByInfoId" parameterType="long" resultMap="InformationMap">
         SELECT * FROM information
         WHERE id = #{id}
+    </select>
+
+    <select id="findInfoByDate" resultMap="InformationMap">
+        SELECT * FROM information
+        ORDER BY publish_date DESC
+        LIMIT 0, 20
     </select>
 
     <update id="updateInformation" parameterType="Information">

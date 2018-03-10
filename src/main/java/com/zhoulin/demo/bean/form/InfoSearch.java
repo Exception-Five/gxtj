@@ -84,13 +84,13 @@ public class InfoSearch {
     }
 
     public int getSize() {
-        if (this.size < 1) {
-            return 5;
-        } else if (this.size > 100) {
-            return 100;
-        } else {
+//        if (this.size < 1) {
+//            return 5;
+//        } else if (this.size > 100) {
+//            return 100;
+//        } else {
             return this.size;
-        }
+//        }
     }
 
     public void setSize(int size) {

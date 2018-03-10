@@ -35,4 +35,6 @@ public class InformationIndexKey {
 
     public static final String KEYWORD = "keyword";
 
+    public static final String ONLYTEXT = "onlyText";
+
 }

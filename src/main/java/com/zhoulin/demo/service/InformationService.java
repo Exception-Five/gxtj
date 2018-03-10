@@ -17,4 +17,6 @@ public interface InformationService {
 
     public List<Information> findAll() throws Exception;
 
+    public List<Information> findInfoByDate() throws Exception;
+
 }
