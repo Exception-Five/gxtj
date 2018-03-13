@@ -1,12 +1,15 @@
 package com.zhoulin.demo.service.impl;
 
+import com.ansj.vec.Word2VEC;
 import com.google.common.primitives.Longs;
 import com.textrank.TextRankKeyword;
 import com.textrank.TextRankSummary;
 import com.zhoulin.demo.bean.InfoSort;
 import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.ModService;
 import com.zhoulin.demo.service.search.InformationIndexKey;
@@ -47,12 +50,20 @@ public class ModServiceImpl implements ModService{
     @Autowired
     private InformationService informationService;
 
+    @Autowired
+    private TypeRelationMapper relationMapper;
+
+    /**
+     * 分析并提取关键词
+     * @param id
+     * @return
+     */
     @Override
     public boolean modAnalyse(long id){
 
         String content = "";
 
-        List<String> summary = new ArrayList<>();
+//        List<String> summary = new ArrayList<>();
 
         String keyword = "";
 
@@ -60,13 +71,19 @@ public class ModServiceImpl implements ModService{
 
         Information information = new Information();
 
+        TypeRelation typeRelation = new TypeRelation();
+
         try {
 
             information = informationService.getInfoByInfoId(id);
 
-            content = information.getOnlyText() + information.getDescription() + information.getTitle();
+            typeRelation = relationMapper.getInfoByTRId(id);
+
+            content = typeRelation.getOnlyText() +  information.getDescription() + information.getTitle();
 
 //            summary = TextRankSummary.getTopSentenceList(content, 100);
+
+            System.out.println("content>>>" + content);
 
             //提取关键字
             List<String> keywords = new TextRankKeyword().getKeyword("", content);
@@ -77,18 +94,16 @@ public class ModServiceImpl implements ModService{
 
             String tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
 
-//            keyword = keywords.get(0) + "," + keywords.get(1) + "," + keywords.get(2) + "," + keywords.get(3) + "," + keywords.get(4)+ "," + keywords.get(5);
-
             logger.info("获取的关键词为 >>>>> " + tokenizerResult);
 
             information.setKeyword(tokenizerResult);
 
+            //关键词存储到mysql
             status = informationService.updateInformation(information);
 
             if (status == 1){
                 return true;
             }
-
             return false;
 
         } catch (Exception e) {
@@ -99,6 +114,11 @@ public class ModServiceImpl implements ModService{
 
     }
 
+    /**
+     * 兴趣分析
+     * @param infoSearch
+     * @return
+     */
     @Override
     public ServiceMultiResult<Long> queryMuti(InfoSearch infoSearch) {
 
@@ -125,6 +145,104 @@ public class ModServiceImpl implements ModService{
         }
 
         return new ServiceMultiResult<>(searchResponse.getHits().totalHits, infoIds);
+
+    }
+
+    /**
+     * 新闻类型划分
+     * @param id
+     * @param type
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public String modForInfoType(long id, String type) throws Exception {
+
+        String content = "";
+
+        String w2vS = "";
+
+        Integer status = 0;
+
+        Integer infoStatus = 0;
+
+        Integer matchNum = 0;
+
+        boolean sentence = false;
+
+        List<String> kws = new ArrayList<>();
+
+        Information information = new Information();
+
+        TypeRelation typeRelation = new TypeRelation();
+
+        try {
+
+            information = informationService.getInfoByInfoId(id);
+
+            typeRelation = relationMapper.getInfoByTRId(id);
+
+            content = typeRelation.getOnlyText() + information.getDescription() + information.getTitle();
+
+            System.out.println("!!!!" + typeRelation.getOnlyText());
+
+            //提取关键字
+//            List<String> keywords = new TextRankKeyword().getKeyword("", typeRelation.getOnlyText());
+
+//            List<String> keywords = new Split().getKwList(information.getKeyword());
+
+            Word2VEC vec = new Word2VEC();
+            //加载训练模型
+            vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector030806.mod");
+
+            //得到类型 关键词范围
+            kws = vec.distance(type);
+
+            for (String kwT:kws) {
+                if (content.contains(kwT)){
+                    logger.info("!!! 匹配成功 " + kwT);
+                    matchNum  = matchNum + 1;
+                }
+            }
+
+            //向量词匹配的次数到达5次 ！！！
+            if (matchNum >= 5){
+                sentence = true;
+            }
+//            for (String kw : keywords) {
+//                if (kws.contains(kw)){
+//                    logger.info("匹配成功！已归类！" + type + ">>>" + kw);
+//                    //如果匹配成功 返回判断成功
+//                    sentence = true;
+//                }
+//                w2vS = w2vS + kw + " ";
+//            }
+//
+//            logger.info("获取的关键词为 >>>>> " + w2vS);
+
+            if (sentence == true){
+                //判断成功执行keyword字段更新
+//                information.setKeyword(w2vS);
+
+                //插入
+                typeRelation.setInfoId(id);
+                typeRelation.setType(type);
+
+//                infoStatus = informationService.updateInformation(information);
+
+                status = relationMapper.updateTypeRelationByInfoId(typeRelation);
+            }
+
+            if (status == 1){
+                return type;
+            }
+            return null;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            return null;
+        }
 
     }
 

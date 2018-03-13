@@ -1,12 +1,10 @@
 package com.zhoulin.demo.service.impl;
 
 import com.zhoulin.demo.bean.Information;
-import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.mapper.InformationMapper;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.search.SearchService;
-import com.zhoulin.demo.utils.RedisTokenManager;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ValueRange;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -61,8 +57,8 @@ public class InformationServiceImpl implements InformationService {
 
         try {
             information = informationMapper.getInfoByInfoId(infoId);
-            operations.set(key, information, 6, TimeUnit.HOURS);
-            logger.info("资讯信息插入缓存 >> " + information.toString());
+//            operations.set(key, information, 6, TimeUnit.HOURS);
+//            logger.info("资讯信息插入缓存 >> " + information.toString());
             return information;
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,8 +77,8 @@ public class InformationServiceImpl implements InformationService {
         boolean hasKey = redisTemplate.hasKey(key);
         if (hasKey){
             //缓存删除原有信息
-            redisTemplate.delete(key);
-            logger.info("从缓存中删除了资讯信息 >> " + information.toString());
+//            redisTemplate.delete(key);
+//            logger.info("从缓存中删除了资讯信息 >> " + information.toString());
         }
 
         try {
@@ -90,8 +86,8 @@ public class InformationServiceImpl implements InformationService {
             if (updateStatus == 1){
                 //更新索引数据
                 searchService.index(information.getId());
-                operations.set(key, information, 6, TimeUnit.HOURS);
-                logger.info("资讯信息插入缓存 >> " + information.toString());
+//                operations.set(key, information, 6, TimeUnit.HOURS);
+//                logger.info("资讯信息插入缓存 >> " + information.toString());
             }
             return updateStatus;
         } catch (Exception e) {
@@ -149,8 +145,8 @@ public class InformationServiceImpl implements InformationService {
             infoAllList = informationMapper.findAll();
 
             //Redis有效时间设置为6个小时
-            operations.set(key, infoAllList, 6, TimeUnit.HOURS);
-            logger.info("资讯列表插入缓存 >> " + infoAllList.toString());
+//            operations.set(key, infoAllList, 6, TimeUnit.HOURS);
+//            logger.info("资讯列表插入缓存 >> " + infoAllList.toString());
             return infoAllList;
         } catch (Exception e) {
             e.printStackTrace();

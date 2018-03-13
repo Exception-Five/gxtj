@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.demo.mapper.TypeRelationMapper">
+    <resultMap id="TypeRelationMap" type="com.zhoulin.demo.bean.TypeRelation">
+        <id column="relate_id" property="relateId"/>
+        <result column="info_id" property="infoId"/>
+        <result column="type" property="type"/>
+        <result column="only_text" property="onlyText"/>
+    </resultMap>
+
+    <select id="getInfoByTRId" parameterType="long" resultMap="TypeRelationMap">
+        SELECT * FROM type_relation
+        WHERE info_id = #{infoId}
+    </select>
+
+    <insert id="addTypeRelation" parameterType="TypeRelation" useGeneratedKeys="true" keyProperty="relateId">
+        INSERT INTO type_relation (relate_id, info_id, type)
+        VALUES (#{relateId}, #{infoId}, #{type})
+    </insert>
+
+    <update id="updateTypeRelationByInfoId" parameterType="TypeRelation">
+        UPDATE type_relation
+        <set>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where info_id = #{infoId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -19,7 +19,6 @@
         <result column="content_time" property="contentTime"/>
         <result column="feed_time" property="feedTime"/>
         <result column="user_add_flag" property="userAddFlag"/>
-        <result column="only_text" property="onlyText"/>
     </resultMap>
 
     <select id="findAll" resultMap="InformationMap">
@@ -52,13 +51,5 @@
     <delete id="deleteInformationById" parameterType="int">
         DELETE from information WHERE id = #{id}
     </delete>
-
-    <!--<select id="findPage" resultMap="CourseArrangeResult">-->
-        <!--SELECT a.* FROM course_arrange a, course_class c, course_info i-->
-        <!--WHERE c.id =  a.class_id-->
-        <!--AND a.course_id = i.id-->
-        <!--AND a.course_id = #{courseId}-->
-        <!--ORDER BY ${sort} ${order} LIMIT #{offset},#{limit}-->
-    <!--</select>-->
 
 </mapper>

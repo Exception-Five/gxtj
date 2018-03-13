@@ -4,6 +4,7 @@ import com.ansj.vec.domain.WordEntry;
 
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.util.*;
@@ -11,11 +12,13 @@ import java.util.Map.Entry;
 
 import static com.ansj.vec.constants.Constants.ENCODING;
 
-
+@Component
 public class Word2VEC {
 
 	public static void dataProcess() {
-		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
+//		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
+		//010806 020806 030806
+		File commentFile = new File(Word2VEC.class.getResource("/library/21252.txt").getPath());
 		long start = System.currentTimeMillis();
 		try {
 			StringBuilder vectorSB = new StringBuilder();
@@ -25,7 +28,7 @@ public class Word2VEC {
 				System.out.println("Parsing comment: " + line);
 			}
 
-			File file = new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\tokenizerResult.txt");
+			File file = new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\21252tokenR.txt");
 			List<StringBuilder> list = new ArrayList<StringBuilder>();
 			list.add(vectorSB);
 			FileUtils.writeLines(file, list);
@@ -45,33 +48,39 @@ public class Word2VEC {
 
 		//train the model and save model
 //		Learn learn = new Learn();
-//		learn.learnFile(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\tokenizerResult.txt"));
-//		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod"));
-
-		//use the trained model to analyze
+//		learn.learnFile(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\21252tokenR.txt"));
+//		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
+//
+//		//use the trained model to analyze
 		Word2VEC vec = new Word2VEC();
-						vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector.mod");
+		vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector030806.mod");
 
-//		System.out.println("新闻" + "\t" +
-//		Arrays.toString(vec.getWordVector("新闻")));
-//
-		String str = "金融";
-//		for (int i = 0; i < 20; i++) {
+		System.out.println("法律" + "\t" +
+		Arrays.toString(vec.getWordVector("法律")));
+
+		String str = "法律";
+		for (int i = 0; i < 20; i++) {
 			System.out.println(vec.distance(str));
-//
-//		}
+
+		}
 
 //		List<String> wordList = new ArrayList<String>();
-//		wordList.add("时尚");
-//		wordList.add("经济");
-//		wordList.add("电影");
-//		wordList.add("计算机");
+//		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
+//		wordList.add("娱乐");
+//		wordList.add("两会");
+//		wordList.add("体育");
+//		wordList.add("财经");
+//		wordList.add("科技");
+//		wordList.add("汽车");
+//		wordList.add("军事");
+//		wordList.add("旅游");
+//		wordList.add("生活");
 //		for (String word : wordList) {
 //			System.out.println(word + "\t" +
 //					vec.distance(word));
 //		}
 
-//		System.out.println(vec.analogy("计算机", "互联网", "谷歌"));
+		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();
@@ -224,11 +233,14 @@ public class Word2VEC {
 
 	}
 
-	public Set<WordEntry> distance(String queryWord) {
+	public List<String> distance(String queryWord) {
+
+		List<String> kws = new ArrayList<>();
 
 		float[] center = wordMap.get(queryWord);
 		if (center == null) {
-			return Collections.emptySet();
+//			return Collections.emptySet();
+			return null;
 		}
 
 		int resultSize = wordMap.size() < topNSize ? wordMap.size() : topNSize;
@@ -247,12 +259,13 @@ public class Word2VEC {
 				if (resultSize < result.size()) {
 					result.pollLast();
 				}
+				kws.add(entry.getKey());
 				min = result.last().score;
 			}
 		}
 		result.pollFirst();
 
-		return result;
+		return kws;
 	}
 
 	public Set<WordEntry> distance(List<String> words) {

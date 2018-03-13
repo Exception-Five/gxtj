@@ -44,8 +44,8 @@
     </select>
 
     <insert id="addUserInfo" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="userId">
-        INSERT INTO user_info (username, password, nickname, user_mail, user_image_url, gmt_create, gmt_modified, user_group_id)
-        VALUES (#{username}, #{password}, #{nickname}, #{userMail}, #{userImageUrl}, #{gmtCreate}, #{gmtModified}, #{userGroupId})
+        INSERT INTO user_info (username, password, nickname, user_mail, user_image_url, gmt_create, gmt_modified, user_group_id, user_status)
+        VALUES (#{username}, #{password}, #{nickname}, #{userMail}, #{userImageUrl}, #{gmtCreate}, #{gmtModified}, #{userGroupId}, #{userStatus})
     </insert>
 
     <update id="updateUserInfo" parameterType="UserInfo">

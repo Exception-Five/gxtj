@@ -21,7 +21,7 @@ public class TokenizerAnalyzerUtils {
 
 
     public static void main(String args[]) throws IOException {
-        String tokenizerResult = getAnalyzerResult("调整 回落 上证 创业 反弹 提前 高点 ");
+        String tokenizerResult = getAnalyzerResult("证据 取证 提交 配偶 第三者 离婚 当事人 ");
         System.out.println(tokenizerResult);
     }
 
@@ -50,6 +50,7 @@ public class TokenizerAnalyzerUtils {
     private static List<String> getStopWordsList(){
         List<String> stopWordList = null;
         File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/stopwords.dic").getPath());
+//          File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/stopwords/swresult_withoutnature.txt").getPath());
         try {
              stopWordList = FileUtils.readLines(stopWordFile, Constants.ENCODING);
         } catch (IOException e) {

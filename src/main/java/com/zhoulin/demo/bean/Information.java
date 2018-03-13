@@ -1,9 +1,8 @@
 package com.zhoulin.demo.bean;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class Information implements Serializable{
+public class Information {
 
     private Long id;
 
@@ -34,16 +33,6 @@ public class Information implements Serializable{
     private Date feedTime;
 
     private String userAddFlag;
-
-    private String onlyText;
-
-    public String getOnlyText() {
-        return onlyText;
-    }
-
-    public void setOnlyText(String onlyText) {
-        this.onlyText = onlyText;
-    }
 
     public String getKeyword() {
         return keyword;

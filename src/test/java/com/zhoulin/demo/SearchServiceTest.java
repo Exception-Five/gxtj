@@ -92,7 +92,7 @@ public class SearchServiceTest extends DemoApplicationTests {
             List<Information> informationList = informationService.findAll();
             for (Information information: informationList) {
                 info = info + "\n" + information.getDescription();
-                content = content + "\n" + information.getOnlyText();
+//                content = content + "\n" + information.getOnlyText();
                 title = title + "\n" + information.getTitle();
             }
             System.out.println(">>>>>>>" + info);
