@@ -37,16 +37,6 @@ public class InformationIndexTemplate {
 
     private String userAddFlag;
 
-    private String onlyText;
-
-    public String getOnlyText() {
-        return onlyText;
-    }
-
-    public void setOnlyText(String onlyText) {
-        this.onlyText = onlyText;
-    }
-
     public String getContent() {
         return content;
     }
