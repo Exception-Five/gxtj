@@ -72,10 +72,10 @@ public class ModTest extends DemoApplicationTests {
 
         try {
             informationList = informationService.findAll();
-            for (Information information:informationList) {
-                finalType = modService.modForInfoType(information.getId(), type);
+//            for (Information information:informationList) {
+                finalType = modService.modForInfoType(22163, type);
                 System.out.println("类型>>>>>>>>>>>" + finalType);
-            }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

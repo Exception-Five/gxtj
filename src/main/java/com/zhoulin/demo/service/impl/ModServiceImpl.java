@@ -193,7 +193,7 @@ public class ModServiceImpl implements ModService{
 
             Word2VEC vec = new Word2VEC();
             //加载训练模型
-            vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector030806.mod");
+            vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\comment\\vector030806.mod");
 
             //得到类型 关键词范围
             kws = vec.distance(type);
