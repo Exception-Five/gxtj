@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.demo.mapper.InfoMapper">
+    <resultMap id="InfoMap" type="com.zhoulin.demo.bean.Info">
+        <id column="id" property="id"/>
+        <result column="info_id" property="infoId"/>
+        <result column="title" property="title"/>
+        <result column="author" property="author"/>
+        <result column="description" property="description"/>
+        <result column="keyword" property="keyword"/>
+        <result column="reads" property="reads"/>
+        <result column="likes" property="likes"/>
+        <result column="score" property="score"/>
+        <result column="source_url" property="sourceUrl"/>
+        <result column="source_site" property="sourceSite"/>
+        <result column="publish_date" property="publishDate"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="InfoMap">
+        SELECT * FROM info
+    </select>
+
+    <select id="getInfoByInfoId" parameterType="long" resultMap="InfoMap">
+        SELECT * FROM info
+        WHERE info_id = #{infoId}
+    </select>
+
+    <select id="findInfoByDate" parameterType="int" resultMap="InfoMap">
+        SELECT * FROM info
+        ORDER BY publish_date DESC
+        LIMIT #{limitNum}, 20
+    </select>
+
+    <update id="updateInfo" parameterType="Info">
+        update info
+        <set>
+
+            <if test="keyword != null">
+                keyword = #{keyword,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <delete id="deleteInfoById" parameterType="int">
+        DELETE from info WHERE info_id = #{infoId}
+    </delete>
+
+</mapper>

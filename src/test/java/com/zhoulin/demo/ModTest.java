@@ -71,7 +71,7 @@ public class ModTest extends DemoApplicationTests {
         String finalType = "";
 
         try {
-            informationList = informationService.findAll();
+//            informationList = informationService.findAll();
 //            for (Information information:informationList) {
                 finalType = modService.modForInfoType(22163, type);
                 System.out.println("类型>>>>>>>>>>>" + finalType);
