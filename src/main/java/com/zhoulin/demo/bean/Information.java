@@ -1,8 +1,9 @@
 package com.zhoulin.demo.bean;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Information {
+public class Information implements Serializable{
 
     private Long id;
 
