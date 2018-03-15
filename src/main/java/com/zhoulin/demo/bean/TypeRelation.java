@@ -1,6 +1,7 @@
 package com.zhoulin.demo.bean;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 新闻类型划分
@@ -11,9 +12,11 @@ public class TypeRelation implements Serializable{
 
     private long infoId;
 
-    private String type;
+    private int typeId;
 
     private String onlyText;
+
+    private Date publishDate;
 
     public String getOnlyText() {
         return onlyText;
@@ -39,11 +42,19 @@ public class TypeRelation implements Serializable{
         this.infoId = infoId;
     }
 
-    public String getType() {
-        return type;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
     }
 }

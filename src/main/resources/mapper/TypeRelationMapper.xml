@@ -6,8 +6,9 @@
     <resultMap id="TypeRelationMap" type="com.zhoulin.demo.bean.TypeRelation">
         <id column="relate_id" property="relateId"/>
         <result column="info_id" property="infoId"/>
-        <result column="type" property="type"/>
+        <result column="type_id" property="typeId"/>
         <result column="only_text" property="onlyText"/>
+        <result column="publish_date" property="publishDate"/>
     </resultMap>
 
     <select id="getInfoByTRId" parameterType="long" resultMap="TypeRelationMap">
@@ -16,17 +17,27 @@
     </select>
 
     <insert id="addTypeRelation" parameterType="TypeRelation" useGeneratedKeys="true" keyProperty="relateId">
-        INSERT INTO type_relation (relate_id, info_id, type)
-        VALUES (#{relateId}, #{infoId}, #{type})
+        INSERT INTO type_relation (relate_id, info_id, type_id, publish_date)
+        VALUES (#{relateId}, #{infoId}, #{typeId}, #{publishDate})
     </insert>
 
     <update id="updateTypeRelationByInfoId" parameterType="TypeRelation">
         UPDATE type_relation
         <set>
-            <if test="type != null">
-                type = #{type,jdbcType=VARCHAR},
+            <!--<if test="typeId != null">-->
+                <!--type_id = #{typeId,jdbcType=INTEGER},-->
+            <!--</if>-->
+            <if test="publishDate != null">
+                publish_date = #{publishDate},
             </if>
         </set>
         where info_id = #{infoId,jdbcType=INTEGER}
     </update>
+
+    <select id="getInfoBytTypeId" parameterType="int" resultMap="TypeRelationMap">
+        SELECT * FROM type_relation
+        WHERE type_id = #{typeId}
+        limit  0, 4
+        ORDER BY publish_date DESC
+    </select>
 </mapper>

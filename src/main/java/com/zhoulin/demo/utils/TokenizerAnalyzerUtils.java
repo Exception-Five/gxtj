@@ -20,7 +20,7 @@ public class TokenizerAnalyzerUtils {
     }
 
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]   ) throws IOException {
         String tokenizerResult = getAnalyzerResult("证据 取证 提交 配偶 第三者 离婚 当事人 ");
         System.out.println(tokenizerResult);
     }

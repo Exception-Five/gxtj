@@ -4,12 +4,14 @@ import com.ansj.vec.Word2VEC;
 import com.google.common.primitives.Longs;
 import com.textrank.TextRankKeyword;
 import com.textrank.TextRankSummary;
+import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.InfoSort;
 import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
+import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.ModService;
 import com.zhoulin.demo.service.search.InformationIndexKey;
@@ -53,6 +55,9 @@ public class ModServiceImpl implements ModService{
     @Autowired
     private TypeRelationMapper relationMapper;
 
+    @Autowired
+    private InfoService infoService;
+
     /**
      * 分析并提取关键词
      * @param id
@@ -69,11 +74,17 @@ public class ModServiceImpl implements ModService{
 
         Integer status = 0;
 
+        Integer infoStatus = 0;
+
+        Info info = new Info();
+
         Information information = new Information();
 
         TypeRelation typeRelation = new TypeRelation();
 
         try {
+
+            info = infoService.getInfoByInfoIdForImage(id);
 
             information = informationService.getInfoByInfoId(id);
 
@@ -98,8 +109,11 @@ public class ModServiceImpl implements ModService{
 
             information.setKeyword(tokenizerResult);
 
+            info.setKeyword(tokenizerResult);
+
             //关键词存储到mysql
             status = informationService.updateInformation(information);
+            infoStatus = infoService.updateInfo(info);
 
             if (status == 1){
                 return true;
@@ -226,7 +240,7 @@ public class ModServiceImpl implements ModService{
 
                 //插入
                 typeRelation.setInfoId(id);
-                typeRelation.setType(type);
+//                typeRelation.setType(type);
 
 //                infoStatus = informationService.updateInformation(information);
 

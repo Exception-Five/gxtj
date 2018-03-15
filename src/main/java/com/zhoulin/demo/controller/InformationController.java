@@ -69,7 +69,7 @@ public class InformationController {
 
                 typeRelation = typeRelationMapper.getInfoByTRId(infoId);
 
-                userMod = checkType.checkInfoType(userMod, typeRelation.getType());
+//                userMod = checkType.checkInfoType(userMod, typeRelation.getType());
 
                 //用户模型修改
                 userModService.updateUserMod(userMod);

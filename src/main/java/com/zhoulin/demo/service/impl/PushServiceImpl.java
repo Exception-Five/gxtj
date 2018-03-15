@@ -1,8 +1,11 @@
 package com.zhoulin.demo.service.impl;
 
-import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.RecessiveGroupMapper;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
+import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.ModService;
 import com.zhoulin.demo.service.PushService;
@@ -22,7 +25,16 @@ public class PushServiceImpl implements PushService {
     private ModService modService;
 
     @Autowired
+    private RecessiveGroupMapper recessiveGroupMapper;
+
+    @Autowired
     private InformationService informationService;
+
+    @Autowired
+    private TypeRelationMapper typeRelationMapper;
+
+    @Autowired
+    private InfoService infoService;
 
     @Override
     public long pushInformation(long id) {
@@ -55,4 +67,51 @@ public class PushServiceImpl implements PushService {
         }
 
     }
+
+    @Override
+    public List<UserInfo> pushInfoForRecessiveGroup(Integer typeId){
+
+        List<RecessiveGroup> recessiveGroups = new ArrayList<>();
+        try {
+            //获得用户群
+            recessiveGroups = recessiveGroupMapper.getUserRecessiveGroup(typeId);
+            Integer userId = 0;
+
+            for (RecessiveGroup recessiveGroup: recessiveGroups) {
+                userId = recessiveGroup.getUserId();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+//        return null;
+    }
+
+    /**
+     * 获取当前最新发布的 该类型 的新闻
+     * @param typId
+     * @return
+     */
+    public List<Info> InfoAnalyz(Integer typId) {
+
+        List<TypeRelation> wantTypeList =  new ArrayList<>();
+        List<Info> wantInfoList = new ArrayList<>();
+        Info info = new Info();
+        try {
+            //获得新闻群
+            wantTypeList = typeRelationMapper.getInfoBytTypeId(typId);
+
+            for (TypeRelation typeRelation:wantTypeList) {
+                info = infoService.getInfoByInfoIdForImage(typeRelation.getInfoId());
+                wantInfoList.add(info);
+            }
+            return wantInfoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }

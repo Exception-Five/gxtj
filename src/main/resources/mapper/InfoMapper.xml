@@ -20,6 +20,7 @@
 
     <select id="findAll" resultMap="InfoMap">
         SELECT * FROM info
+        ORDER BY publish_date DESC
     </select>
 
     <select id="getInfoByInfoId" parameterType="long" resultMap="InfoMap">
