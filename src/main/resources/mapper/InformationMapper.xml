@@ -41,9 +41,14 @@
         <set>
 
             <if test="keyword != null">
-                keyword = #{keyword,jdbcType=VARCHAR},
+                `keyword` = #{keyword,jdbcType=VARCHAR},
             </if>
-
+            <if test="likes != null">
+                `likes` = #{likes,jdbcType=INTEGER},
+            </if>
+            <if test="reads != null">
+                `reads` = #{reads,jdbcType=INTEGER}
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -51,5 +56,8 @@
     <delete id="deleteInformationById" parameterType="int">
         DELETE from information WHERE id = #{id}
     </delete>
-
+    <insert id="addInformation" parameterType="com.zhoulin.demo.bean.Information" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO information (`title`,`author`,`description`, `keyword`, `content`, `reads`,`likes`,`score`,`source_url`,`source_site`,`publish_date`)
+        VALUES (#{title},#{author},#{description},#{keyword},#{content},#{reads},#{likes},#{score},#{sourceUrl},#{sourceSite},#{publishDate})
+    </insert>
 </mapper>

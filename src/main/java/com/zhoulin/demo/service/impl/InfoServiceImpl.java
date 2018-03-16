@@ -7,6 +7,7 @@ import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.service.InfoService;
+import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class InfoServiceImpl implements InfoService{
 
     @Autowired
     private InfoImageMapper infoImageMapper;
+
+    @Autowired
+    private VerificationUtils verificationUtils;
 
     /**
      * 完整版
@@ -89,7 +93,16 @@ public class InfoServiceImpl implements InfoService{
 
     @Override
     public Integer updateInfo(Info info) {
-        return null;
+        Integer updateStatus = -1;
+
+        try {
+            updateStatus = verificationUtils.verification(infoMapper.updateInfo(info));
+            return updateStatus;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return updateStatus;
+        }
+
     }
 
     @Override
@@ -99,7 +112,15 @@ public class InfoServiceImpl implements InfoService{
 
     @Override
     public List<Info> findAll(){
-        return null;
+        List<Info> dateAllList = new ArrayList<>();
+        try {
+            dateAllList = infoMapper.findAll();
+            return dateAllList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     /**

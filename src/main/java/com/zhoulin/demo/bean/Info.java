@@ -33,6 +33,9 @@ public class Info implements Serializable {
 
     private InfoImage infoImage;
 
+    public Info() {
+    }
+
     public long getInfoId() {
         return infoId;
     }

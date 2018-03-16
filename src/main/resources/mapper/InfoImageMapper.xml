@@ -17,5 +17,8 @@
         SELECT * FROM info_image
         WHERE info_id = #{infoId}
     </select>
-
+    <insert id="addInfoImage" parameterType="com.zhoulin.demo.bean.InfoImage" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `info_image` (`info_id`, `image`)
+        VALUES (#{infoId},#{image})
+    </insert>
 </mapper>

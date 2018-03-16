@@ -17,5 +17,8 @@
         SELECT * FROM info_content
         WHERE info_id = #{infoId}
     </select>
-
+    <insert id="addInfoContent" parameterType="com.zhoulin.demo.bean.InfoContent" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `info_content` (`info_id`, `content`)
+        VALUES (#{infoId},#{content})
+    </insert>
 </mapper>

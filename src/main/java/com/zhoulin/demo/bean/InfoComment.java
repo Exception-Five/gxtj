@@ -34,6 +34,9 @@ public class InfoComment {
      */
     private Integer replyUserId;
 
+    private Integer like;
+
+    private Integer dislike;
     /**
      * 状态，0为启用 1为删除
      */
@@ -50,13 +53,15 @@ public class InfoComment {
     public InfoComment() {
     }
 
-    public InfoComment(Integer id, String content, Integer infoId, Integer userId, Integer parentCommentId, Integer replyUserId, Integer status, Date createTime, UserInfo userInfo, UserInfo replyUser) {
+    public InfoComment(Integer id, String content, Integer infoId, Integer userId, Integer parentCommentId, Integer replyUserId, Integer like, Integer dislike, Integer status, Date createTime, UserInfo userInfo, UserInfo replyUser) {
         this.id = id;
         this.content = content;
         this.infoId = infoId;
         this.userId = userId;
         this.parentCommentId = parentCommentId;
         this.replyUserId = replyUserId;
+        this.like = like;
+        this.dislike = dislike;
         this.status = status;
         this.createTime = createTime;
         this.userInfo = userInfo;
@@ -143,6 +148,22 @@ public class InfoComment {
         this.replyUser = replyUser;
     }
 
+    public Integer getLike() {
+        return like;
+    }
+
+    public void setLike(Integer like) {
+        this.like = like;
+    }
+
+    public Integer getDislike() {
+        return dislike;
+    }
+
+    public void setDislike(Integer dislike) {
+        this.dislike = dislike;
+    }
+
     @Override
     public String toString() {
         return "InfoComment{" +
@@ -152,6 +173,8 @@ public class InfoComment {
                 ", userId=" + userId +
                 ", parentCommentId=" + parentCommentId +
                 ", replyUserId=" + replyUserId +
+                ", like=" + like +
+                ", dislike=" + dislike +
                 ", status=" + status +
                 ", createTime=" + createTime +
                 ", userInfo=" + userInfo +

@@ -35,6 +35,9 @@ public class Information implements Serializable{
 
     private String userAddFlag;
 
+    public Information() {
+    }
+
     public String getKeyword() {
         return keyword;
     }

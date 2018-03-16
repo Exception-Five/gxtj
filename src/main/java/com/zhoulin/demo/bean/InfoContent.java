@@ -6,9 +6,12 @@ public class InfoContent implements Serializable {
 
     private long id;
 
-    private Integer infoId;
+    private long infoId;
 
     private String content;
+
+    public InfoContent() {
+    }
 
     public long getId() {
         return id;
@@ -18,11 +21,11 @@ public class InfoContent implements Serializable {
         this.id = id;
     }
 
-    public Integer getInfoId() {
+    public long getInfoId() {
         return infoId;
     }
 
-    public void setInfoId(Integer infoId) {
+    public void setInfoId(long infoId) {
         this.infoId = infoId;
     }
 

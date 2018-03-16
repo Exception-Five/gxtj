@@ -8,4 +8,6 @@ public interface InfoContentMapper {
 
     public InfoContent getInfoContentByInfoId(long infoId) throws Exception;
 
+    public Integer addInfoContent(InfoContent infoContent) throws Exception;
+
 }

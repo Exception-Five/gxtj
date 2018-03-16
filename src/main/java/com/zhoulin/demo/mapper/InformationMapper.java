@@ -18,4 +18,6 @@ public interface InformationMapper {
 
     public List<Information> findInfoByDate() throws Exception;
 
+    public Integer addInformation(Information information) throws Exception;
+
 }
