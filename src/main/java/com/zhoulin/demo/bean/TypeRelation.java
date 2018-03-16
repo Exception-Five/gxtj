@@ -12,11 +12,14 @@ public class TypeRelation implements Serializable{
 
     private long infoId;
 
-    private int typeId;
+    private Integer typeId;
 
     private String onlyText;
 
     private Date publishDate;
+
+    public TypeRelation() {
+    }
 
     public String getOnlyText() {
         return onlyText;
@@ -42,11 +45,11 @@ public class TypeRelation implements Serializable{
         this.infoId = infoId;
     }
 
-    public int getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 

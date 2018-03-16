@@ -33,14 +33,7 @@ public class Info implements Serializable {
 
     private InfoImage infoImage;
 
-    private boolean isRead;
-
-    public boolean isRead() {
-        return isRead;
-    }
-
-    public void setRead(boolean read) {
-        isRead = read;
+    public Info() {
     }
 
     public long getInfoId() {

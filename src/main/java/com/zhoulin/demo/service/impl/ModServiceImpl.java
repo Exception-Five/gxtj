@@ -103,13 +103,13 @@ public class ModServiceImpl implements ModService{
                 keyword = keyword + kw + ",";
             }
 
-            String tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
+//            String tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
 
-            logger.info("获取的关键词为 >>>>> " + tokenizerResult);
-
-            information.setKeyword(tokenizerResult);
-
-            info.setKeyword(tokenizerResult);
+//            logger.info("获取的关键词为 >>>>> " + tokenizerResult);
+//
+//            information.setKeyword(tokenizerResult);
+//
+//            info.setKeyword(tokenizerResult);
 
             //关键词存储到mysql
             status = informationService.updateInformation(information);

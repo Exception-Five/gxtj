@@ -20,7 +20,6 @@
 
     <select id="findAll" resultMap="InfoMap">
         SELECT * FROM info
-        ORDER BY publish_date DESC
     </select>
 
     <select id="getInfoByInfoId" parameterType="long" resultMap="InfoMap">
@@ -49,5 +48,10 @@
     <delete id="deleteInfoById" parameterType="int">
         DELETE from info WHERE info_id = #{infoId}
     </delete>
+
+    <insert id="addInfo" parameterType="com.zhoulin.demo.bean.Info" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO info (`info_id`, `title`,`author`,`description`, `keyword`, `reads`,`likes`,`score`,`source_url`,`source_site`,`publish_date`)
+        VALUES (#{infoId},#{title},#{author},#{description},#{keyword},#{reads},#{likes},#{score},#{sourceUrl},#{sourceSite},#{publishDate})
+    </insert>
 
 </mapper>

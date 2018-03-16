@@ -13,6 +13,8 @@ public interface InfoMapper {
     public Integer updateInfo(Info info) throws Exception;
 
     public Integer deleteInfoById(long infoId) throws Exception;
+    
+    public Integer addInfo(Info info) throws Exception;
 
     public List<Info> findAll() throws Exception;
 

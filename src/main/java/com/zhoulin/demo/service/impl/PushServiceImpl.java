@@ -85,7 +85,7 @@ public class PushServiceImpl implements PushService {
             e.printStackTrace();
             return null;
         }
-//        return null;
+        return null;
     }
 
     /**
@@ -100,7 +100,7 @@ public class PushServiceImpl implements PushService {
         Info info = new Info();
         try {
             //获得新闻群
-            wantTypeList = typeRelationMapper.getInfoBytTypeId(typId);
+//            wantTypeList = typeRelationMapper.getInfoBytTypeId(typId);
 
             for (TypeRelation typeRelation:wantTypeList) {
                 info = infoService.getInfoByInfoIdForImage(typeRelation.getInfoId());

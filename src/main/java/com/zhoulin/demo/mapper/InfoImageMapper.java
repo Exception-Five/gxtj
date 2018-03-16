@@ -8,4 +8,6 @@ public interface InfoImageMapper {
 
     public InfoImage getInfoImageByInfoId(long id) throws Exception;
 
+    public Integer addInfoImage(InfoImage infoImage) throws Exception;
+
 }

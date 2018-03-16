@@ -10,6 +10,9 @@ public class InfoImage implements Serializable {
 
     private String image;
 
+    public InfoImage() {
+    }
+
     public Integer getId() {
         return id;
     }
