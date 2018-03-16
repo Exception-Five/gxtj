@@ -44,7 +44,7 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a href="#" title="首页"><img src="../assets/images/logo.png" alt="虎嗅网" title="首页" /></a>
+                    <a href="#" title="首页"><img src="../assets/images/logo.jpg" alt="虎嗅网" title="首页" /></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <li class="nav-news js-show-menu">
@@ -85,17 +85,7 @@
                     <li class="search-li js-show-search-box"><a><i class="icon icon-search "></i></a><span>搜索</span></li>
                     <li class="login-link-box" @click="handleForm(0)" v-show="!isLogined"><a class="cd-signin">登录</a></li>
                     <li ><a class="cd-signup" @click="handleForm(1)" v-show="!isLogined">注册</a></li>
-                    <li class="logined-info" v-show="isLogined">
-                        <router-link :to="`#`"> 
-                            您好，{{userInfo.nickname}}
-                            <span class="caret"></span>
-                            <ul class="logined-show-menu">
-                                <li><router-link :to="`/member`">个人中心</router-link></li>
-                                <li><router-link :to="`/usermod`">兴趣统计</router-link></li>
-                                <li @click="logout"><router-link :to="`/`">退出登录</router-link></li>
-                            </ul>
-                        </router-link>
-                        <!-- <a @click="logout">&nbsp;&nbsp;&nbsp;退出</a></li> -->
+                    <li v-show="isLogined">您好，{{userInfo.nickname}}<a @click="logout">&nbsp;&nbsp;&nbsp;退出</a></li>
                     <li><a class="cd-tougao">投稿</a></li>
                 </ul>
             </div>
@@ -248,20 +238,7 @@ export default {
     font-size: 14px;
 }
 li.nav-news.js-show-menu ul{position: absolute; visibility: hidden; background:#fff; width:250px;  top:60px; left:-50px; z-index:9999; box-shadow:0 1px 15px rgba(18,21,21,.2);padding:10px 5px;}
-li.logined-info ul{
-    position: absolute; 
-    visibility: hidden; 
-    background:#fff; 
-    width:100px;  
-    top:40px; 
-    left:0; 
-    z-index:9999; 
-    box-shadow:0 1px 15px rgba(18,21,21,.2);
-    padding:10px 5px;
-}
-
 #jsddm ul li{ float:left; width:105px; padding-left:20px; line-height:40px;}
-.logined-info ul li{ float:left; width:105px; padding-left:10px; line-height:30px;}
 
 </style>
 
