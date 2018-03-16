@@ -3,7 +3,7 @@ package com.zhoulin.demo.controller;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.bean.UserMod;
-import com.zhoulin.demo.service.impl.UserModService;
+import com.zhoulin.demo.service.UserModService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;

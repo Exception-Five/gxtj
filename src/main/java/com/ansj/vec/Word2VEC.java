@@ -53,7 +53,7 @@ public class Word2VEC {
 //
 //		//use the trained model to analyze
 		Word2VEC vec = new Word2VEC();
-		vec.loadJavaModel("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector030806.mod");
+		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector030806.mod");
 
 		System.out.println("法律" + "\t" +
 		Arrays.toString(vec.getWordVector("法律")));

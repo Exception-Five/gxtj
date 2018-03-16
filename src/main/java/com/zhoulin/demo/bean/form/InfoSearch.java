@@ -10,7 +10,7 @@ public class InfoSearch {
 
     private int start = 0;
 
-    private int size = 5;
+    private int size = 100;
 
     private String titleSearch;
 

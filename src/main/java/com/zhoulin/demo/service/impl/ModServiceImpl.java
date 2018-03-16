@@ -18,7 +18,9 @@ import com.zhoulin.demo.service.search.InformationIndexKey;
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
@@ -129,36 +131,43 @@ public class ModServiceImpl implements ModService{
     }
 
     /**
-     * 兴趣分析
+     * ElasticSearch全文本检索
      * @param infoSearch
-     * @return
+     * @return json
      */
     @Override
-    public ServiceMultiResult<Long> queryMuti(InfoSearch infoSearch) {
+    public ServiceMultiResult<String> queryMuti(InfoSearch infoSearch) {
 
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
-                .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content"))
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content").type("best_fields").operator(Operator.OR))
                 .setExplain(true)
-                .setFetchSource(InformationIndexKey.ID, null);
+//                .setFetchSource(InformationIndexKey.ID, null)
+                ;
+        logger.info("！！！" + requestBuilder);
 
         logger.debug(requestBuilder.toString());
 
-        List<Long> infoIds = new ArrayList<>();
+        List<String> infoList = new ArrayList<>();
 
         SearchResponse searchResponse = requestBuilder.get();
 
         if(searchResponse.status() != RestStatus.OK){
             logger.warn("Search status is no ok for " + requestBuilder);
-            return new ServiceMultiResult<>(0, infoIds);
+            return new ServiceMultiResult<>(0, null);
         }
 
         for (SearchHit hit : searchResponse.getHits()) {
             logger.debug(String.valueOf(hit.getSource()));
-            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+//            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+            logger.info("详细信息" + hit.getSourceAsString());
+            infoList.add(hit.getSourceAsString());
         }
 
-        return new ServiceMultiResult<>(searchResponse.getHits().totalHits, infoIds);
+
+
+        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
 
     }
 
