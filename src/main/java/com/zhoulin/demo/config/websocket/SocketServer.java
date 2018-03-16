@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@ServerEndpoint(value = "/socketServer/{userid}")
+@ServerEndpoint(value = "/socketServer/{token}")
 @Component
 public class SocketServer {
     private Session session;
@@ -20,13 +20,13 @@ public class SocketServer {
      * 用户连接时触发
      *
      * @param session
-     * @param userid
+     * @param token
      */
     @OnOpen
-    public void open(Session session, @PathParam(value = "userid") String userid) {
+    public void open(Session session, @PathParam(value = "token") String token) {
         this.session = session;
-        sessionPool.put(userid, session);
-        sessionIds.put(session.getId(), userid);
+        sessionPool.put(token, session);
+        sessionIds.put(session.getId(), token);
     }
 
     /**
@@ -63,10 +63,10 @@ public class SocketServer {
      * 信息发送的方法
      *
      * @param message
-     * @param userId
+     * @param token
      */
-    public static void sendMessage(String message, String userId) {
-        Session s = sessionPool.get(userId);
+    public static void sendMessage(String message, String token) {
+        Session s = sessionPool.get(token);
         if (s != null) {
             try {
                 s.getBasicRemote().sendText(message);
