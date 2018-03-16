@@ -1,0 +1,51 @@
+// commentList: [{
+		// 	id:1,
+		// 	content: "这篇文章写的真不错",
+		// 	userInfo: {
+        //         userId: 1,
+        //         nickname: "周林13"
+        //     },
+		// 	replyUser: null,
+		// 	hasSubComment: true,
+		// 	subCommentList:[{
+		// 			id:3,
+		// 			content: "我也这么觉得",
+		// 			parentCommentId: 1,
+		// 			userInfo: {
+		// 				userId: 1,
+		// 				nickname: "zongyuhui"
+		// 			},
+		// 			replyUser: {
+		// 				userId: 1,
+		// 				nickname: "周林13"
+		// 			},
+		// 			hasSubComment: false,
+		// 			isCommentClick:false
+		// 		},{
+		// 			id:6,
+		// 			content: "我yjy也这么觉得",
+		// 			parentCommentId: 1,
+		// 			userInfo: {
+		// 				userId: 15,
+		// 				nickname: "yaojiayang"
+		// 			},
+		// 			replyUser: {
+		// 				userId: 1,
+		// 				nickname: "周林13"
+		// 			},
+		// 			hasSubComment: false,
+		// 			isCommentClick:false
+		// 		}
+		// 	],
+		// 	isCommentClick:false,
+		// },{
+		// 	id:2,
+		// 	content: "写的真好",
+		// 	userInfo: {
+        //         userId: 1,
+        //         nickname: "竺孙灵3"
+        //     },
+        //     replyUser: null,
+		// 	hasSubComment: false,
+		// 	isCommentClick:false
+		// }]
