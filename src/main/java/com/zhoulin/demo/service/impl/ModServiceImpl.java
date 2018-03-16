@@ -133,7 +133,7 @@ public class ModServiceImpl implements ModService{
     /**
      * ElasticSearch全文本检索
      * @param infoSearch
-     * @return
+     * @return json
      */
     @Override
     public ServiceMultiResult<String> queryMuti(InfoSearch infoSearch) {
