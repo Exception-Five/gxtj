@@ -1,4 +1,4 @@
-package com.zhoulin.demo.service.impl;
+package com.zhoulin.demo.service;
 
 import com.zhoulin.demo.bean.UserMod;
 

@@ -56,9 +56,9 @@ public class PushServiceImpl implements PushService {
 
                 infoSearch.setMutiContent(keywords);
 
-                ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
+//                ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
 
-                return multiResult.getResult().get(1);
+//                return multiResult.getResult().get(1);
             }
             return -1L;
         } catch (Exception e) {

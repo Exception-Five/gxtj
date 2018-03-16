@@ -1,6 +1,10 @@
 package com.zhoulin.demo;
 
 import com.zhoulin.demo.bean.Info;
+import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.TypeRelation;
+import com.zhoulin.demo.mapper.InformationMapper;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InfoService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,24 @@ public class InfoServiceTest extends DemoApplicationTests {
 
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private TypeRelationMapper typeRelationMapper;
+    @Autowired
+    private InformationMapper informationMapper;
+
+    @Test
+    public void tyFindTest(){
+        try {
+           List<Information> informationList = informationMapper.findAll();
+            for (Information information: informationList) {
+                TypeRelation t = typeRelationMapper.getInfoByTRId(information.getId());
+                System.out.println(t.toString());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void dateFindTest(){

@@ -5,11 +5,9 @@ import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.bean.UserMod;
 import com.zhoulin.demo.service.RegisterService;
 import com.zhoulin.demo.service.UserInfoService;
-import com.zhoulin.demo.service.impl.UserModService;
+import com.zhoulin.demo.service.UserModService;
 import com.zhoulin.demo.utils.RedisTokenManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**

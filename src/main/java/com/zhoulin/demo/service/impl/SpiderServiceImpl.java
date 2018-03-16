@@ -118,7 +118,7 @@ public class SpiderServiceImpl implements SpiderService{
             /*分类*/
 
             //加载训练模型
-            vec.loadJavaModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\comment\\vector030806.mod");
+            vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector030806.mod");
             logger.info("!!! 加载训练模型完成 ");
 
             for(int i = 0; i<arr.size(); i++) {
@@ -137,7 +137,7 @@ public class SpiderServiceImpl implements SpiderService{
                 //拼接要分析的文本
                 analyzeContent = onlyText + information.getTitle() + information.getDescription();
                 keywords = new TextRankKeyword().getKeyword("", analyzeContent);
-                logger.info("姚家杨", keywords);
+
 
                 for (String kw : keywords) {
                     keyword = keyword + kw + ",";

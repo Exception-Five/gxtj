@@ -52,6 +52,9 @@ public class keyWordTest extends DemoApplicationTests{
 
     }
 
+    /**
+     * 多字段抓取
+     */
     @Test
     public void queryMutiTest(){
 
@@ -59,7 +62,7 @@ public class keyWordTest extends DemoApplicationTests{
 
         String keywords = "";
 
-        long id = 9323;
+        long id = 25886;
 
         List<Information> informationList = new ArrayList<>();
 
@@ -70,11 +73,15 @@ public class keyWordTest extends DemoApplicationTests{
 
             infoSearch.setMutiContent(keywords);
 
-            ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
+            ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
 
             multiResult.getResult();
 
-            System.out.println(multiResult.getResult().get(0) + "<><><>" + multiResult.getResult().size() + multiResult.getResult().get(1));
+            for (String rs:multiResult.getResult()) {
+                System.out.println(rs);
+            }
+
+            System.out.println("<><><>" + multiResult.getTotal() );
 
 
         } catch (Exception e) {

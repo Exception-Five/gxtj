@@ -2,6 +2,7 @@ package com.zhoulin.demo.service.impl;
 
 import com.zhoulin.demo.bean.UserMod;
 import com.zhoulin.demo.mapper.UserModMapper;
+import com.zhoulin.demo.service.UserModService;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

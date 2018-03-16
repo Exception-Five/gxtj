@@ -7,11 +7,12 @@ package com.zhoulin.demo.controller;
  */
 
 import com.zhoulin.demo.bean.*;
+import com.zhoulin.demo.mapper.InfoContentMapper;
+import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
-import com.zhoulin.demo.mapper.UserModMapper;
 import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
-import com.zhoulin.demo.service.impl.UserModService;
+import com.zhoulin.demo.service.UserModService;
 import com.zhoulin.demo.utils.CheckType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,6 +37,12 @@ public class InformationController {
     private TypeRelationMapper typeRelationMapper;
 
     @Autowired
+    private InfoImageMapper infoImageMapper;
+
+    @Autowired
+    private InfoContentMapper infoContentMapper;
+
+    @Autowired
     private CheckType checkType;
 
     /**
@@ -50,6 +57,8 @@ public class InformationController {
 //        Information information = new Information();
 
         Info info = new Info();
+
+
 
         TypeRelation typeRelation = new TypeRelation();
 
