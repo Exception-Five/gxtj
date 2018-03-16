@@ -11,16 +11,16 @@ font-family:Arial,微软雅黑,"Microsoft yahei","Hiragino Sans GB","冬青黑�
 }
 
 header {
-position:fixed;
-z-index:500;
-width:100%;
-height:60px;
-border-bottom:1px solid #f0f0f0;
-line-height:60px;
-margin-bottom:30px;
-min-width:1170px;
-background-color:#fff;
-font-size:16px; top:0;
+    position:fixed;
+    z-index:500;
+    width:100%;;
+    height:60px;
+    border-bottom:1px solid #f0f0f0;
+    line-height:60px;
+    margin-bottom:30px;
+    min-width:1170px;
+    background-color:#fff;
+    font-size:16px; top:0;
 }
 
 .header-vip-img {
@@ -45,6 +45,12 @@ margin-top:-2px;
 }
 
 li.js-show-menu.nav-news:hover ul{
+    visibility: visible;
+}
+li.logined-info:hover ul{
+    visibility: hidden;
+}
+li.logined-info:hover ul{
     visibility: visible;
 }
 .border-none {
@@ -289,7 +295,7 @@ display:none;
 padding:0;
 }
 
-header .navbar-right li:last-child a {
+header .navbar-right > li:last-child a {
 width:70px;
 height:40px;
 color:#fff;
@@ -758,6 +764,7 @@ font-style:normal;
 .mob-author {
 /* margin:15px 200px 15px 30px; */
 margin: 15px 0;
+text-align: left;
 }
 /* #index .mob-author{
     margin:15px 200px 15px 30px;
@@ -789,7 +796,8 @@ margin-left:5px;
 width:220px;
 height:165px;
 overflow:hidden;
-background:#000;
+background:#fff;
+background-size: cover;
 }
 
 .dp-box-warp {
@@ -1034,7 +1042,7 @@ height:60px;
 }
 
 .icon-fvr {
-background-position:-106px -3px;
+background-position:-219px -172px;
 margin-left:15px;
 cursor:auto!important;
 }
@@ -2482,7 +2490,14 @@ background-color:#f63756;
 color:#fff;
 border-color:#f63756;
 }
-
+.praise-box.active{
+    background-color:#f63756;
+    color:#fff;
+    border-color:#f63756;
+}
+.praise-box.active .icon-article-zan {
+    background-position:-367px -333px;
+}
 .download-box {
 color:#999;
 font-size:18px;
@@ -2498,9 +2513,9 @@ margin:0 auto;
 background:#0da3fa;
 }
 
-.praise-box.active .icon-article-zan {
+/* .praise-box.active .icon-article-zan {
 background-position:-362px -400px;
-}
+} */
 
 .praise-box:hover .icon-article-zan {
 background-position:-367px -333px;
@@ -3214,14 +3229,14 @@ line-height:24px;
 }
 
 .one-pl-content .dp-reply-box,.one-pl-content .js-hf-article-pl {
-cursor:pointer;
-color:#bbb;
-margin:20px 20px 9px 0;
+    cursor:pointer;
+    color:#bbb;
+    margin:20px 20px 9px 0;
 }
 
 .one-pl-content .hu-pl-box {
-margin-top:20px;
-display:none;
+    margin-top:20px;
+    /* display:none; */
 }
 
 .one-pl-content .hu-pl-box textarea {
@@ -6658,7 +6673,7 @@ position:relative;
 margin-top:17px;
 }
 
-header .navbar-right li:last-child a:hover,.btn-article:hover,.btn-messages:hover,.btn-user-edit:hover,.btn-save:hover,.btn-determine:hover {
+header .navbar-right > li:last-child a:hover,.btn-article:hover,.btn-messages:hover,.btn-user-edit:hover,.btn-save:hover,.btn-determine:hover {
 color:#fff;
 background-color:#2f99ea;
 }
@@ -6717,10 +6732,29 @@ width:100%;
 .big2-pic .back-img{
     left: 0;
 }
+
+.msgAlert{
+    margin-top: 10px;
+    width: 100%;
+    height: 50px;
+    background: #3ca5f6;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    font-size: 18px;
+    transition: .5s ease;
+    /* transition-delay: 1s; */
+}
+.msgAlert.active{
+    height: 0;
+}
+
 .mod-info-flow,.mob-author .qr-moments-box,.dl-user ul,.tag-wrap .tag-img-wrap,.about-us-video,.about-icon-ul {
 display:inline-block;
 }
-
+.mod-info-flow{
+    text-align: left;
+}
 .mod-b:last-child,.mod-b.dp-box-active,.promote-box ul li:last-child,.article-left-btn-group ul li:last-child,.article-left-btn-group ul li:nth-child(4),.moder-group-list ul li:last-child,.hot-article ul li:last-child,.topic-message-wrap .message-box:last-child,.acnt-item-content,.moder-story-list ul li:last-child,.zt-article ul li:last-child {
 border:none;
 }
@@ -6879,8 +6913,8 @@ padding:30px 0;
 position:relative;
 top:30px;
 }
-
-.pl-box-btm .pl-form-box,.dp-list-box,.user-head-box .user-one:hover .user-one .hide-edit,.acnt-item .under-ul,.radio-inline input[type=radio],#hot {
+/* .pl-box-btm .pl-form-box, */
+.dp-list-box,.user-head-box .user-one:hover .user-one .hide-edit,.acnt-item .under-ul,.radio-inline input[type=radio],#hot {
 display:none;
 }
 
