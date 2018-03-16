@@ -3,8 +3,10 @@ package com.zhoulin.demo.service.search;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.Longs;
 import com.zhoulin.demo.bean.InfoSort;
+import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -53,6 +55,9 @@ public class SearchServiceImpl implements SearchService{
     private ModelMapper modelMapper;
 
     @Autowired
+    private TypeRelationMapper typeRelationMapper;
+
+    @Autowired
     private TransportClient esClient;
 
     @Autowired
@@ -89,7 +94,7 @@ public class SearchServiceImpl implements SearchService{
         Long id = message.getInfoId();
 
         Information information = new Information();
-
+        TypeRelation typeRelation = new TypeRelation();
         try {
             information = informationService.getInfoByInfoId(id);
 
@@ -100,7 +105,8 @@ public class SearchServiceImpl implements SearchService{
                 this.index(id, message.getRetry() + 1);
                 return;
             }
-
+            typeRelation = typeRelationMapper.getInfoByTRId(id);
+            information.setContent(typeRelation.getOnlyText());
             InformationIndexTemplate indexTemplate = new InformationIndexTemplate();
             modelMapper.map(information, indexTemplate);
 
@@ -318,12 +324,15 @@ public class SearchServiceImpl implements SearchService{
     @Override
     public boolean indexPro(long id) {
         Information information = new Information();
+        TypeRelation typeRelation = new TypeRelation();
         try {
             information = informationService.getInfoByInfoId(id);
             if(information==null){
                 logger.error("无对应id的资讯", id);
                 return false;
             }
+            typeRelation = typeRelationMapper.getInfoByTRId(id);
+            information.setContent(typeRelation.getOnlyText());
             InformationIndexTemplate indexTemplate = new InformationIndexTemplate();
             modelMapper.map(information, indexTemplate);
             SearchRequestBuilder requestBuilder = this.esClient

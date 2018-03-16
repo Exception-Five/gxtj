@@ -1,8 +1,10 @@
 package com.zhoulin.demo.service.impl;
 
 import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.mapper.InformationMapper;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.search.SearchService;
 import com.zhoulin.demo.utils.VerificationUtils;
@@ -27,6 +29,9 @@ public class InformationServiceImpl implements InformationService {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private TypeRelationMapper typeRelationMapper;
 
     @Autowired
     private VerificationUtils verificationUtils;
@@ -129,17 +134,17 @@ public class InformationServiceImpl implements InformationService {
     public List<Information> findAll() {
 
         List<Information> infoAllList = new ArrayList<>();
-
+        TypeRelation typeRelation = new TypeRelation();
         // 从缓存中获取资讯列表 默认设置为 1
         String key = "infoAllList_" + 1;
         ValueOperations<String, List<Information>> operations = redisTemplate.opsForValue();
 
-        boolean hasKey = redisTemplate.hasKey(key);
-        if (hasKey) {
-            infoAllList = operations.get(key);
-            logger.info("从缓存中获取资讯列表 >> " + infoAllList.toString());
-            return infoAllList;
-        }
+//        boolean hasKey = redisTemplate.hasKey(key);
+//        if (hasKey) {
+//            infoAllList = operations.get(key);
+//            logger.info("从缓存中获取资讯列表 >> " + infoAllList.toString());
+//            return infoAllList;
+//        }
 
         try {
             infoAllList = informationMapper.findAll();
@@ -147,6 +152,10 @@ public class InformationServiceImpl implements InformationService {
             //Redis有效时间设置为6个小时
 //            operations.set(key, infoAllList, 6, TimeUnit.HOURS);
 //            logger.info("资讯列表插入缓存 >> " + infoAllList.toString());
+            for (Information information : infoAllList) {
+                typeRelation = typeRelationMapper.getInfoByTRId(information.getId());
+                information.setContent(typeRelation.getOnlyText());
+            }
             return infoAllList;
         } catch (Exception e) {
             e.printStackTrace();
