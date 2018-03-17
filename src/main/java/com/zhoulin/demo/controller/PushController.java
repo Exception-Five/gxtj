@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/push/")
+@RequestMapping("/api/push")
 public class PushController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class PushController {
      * @param id 资讯id
      * @return
      */
-    @RequestMapping(value = "/pushInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/push/", method = RequestMethod.POST)
     @ResponseBody
     public Message pushInfo(@RequestParam(value = "id") long id){
 
