@@ -16,6 +16,11 @@
         WHERE info_id = #{infoId}
     </select>
 
+    <select id="getInfoByTypeId" parameterType="int" resultMap="TypeRelationMap">
+        SELECT * FROM type_relation
+        WHERE type_id = #{typeId}
+    </select>
+
     <insert id="addTypeRelation" parameterType="TypeRelation" useGeneratedKeys="true" keyProperty="relateId">
         INSERT INTO type_relation (relate_id, info_id, type_id, only_text, publish_date)
         VALUES (#{relateId}, #{infoId}, #{typeId},#{onlyText},#{publishDate})

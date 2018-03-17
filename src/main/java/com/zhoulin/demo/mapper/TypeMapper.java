@@ -10,4 +10,5 @@ public interface TypeMapper {
 
     public List<Type> findAll() throws Exception;
 
+    public Type getTypeByTypeId(Integer typeId) throws Exception;
 }

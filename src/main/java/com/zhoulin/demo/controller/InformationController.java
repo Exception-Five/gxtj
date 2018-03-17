@@ -1,29 +1,31 @@
 package com.zhoulin.demo.controller;
 
-/**
- * @Author: YannYao
- * @Description:
- * @Date Created in 14:02 2018/3/7
- */
-
 import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
+import com.zhoulin.demo.service.LogInfoService;
 import com.zhoulin.demo.service.UserModService;
 import com.zhoulin.demo.utils.CheckType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/public/information")
 public class InformationController {
+
+    private final static Logger logger = LoggerFactory.getLogger(InformationController.class);
+
     @Autowired
     private InformationService informationService;
 
@@ -43,6 +45,9 @@ public class InformationController {
     private InfoContentMapper infoContentMapper;
 
     @Autowired
+    private LogInfoService logInfoService;
+
+    @Autowired
     private CheckType checkType;
 
     /**
@@ -56,13 +61,17 @@ public class InformationController {
 
 //        Information information = new Information();
 
+        Integer addLStatus = 0;
+
+        Integer upLStatus = 0;
+
         Info info = new Info();
-
-
 
         TypeRelation typeRelation = new TypeRelation();
 
         UserMod userMod = new UserMod();
+
+        LogInfo logInfo = new LogInfo();
 
         try {
             info = infoService.getInfoByInfoId(infoId);
@@ -78,7 +87,28 @@ public class InformationController {
 
                 typeRelation = typeRelationMapper.getInfoByTRId(infoId);
 
-//                userMod = checkType.checkInfoType(userMod, typeRelation.getType());
+
+                logInfo = logInfoService.getLogInfoByInfoId(infoId);
+
+                if(logInfo!=null){
+                    logInfo.setLookTime(new Date());
+                    upLStatus = logInfoService.updateLogInfo(logInfo);
+                    if (upLStatus==1){
+                        logger.info("浏览日志>>>>>修改成功");
+                    }
+                }else {
+                    logInfo.setUserId(userId);
+                    logInfo.setInfoId(infoId);
+                    logInfo.setLookTime(new Date());
+
+                    //日志插入
+                    addLStatus = logInfoService.addLogInfo(logInfo);
+                    if (addLStatus==1){
+                        logger.info("浏览日志>>>>>插入成功");
+                    }
+                }
+
+                userMod = checkType.checkInfoType(userMod, typeRelation.getTypeId());
 
                 //用户模型修改
                 userModService.updateUserMod(userMod);

@@ -12,4 +12,9 @@
         SELECT * FROM type
     </select>
 
+    <select id="getTypeByTypeId" resultMap="TypeMap">
+        SELECT * FROM type
+        WHERE type_id = #{typeId}
+    </select>
+
 </mapper>

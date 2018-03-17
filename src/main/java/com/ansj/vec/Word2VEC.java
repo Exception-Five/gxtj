@@ -17,18 +17,18 @@ public class Word2VEC {
 
 	public static void dataProcess() {
 //		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
-		//010806 020806 030806
-		File commentFile = new File(Word2VEC.class.getResource("/library/21252.txt").getPath());
+		//010806 020806 030806D:\Java\generator\gxtj\src\main\resources\library\mod\aaa,tex
+		File commentFile = new File(Word2VEC.class.getResource("/library/merged.txt").getPath());
 		long start = System.currentTimeMillis();
 		try {
 			StringBuilder vectorSB = new StringBuilder();
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
-				vectorSB.append(TokenizerAnalyzerUtils.getAnalyzerResult(line.trim()) + "\r\n");
+				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
 			}
 
-			File file = new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\21252tokenR.txt");
+			File file = new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\comment\\1.txt");
 			List<StringBuilder> list = new ArrayList<StringBuilder>();
 			list.add(vectorSB);
 			FileUtils.writeLines(file, list);
@@ -43,7 +43,7 @@ public class Word2VEC {
 
 
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-//		dataProcess();
+		dataProcess();
 
 
 		//train the model and save model
@@ -52,17 +52,17 @@ public class Word2VEC {
 //		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
 //
 //		//use the trained model to analyze
-		Word2VEC vec = new Word2VEC();
-		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector030806.mod");
+//		Word2VEC vec = new Word2VEC();
+//		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector030806.mod");
+//
+//		System.out.println("法律" + "\t" +
+//		Arrays.toString(vec.getWordVector("法律")));
+//
+//		String str = "法律";
+//		for (int i = 0; i < 20; i++) {
+//			System.out.println(vec.distance(str));
 
-		System.out.println("法律" + "\t" +
-		Arrays.toString(vec.getWordVector("法律")));
-
-		String str = "法律";
-		for (int i = 0; i < 20; i++) {
-			System.out.println(vec.distance(str));
-
-		}
+//		}
 
 //		List<String> wordList = new ArrayList<String>();
 //		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
@@ -80,7 +80,7 @@ public class Word2VEC {
 //					vec.distance(word));
 //		}
 
-		System.out.println(vec.analogy("证据", "离婚", "涉及"));
+//		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();

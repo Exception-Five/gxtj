@@ -157,4 +157,25 @@ public class Information implements Serializable{
     public void setSourceSite(String sourceSite) {
         this.sourceSite = sourceSite;
     }
+
+    @Override
+    public String toString() {
+        return "Information{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", reads=" + reads +
+                ", likes=" + likes +
+                ", keyword='" + keyword + '\'' +
+                ", score=" + score +
+                ", content='" + content + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
+                ", sourceSite='" + sourceSite + '\'' +
+                ", publishDate=" + publishDate +
+                ", contentTime=" + contentTime +
+                ", feedTime=" + feedTime +
+                ", userAddFlag='" + userAddFlag + '\'' +
+                '}';
+    }
 }
