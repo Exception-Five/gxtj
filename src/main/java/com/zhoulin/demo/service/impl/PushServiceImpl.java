@@ -123,6 +123,7 @@ public class PushServiceImpl implements PushService {
         List<TypeRelation> typeRelations = new ArrayList<>();
         TypeRelation typeRelation = new TypeRelation();
         InfoSearch infoSearch = new InfoSearch();
+        List<Integer> infoIds = new ArrayList<>();
         List<Integer> types = new ArrayList<>();
         List<Integer> typeIds = new ArrayList<>();
         String keywords = "";
@@ -132,11 +133,12 @@ public class PushServiceImpl implements PushService {
             logInfos = logInfoService.getLogInfoByUserId(userId);
             for (LogInfo logInfo: logInfos) {
                 //查找对应新闻的详细信息
-                typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getLogId());
+                typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
                 Info info = infoService.getInfoByInfoId(logInfo.getInfoId());
                 keywords = keywords + info.getKeyword();
 //                Type type = typeMapper.getTypeByTypeId(typeRelation.getTypeId());
                 types.add(typeRelation.getTypeId());
+                infoIds.add(logInfo.getInfoId());
             }
 
             List<String> finalKeywords = new TextRankKeyword().getKeyword("", keywords);
@@ -177,31 +179,48 @@ public class PushServiceImpl implements PushService {
 
             for (String rs:multiResult.getResult()) {
                 Information information = objectMapper.readValue(rs, Information.class);
-                logger.info("最终关键词为 :  " + information.toString());
+//                logger.info("最终关键词为 :  " + information.toString());
                 //通过关键词找到的新闻列表
                 kwInformationList.add(information);
             }
 
             //获取交叉内容
             for (int i=0;i<typeInformationList.size();i++) {
-                if (kwInformationList.contains(typeInformationList.get(i))){
-                    logger.info("匹配到交叉内容 ！！！ " );
-                    mergeInforList.add(typeInformationList.get(i));
-                    typeInformationList.remove(i);
+                for (int j=0;j<kwInformationList.size();j++) {
+                    if (typeInformationList.get(i).getId() == kwInformationList.get(j).getId()){
+                        logger.info("匹配到交叉内容 ！！！ " );
+                        mergeInforList.add(typeInformationList.get(i));
+                        //去掉重复内容
+                        typeInformationList.remove(i);
+                        kwInformationList.remove(j);
+                    }
                 }
+//                if (kwInformationList.contains(typeInformationList.get(i))){
+//                    logger.info("匹配到交叉内容 ！！！ " );
+//                    mergeInforList.add(typeInformationList.get(i));
+//                    typeInformationList.remove(i);
+//                }
             }
 
             //去掉重复内容
-            for (int i=0;i<kwInformationList.size();i++) {
-                if (mergeInforList.contains(kwInformationList.get(i))){
-                    logger.info("匹配到交叉内容 ！！！ " );
-                    kwInformationList.remove(i);
-                }
-            }
+//            for (int i=0;i<kwInformationList.size();i++) {
+//                if (mergeInforList.contains(kwInformationList.get(i))){
+//                    logger.info("匹配到交叉内容 ！！！ " );
+//                    kwInformationList.remove(i);
+//                }
+//            }
 
             //最终新闻列表
             mergeInforList.addAll(kwInformationList);
             mergeInforList.addAll(typeInformationList);
+
+            for (int i=0;i<mergeInforList.size();i++) {
+                for (int j=0;j<infoIds.size();j++) {
+                    if (mergeInforList.get(i).getId() == infoIds.get(j)){
+                        mergeInforList.remove(i);
+                    }
+                }
+            }
 
             return mergeInforList;
 
