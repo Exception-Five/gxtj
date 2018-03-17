@@ -10,10 +10,12 @@ import com.zhoulin.demo.mapper.TypeRelationMapper;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.reindex.BulkByScrollResponse;
 import org.elasticsearch.index.reindex.DeleteByQueryAction;
@@ -366,6 +368,8 @@ public class SearchServiceImpl implements SearchService{
             }
     }
 
+
+
     private void remove(long id, Integer retry){
         if(retry > InformationIndexMessage.MAX_RETRY){
             logger.error("超过最大请求索引次数" + id );
@@ -382,5 +386,37 @@ public class SearchServiceImpl implements SearchService{
         }
     }
 
+    @Override
+    public ServiceMultiResult<String> queryMultiMatch(InfoSearch infoSearch) {
+
+        SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
+                .setTypes(INDEX_TYPE)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content").type("best_fields").operator(Operator.OR))
+                .setExplain(true)
+//                .setFetchSource(InformationIndexKey.ID, null)
+                ;
+        logger.info("！！！" + requestBuilder);
+
+        logger.debug(requestBuilder.toString());
+
+        List<String> infoList = new ArrayList<>();
+
+        SearchResponse searchResponse = requestBuilder.get();
+
+        if(searchResponse.status() != RestStatus.OK){
+            logger.warn("Search status is no ok for " + requestBuilder);
+            return new ServiceMultiResult<>(0, null);
+        }
+
+        for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug(String.valueOf(hit.getSource()));
+//            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+            logger.info("详细信息" + hit.getSourceAsString());
+            infoList.add(hit.getSourceAsString());
+        }
+
+        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+    }
 
 }

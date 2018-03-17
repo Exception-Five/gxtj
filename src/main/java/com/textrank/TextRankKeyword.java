@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class TextRankKeyword
 {
-    public static final int nKeyword = 10;
+    public static final int nKeyword = 9;
     /**
      * 阻尼系数（ＤａｍｐｉｎｇＦａｃｔｏｒ），一般取值为0.85
      */
@@ -117,11 +117,12 @@ public class TextRankKeyword
     {
         String content = "程序员(英文Programmer)是从事程序开发、维护的专业人员。一般将程序员分为程序设计人员和程序编码人员，但两者的界限并不非常清楚，特别是在中国。软件从业人员分为初级程序员、高级程序员、系统分析员和项目经理四大类。";
 
-        List<String> keywords = new TextRankKeyword().getKeyword("", content);
+        List<String> keywords = new TextRankKeyword().getKeyword("", "经济 经济 经济就就就就撒打算打算安信达所大所大所大打算");
 
-        for (String keyword:keywords) {
-            System.out.println("k:  " + keyword);
-        }
+//        for (String keyword:keywords) {
+//            System.out.println("k:  " + keyword);
+//        }
+        System.out.println("k:  " + keywords);
 
     }
 
