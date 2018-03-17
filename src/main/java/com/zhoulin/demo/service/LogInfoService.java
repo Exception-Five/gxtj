@@ -10,6 +10,8 @@ public interface LogInfoService {
 
     public LogInfo getLogInfoByLogId(Integer logId) throws Exception;
 
+    public LogInfo getLogInfoByInfoId(Integer infoId) throws Exception;
+
     public Integer updateLogInfo(LogInfo logInfo) throws Exception;
 
     public Integer deleteLogInfoById(Integer logId) throws Exception;

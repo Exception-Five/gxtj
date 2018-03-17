@@ -30,11 +30,15 @@ public class LogInfoServiceImpl implements LogInfoService{
     @Autowired
     private RedisTemplate redisTemplate;
 
-
+    /**
+     * 用户登录时就调用 后台直接进行分析
+     * @param userId
+     * @return
+     */
     @Override
     public List<LogInfo> getLogInfoByUserId(Integer userId){
 
-        // 从缓存中获取用户列表
+        // 从缓存中获取列表
         String key = "infoList_" + new Date();
         ValueOperations<String, List<LogInfo>> operations = redisTemplate.opsForValue();
 
@@ -48,7 +52,8 @@ public class LogInfoServiceImpl implements LogInfoService{
 
         try {
             List<LogInfo> infoList = logInfoMapper.getLogInfoByUserId(userId);
-            operations.set(key, infoList, 10, TimeUnit.SECONDS);
+
+            operations.set(key, infoList, 5, TimeUnit.HOURS);
             LOGGER.info("浏览日志列表插入缓存 >> " + infoList.toString());
             return infoList;
         } catch (Exception e) {
@@ -91,6 +96,21 @@ public class LogInfoServiceImpl implements LogInfoService{
 
             return null;
         }
+    }
+
+    @Override
+    public LogInfo getLogInfoByInfoId(Integer infoId) {
+
+        LogInfo logInfo = new LogInfo();
+
+        try {
+            logInfo = logInfoMapper.getLogInfoByInfoId(infoId);
+            return logInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     @Override

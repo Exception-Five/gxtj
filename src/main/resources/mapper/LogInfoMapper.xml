@@ -20,6 +20,11 @@
         WHERE log_id = #{logId}
     </select>
 
+    <select id="getLogInfoByInfoId" parameterType="int" resultMap="LogInfoMap">
+        SELECT * FROM log_info
+        WHERE info_id = #{infoId}
+    </select>
+
     <update id="updateLogInfo" parameterType="LogInfo">
         update log_info
         <set>
@@ -28,6 +33,9 @@
             </if>
             <if test="userId != null">
                 user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="lookTime != null">
+                look_time = #{lookTime},
             </if>
         </set>
         where log_id = #{logId,jdbcType=INTEGER}

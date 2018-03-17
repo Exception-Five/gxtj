@@ -1,5 +1,6 @@
 package com.zhoulin.demo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
@@ -20,6 +21,9 @@ public class keyWordTest extends DemoApplicationTests{
 
     @Autowired
     private InformationService informationService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void kwTest(){
@@ -78,7 +82,9 @@ public class keyWordTest extends DemoApplicationTests{
             multiResult.getResult();
 
             for (String rs:multiResult.getResult()) {
-                System.out.println(rs);
+//                System.out.println(rs);
+                Information information1 = objectMapper.readValue(rs, Information.class);
+                System.out.println("转换结果："  +  information1.toString());
             }
 
             System.out.println("<><><>" + multiResult.getTotal() );

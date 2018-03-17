@@ -30,4 +30,11 @@ public interface SearchService {
 
     boolean indexPro(long id);
 
+    /**
+     * 多条件匹配
+     * @param infoSearch
+     * @return
+     */
+    public ServiceMultiResult<String> queryMultiMatch(InfoSearch infoSearch);
+
 }
