@@ -51,7 +51,7 @@ public class FileUtil {
      */
     public static void saveTxtFile(String content,String filename){
         try {
-            File file = new File("E:\\sougoudata\\convert\\"+filename+".txt");
+            File file = new File("E:\\sougoudata\\convert\\"+filename);
             if(!file.exists()){
                 file.getParentFile().mkdirs();
             }

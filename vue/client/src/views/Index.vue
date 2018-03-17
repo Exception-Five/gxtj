@@ -6,11 +6,13 @@
         :userInfo="userInfo" 
         :isLoginShow="isLoginShow"
         :isRegisterShow="isRegisterShow"
+        :isSearchShow="isSearchShow"
         @handleForm="handleForm"
         @closeForm="closeForm"
         @loginConfirm="loginConfirm"
         @registerConfirm="registerConfirm"
         @logout="logout"
+        @handleSearch="handleSearch"
         ></VHeader>
 
 <div class="placeholder-height"></div>
@@ -664,7 +666,8 @@ export default {
             isLogined: false,
             isLoginShow: false,
             isRegisterShow: false,
-            
+            isSearchShow: false,
+
             isMsgAlert: true,
             isMsgAlertText: '',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
@@ -740,6 +743,17 @@ export default {
             window.localStorage.removeItem("token")
             window.localStorage.removeItem("user")
             this.isLogined = false
+        },
+        handleSearch(...data){
+            if(data[0] === 0){//关闭
+                this.isSearchShow = false
+            }else if(data[0] === 1){
+                this.isSearchShow = true
+            }    
+        },
+        requestSearch(...data){
+            this.searchContent = data[0]
+            init()
         },
         loadMore(){
             this.page += 1
