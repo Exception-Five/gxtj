@@ -4,6 +4,7 @@ import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.service.InformationService;
+import com.zhoulin.demo.service.LogInfoService;
 import com.zhoulin.demo.service.PushService;
 import com.zhoulin.demo.service.search.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class PushController {
     @Autowired
     private InformationService informationService;
 
+    @Autowired
+    private LogInfoService logInfoService;
     /**
      * 推送功能
      * @param id 资讯id
      * @return
      */
-    @RequestMapping(value = "/api/push/", method = RequestMethod.POST)
+    @RequestMapping(value = "/pushInfoByKeyword", method = RequestMethod.POST)
     @ResponseBody
     public Message pushInfo(@RequestParam(value = "id") long id){
 
@@ -69,6 +72,12 @@ public class PushController {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         List<Information> informationList = new ArrayList<>();
         try {
+
+            if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1){
+                informationList = informationService.findInfoByDate();
+                return new Message(Message.SUCCESS, "实时热点>>>>>推送>>>>>成功", informationList);
+            }
+
             informationList = pushService.logAnalyzForPush(userInfo.getUserId());
 
             return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", informationList);

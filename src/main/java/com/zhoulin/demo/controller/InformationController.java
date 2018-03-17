@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -76,6 +75,8 @@ public class InformationController {
 
         UserMod userMod = new UserMod();
 
+        List<LogInfo> logInfos = new ArrayList<>();
+
         LogInfo logInfo = new LogInfo();
 
         try {
@@ -93,9 +94,9 @@ public class InformationController {
                 typeRelation = typeRelationMapper.getInfoByTRId(infoId);
 
 
-                logInfo = logInfoService.getLogInfoByInfoId(infoId);
+                logInfos = logInfoService.getLogInfoByUserId(userId);
 
-                if(logInfo!=null){
+                if(logInfos.size()>0){
                     logInfo.setLookTime(new Date());
                     upLStatus = logInfoService.updateLogInfo(logInfo);
                     if (upLStatus==1){
