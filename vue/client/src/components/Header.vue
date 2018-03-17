@@ -237,8 +237,8 @@ export default {
             this.$emit('handleSearch', flag)
         },
         requestSearch(){
-            this.$emit('requestSearch', this.searchContent)
-            this.$router.push({path:'/search',params: { searchContent: this.searchContent }})
+            this.$emit('handleSearch', 0)
+            this.$router.push({name:'search',params: { searchContent: this.searchContent }})
         }
     }
 }

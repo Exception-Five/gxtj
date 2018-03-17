@@ -32,7 +32,7 @@ public interface CommentService {
      * @return
      * @throws Exception
      */
-    public List<InfoComment> getListByInfoId(Integer infoId,int page, int limit) throws Exception;
+    public List<InfoComment> getListByInfoId(Integer infoId) throws Exception;
 
 //    /**
 //     * 根据id获取资讯评论

@@ -30,7 +30,7 @@ export const addUser = params => { return axios.post(`/api/user/addUser`, params
 
 
 /* information */
-export const getInfoByInfoId = id => { return axios.get(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };
+export const getInfoByInfoId = id => { return axios.post(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };
 
 //根据阅读的文章推送优质文章
 export const getPushInfo = param => { return axios.post(`/public/pushInfo`,param).then(res => res.data); };
@@ -51,3 +51,8 @@ export const updateComment = param => { return axios.put(`/public/information/co
 
 /* 用户模型 */
 export const getUserMod = () => {return axios.get(`/api/userMod/getUserMod`).then(res => res.data); };
+
+
+/* 用户浏览记录 */
+export const getLogInfos = () => {return axios.get(`/api/logInfo/getLogInfos`).then(res => res.data); };
+

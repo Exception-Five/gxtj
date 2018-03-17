@@ -71,12 +71,12 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<InfoComment> getListByInfoId(Integer id, int page, int limit) {
+    public List<InfoComment> getListByInfoId(Integer id) {
         List<InfoComment> commentList = new ArrayList<>();
         BaseTableMessage tableMessage = new BaseTableMessage();
         try {
-            tableMessage.setLimit(limit);
-            tableMessage.setOffset((page-1)*limit);
+//            tableMessage.setLimit(limit);
+//            tableMessage.setOffset((page-1)*limit);
             commentList = commentMapper.getListByInfoId(id, tableMessage);
             for (InfoComment comment: commentList){
                 Integer userId = comment.getUserId(), replyUserId = comment.getReplyUserId();

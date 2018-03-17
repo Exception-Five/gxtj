@@ -132,12 +132,17 @@ export default {
                 this.isSearchShow = true
             }    
         },
-        requestSearch(...data){
-            this.searchContent = data[0]
-            console.log(this.searchContent+"dasdasdas")
-            init()
-        },
+        // requestSearch(...data){
+        //     this.searchContent = data[0]
+        //     console.log(this.searchContent+"dasdasdas")
+        //     console.log(this.$route.params)
+        //     this.init()
+        // },
         init(){
+            let p = this.$route.params.searchContent
+            if(p!=undefined && p!=""){
+                this.searchContent = p
+            }
             getInfoByDate(1).then(res=>{
                 if(res.status === 1){
                     this.searchList = res.result

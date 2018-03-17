@@ -30,12 +30,10 @@ public class CommentController {
      */
     @RequestMapping(value = "/information/{id}/comment", method = RequestMethod.GET)
     @ResponseBody
-    public Message commentList(@PathVariable(value = "id") Integer id,
-                               @RequestParam("limit") int limit,
-                               @RequestParam("page") int page){
+    public Message commentList(@PathVariable(value = "id") Integer id){
         List<InfoComment> commentList = new ArrayList<>();
         try {
-            commentList = commentService.getListByInfoId(id,page,limit);
+            commentList = commentService.getListByInfoId(id);
             return new Message(Message.SUCCESS,"获取资讯评论成功！",commentList);
         } catch (Exception e) {
             e.printStackTrace();

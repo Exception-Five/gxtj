@@ -6755,6 +6755,9 @@ display:inline-block;
 .mod-info-flow{
     text-align: left;
 }
+.mod-info-flow .isRead{
+    color: #bbb;
+}
 .mod-b:last-child,.mod-b.dp-box-active,.promote-box ul li:last-child,.article-left-btn-group ul li:last-child,.article-left-btn-group ul li:nth-child(4),.moder-group-list ul li:last-child,.hot-article ul li:last-child,.topic-message-wrap .message-box:last-child,.acnt-item-content,.moder-story-list ul li:last-child,.zt-article ul li:last-child {
 border:none;
 }

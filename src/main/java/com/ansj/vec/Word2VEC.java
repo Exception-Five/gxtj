@@ -22,11 +22,14 @@ public class Word2VEC {
 		//010806 020806 030806
 
 		File commentFile = new File(Word2VEC.class.getResource("/library/merged.txt").getPath());
+		System.out.println("dasdasdasdasd");
 		long start = System.currentTimeMillis();
 		try {
 			StringBuilder vectorSB = new StringBuilder();
+			System.out.println("dasdasdasdsd");
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
+				System.out.println("yjyjyjyjy");
 				vectorSB.append(TokenizerAnalyzerUtils.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
 			}
@@ -68,8 +71,8 @@ public class Word2VEC {
 	}
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		//dataProcess();
-		txtConvert();
+		dataProcess();
+//		txtConvert();
 
 		//train the model and save model
 //		Learn learn = new Learn();

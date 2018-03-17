@@ -63,7 +63,7 @@
                  	<a href="#" class="column-link" target="_blank">娱乐淘金</a>
                  </div>
                  <div class="mob-ctt">
-                    <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" target="_blank">{{info.title}}</router-link></h2>
+                    <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
 					<div class="mob-author">
                         <div class="author-face">
                             <a href="#" target="_blank"><img src="../assets/sy-img/59_1502432173.jpg"></a>
@@ -600,56 +600,14 @@
     <div class="placeholder"></div>
 </div>
 </div>
-
-<footer class="footer">
-    <div class="modal-backdrop fade in js-modal-backdrop"></div>
-    <div class="container copy-right">
-        <div class="footer-tag-list">
-            <a href="#" target="_blank" class="transition">关于我们</a>
-            <a href="#" target="_blank" class="transition">加入我们</a>
-            <a href="#" target="_blank" class="transition">合作伙伴</a>
-            <a href="#" target="_blank" class="transition">广告及服务</a>
-            <a href="#" target="_blank" class="transition">常见问题解答</a>
-            <a href="#" target="_blank" class="transition">防网络诈骗专题</a>
-        </div>
-        <span style="text-align:left;">Copyright © <a href="#">虎嗅网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
-            &nbsp;<a href="#" target="_blank"><i class="i-wj"></i>京公网安备 11010102001402号</a>&nbsp;&nbsp;&nbsp;<em class="bull-right">本站由</em><i class="icon-aliyun" style="width: 70px;background-size: 100%;left: 7px;"></i><em class="bull-em">提供计算与安全服务</em>
-        </span>
-        <div class="footer-icon-list pull-right">
-            <ul class="Qr-codee">
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/weixin_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-wx"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                	<div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-ios"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-android"></i>
-                </li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅英文版">
-                    <li><i class="icon icon-footer icon-footer-inter"></i></li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅RSS订阅中心">
-                    <li><i class="icon icon-footer icon-footer-rss"></i></li>
-                </a>
-            </ul>
-        </div>
-    </div>
-<div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
-<div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
-</footer>
-
+<VFooter></VFooter>
     </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate} from '../api/api.js'
+import {requestLogin, requestRegister,getInfoByDate,getLogInfos} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
+import VFooter from '@/components/Footer.vue'
+
 import VueNotifications from 'vue-notifications'
 import {GetDateDiff} from '../utils/date.js'
 
@@ -672,32 +630,49 @@ export default {
             isMsgAlertText: '',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: [],
+            logInfoList: [],
             page: 1
         }
     },
     components:{
-        VHeader
+        VHeader,VFooter
     },
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
             this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-            console.log(this.userInfo)
             this.isLogined = true
         }
-        getInfoByDate(this.page).then((res)=>{
-            console.log(res)
+        getLogInfos().then(res=>{
             if(res.status === 1){
-                this.infoList = res.result
-                this.isMsgAlert = false
-                this.isMsgAlertText = "为您推荐了6条消息"
-                setTimeout(()=>{
-                    this.isMsgAlert = true
-                },3000)
-                
+                this.logInfoList = res.result
+                 getInfoByDate(this.page).then((res)=>{
+                    if(res.status === 1){
+                        /* 设置文章为已读或未读 */
+                        let infos = res.result
+                        for(let info of infos){
+                            info.isRead = false
+                            for(let log of this.logInfoList){
+                                if(log.infoId === info.infoId){
+                                    console.log(info.title+"已经读过")
+                                    info.isRead = true
+                                }
+                            }
+                        }
+                        console.log(infos)
+                        this.infoList = infos
+                        this.isMsgAlert = false
+                        this.isMsgAlertText = "为您推荐了6条消息"
+                        setTimeout(()=>{
+                            this.isMsgAlert = true
+                        },3000)
+                        
+                    }
+                    
+                })
             }
-            
         })
+       
     },
     methods: {
         handleForm(...data) {
@@ -750,10 +725,6 @@ export default {
             }else if(data[0] === 1){
                 this.isSearchShow = true
             }    
-        },
-        requestSearch(...data){
-            this.searchContent = data[0]
-            init()
         },
         loadMore(){
             this.page += 1

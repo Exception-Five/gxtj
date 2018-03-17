@@ -425,6 +425,7 @@ export default {
   components: { VueToast,VHeader},
   mounted(){
 	let token = window.localStorage.getItem("token")
+	console.log( window.localStorage.getItem("dasd"))
 	if(token!=null&&token!=""){
 		this.userInfo = JSON.parse(window.localStorage.getItem("user"))
 		console.log(this.userInfo)
@@ -455,7 +456,7 @@ export default {
 				console.log(res)
 			})
 		}else{
-			this.$router.push({path:'/404'})
+			// this.$router.push({path:'/404'})
 		}
 	})
   },
