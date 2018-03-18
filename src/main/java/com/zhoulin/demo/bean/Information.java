@@ -35,7 +35,17 @@ public class Information implements Serializable{
 
     private String userAddFlag;
 
+    private InfoImage infoImage;
+
     public Information() {
+    }
+
+    public InfoImage getInfoImage() {
+        return infoImage;
+    }
+
+    public void setInfoImage(InfoImage infoImage) {
+        this.infoImage = infoImage;
     }
 
     public String getKeyword() {

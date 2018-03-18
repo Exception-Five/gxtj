@@ -20,4 +20,6 @@ public interface LogInfoMapper {
 
     public Integer addLogInfo(LogInfo logInfo) throws Exception;
 
+    public List<LogInfo> getLogInfoNowadays(Integer userId) throws Exception;
+
 }
