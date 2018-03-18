@@ -30,10 +30,13 @@ export const addUser = params => { return axios.post(`/api/user/addUser`, params
 
 
 /* information */
-export const getInfoByInfoId = id => { return axios.get(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };
+export const getInfoByInfoId = id => { return axios.post(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };
 
-//根据阅读的文章推送优质文章
+/* 文章推送 */
 export const getPushInfo = param => { return axios.post(`/public/pushInfo`,param).then(res => res.data); };
+
+export const pushUserByLogInfo = () => { return axios.post(`/api/push/pushUserByLogInfo`).then(res => res.data); };
+
 
 //根据资讯发布时间获取资讯（ 20 条）
 export const getInfoByDate = page => { return axios.get(`/public/information/findInfoByDate/${page}`).then(res => res.data); };
@@ -45,9 +48,17 @@ export const updateInfoById = param => { return axios.put(`/public/information/u
 /* comment */
 export const getCommentsByInfoId = id => { return axios.get(`/public/information/${id}/comment`).then(res => res.data); };
 
+export const getHotComments = () => { return axios.get(`/public/information/hotComments`).then(res => res.data); };
+
 export const addComment = param => { return axios.post(`/public/information/${param.infoId}/comment`, param).then(res => res.data); };
 
 export const updateComment = param => { return axios.put(`/public/information/comment`, param).then(res => res.data); };
 
+
 /* 用户模型 */
 export const getUserMod = () => {return axios.get(`/api/userMod/getUserMod`).then(res => res.data); };
+
+
+/* 用户浏览记录 */
+export const getLogInfos = () => {return axios.get(`/api/logInfo/getLogInfos`).then(res => res.data); };
+

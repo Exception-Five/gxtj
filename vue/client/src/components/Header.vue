@@ -3,14 +3,12 @@
 	  <header id="top" role="banner" class="transition">
             <!--搜索弹窗 开始-->
             <div class="box">
-                <div class="box2">
-                    <div class="icon icon-search-close js-show-search-box"><a class="close"></a></div>
+                <div class="box2" v-show="isSearchShow">
+                    <div class="icon icon-search-close js-show-search-box" @click="handleSearch(0)"><a class="close"></a></div>
                     <div class="search-content overlay-dialog-animate">
                         <div class="search-input">
-                            <form role="search" method="get" action="/search.html" onsubmit="return checkinput()">
-                                <button type="submit"></button>
-                                <input placeholder="请输入关键字" name="s" id="search-input">
-                            </form>
+                            <button type="submit" @click="requestSearch"></button>
+                            <input placeholder="请输入关键字" name="s" id="search-input" v-model="searchContent">
                         </div>
                         <div class="search-history hide" id="history">
                             <span>我的搜索历史</span>
@@ -82,7 +80,7 @@
                         </div>
                         <i class="icon icon-sm-phone"></i>APP下载<em class="guide-prompt"></em>
                     </li>
-                    <li class="search-li js-show-search-box"><a><i class="icon icon-search "></i></a><span>搜索</span></li>
+                    <li class="search-li js-show-search-box" @click="handleSearch(1)"><a><i class="icon icon-search "></i></a><span>搜索</span></li>
                     <li class="login-link-box" @click="handleForm(0)" v-show="!isLogined"><a class="cd-signin">登录</a></li>
                     <li ><a class="cd-signup" @click="handleForm(1)" v-show="!isLogined">注册</a></li>
                     <li class="logined-info" v-show="isLogined">
@@ -205,14 +203,15 @@
 import {requestLogin, requestRegister} from '../api/api.js'
 
 export default {
-    props:['isLogined','userInfo','isLoginShow','isRegisterShow'],
+    props:['isLogined','userInfo','isLoginShow','isRegisterShow','isSearchShow'],
 	name: "VHeader",
 	data(){
 		return {
             // userInfo:{},
             // // isLogined:false,
 			// isLoginShow: false,
-			// isRegisterShow: false
+            // isRegisterShow: false
+            searchContent: ""
         }
     },
     mounted(){
@@ -233,6 +232,13 @@ export default {
         },
         logout () {
            this.$emit('logout')
+        },
+        handleSearch(flag){
+            this.$emit('handleSearch', flag)
+        },
+        requestSearch(){
+            this.$emit('handleSearch', 0)
+            this.$router.push({name:'search',params: { searchContent: this.searchContent }})
         }
     }
 }

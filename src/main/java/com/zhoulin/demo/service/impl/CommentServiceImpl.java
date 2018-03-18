@@ -71,13 +71,31 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<InfoComment> getListByInfoId(Integer id, int page, int limit) {
+    public List<InfoComment> getMostLikesComments() {
+        List<InfoComment> commentList = new ArrayList<>();
+        try {
+            commentList = commentMapper.getMostLikesComments();
+            for (InfoComment comment: commentList){
+                Integer userId = comment.getUserId();
+                if (userId!=null){
+                    comment.setUserInfo(userMapper.getUserInfoById(userId));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return commentList;
+    }
+
+    @Override
+    public List<InfoComment> getListByInfoId(Integer id) {
         List<InfoComment> commentList = new ArrayList<>();
         BaseTableMessage tableMessage = new BaseTableMessage();
         try {
-            tableMessage.setLimit(limit);
-            tableMessage.setOffset((page-1)*limit);
-            commentList = commentMapper.getListByInfoId(id, tableMessage);
+//            tableMessage.setLimit(limit);
+//            tableMessage.setOffset((page-1)*limit);
+            commentList = commentMapper.getListByInfoId(id);
             for (InfoComment comment: commentList){
                 Integer userId = comment.getUserId(), replyUserId = comment.getReplyUserId();
                 if (userId!=null){
@@ -99,7 +117,7 @@ public class CommentServiceImpl implements CommentService{
         InfoComment result = null;
         try {
             commentMapper.insert(comment);
-            result = commentMapper.getById(comment.getId());
+            result = this.getCommentById(comment.getId());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -115,21 +133,24 @@ public class CommentServiceImpl implements CommentService{
         }
         return state;
     }
-//
-//    @Override
-//    public Info getById(Integer id) {
-//        Info article = new Info();
-//        try {
-//            article = articleMapper.getById(id);
-//            Integer clazz = article.getClazz();
-//            article.setTagList(tagMapper.getListByInfoId(id));
-//            article.setInfoClass(classMapper.getById(clazz));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return article;
-//    }
+    //
+    @Override
+    public InfoComment getCommentById(Integer id) {
+        InfoComment comment = new InfoComment();
+        try {
+            comment = commentMapper.getCommentById(id);
+            int userId = comment.getUserId();
+            Integer replyUserId = comment.getReplyUserId();
+            if(replyUserId != null){
+                comment.setReplyUser(userMapper.getUserInfoById(replyUserId));
+            }
+            comment.setUserInfo(userMapper.getUserInfoById(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return comment;
+    }
 //
 //    @Override
 //    public BaseTableMessage getSearchList(BaseTableMessage tableMessage) throws Exception {
@@ -137,11 +158,18 @@ public class CommentServiceImpl implements CommentService{
 //    }
 //
 
-//
-//    @Override
-//    public Info update(InfoComment comment) throws Exception {
-//        return null;
-//    }
+    //
+    @Override
+    public InfoComment update(InfoComment comment) {
+        InfoComment result = null;
+        try {
+            commentMapper.update(comment);
+            result = this.getCommentById(comment.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 //
 //
 //    @Override

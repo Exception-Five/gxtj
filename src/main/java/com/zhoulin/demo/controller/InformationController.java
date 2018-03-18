@@ -174,5 +174,25 @@ public class InformationController {
             return new Message(Message.ERROR,"获取资讯异常！",e);
         }
     }
+    /**
+     * 更新资讯信息
+     * @return
+     */
+    @RequestMapping(value = "/updateInfoById",method = RequestMethod.PUT)
+    @ResponseBody
+    public Message updateInfoById(@RequestBody Information information){
 
+        try {
+            int status = informationService.updateInformation(information);
+            if (status == 1){
+
+                return new Message(Message.SUCCESS,"修改资讯--成功",status);
+            }else {
+                return new Message(Message.FAILURE,"修改资讯--失败","检查数据源");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"修改资讯异常！",e);
+        }
+    }
 }
