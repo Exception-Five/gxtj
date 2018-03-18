@@ -6586,7 +6586,15 @@ margin-left:5px;
 .more-introduce.active .ls {
 background-position:-20px 4px;
 }
-
+#member .new-edit-btn{
+    position:absolute;top:30px;right:30px;font-size:22px
+}
+#member  .new-edit-btn .btn-user-new-edit{
+    color:#ff6060;height:19px;line-height:19px;font-size:17px
+}
+#member  .new-edit-btn .btn-user-new-edit img{
+    width:21px;height:21px;margin-right:14px;position:relative;top:-2px
+}
 .navbar-nav>li.active>a,header .navbar-nav li.nav-news:hover .caret,.btn-dp:hover {
 color:#3da9f7;
 }

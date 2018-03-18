@@ -42,8 +42,10 @@ export const pushUserByLogInfo = () => { return axios.post(`/api/push/pushUserBy
 export const getInfoByDate = page => { return axios.get(`/public/information/findInfoByDate/${page}`).then(res => res.data); };
 
 //根据id修改资讯
-export const updateInfoById = param => { return axios.put(`/public/information/updateInfoById`, param).then(res => res.data); };
+export const updateInfo = param => { return axios.post(`/public/information/updateInfo`, param).then(res => res.data); };
 
+//根据searchContent返回资讯列表
+export const getInfoBySearchBar = param => { return axios.post(`/public/search/getInfoBySearchBar`, param).then(res => res.data); };
 
 /* comment */
 export const getCommentsByInfoId = id => { return axios.get(`/public/information/${id}/comment`).then(res => res.data); };
@@ -61,4 +63,6 @@ export const getUserMod = () => {return axios.get(`/api/userMod/getUserMod`).the
 
 /* 用户浏览记录 */
 export const getLogInfos = () => {return axios.get(`/api/logInfo/getLogInfos`).then(res => res.data); };
+//获取用户最近浏览新闻
+export const getLogInfoNowadays = () => {return axios.post(`/api/logInfo/getLogInfoNowadays`).then(res => res.data); };
 

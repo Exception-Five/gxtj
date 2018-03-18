@@ -23,27 +23,20 @@
       <div class="search-list-warp">
             <ul class="search-wrap-list-ul">
                 <li v-for="item in searchList">
-                    <h2><a href="/article/227732.html" target="_blank">{{item.title}}</a></h2>
+                    <h2><a href="/article/227732.html" v-html="item.title"></a></h2>
                     <div class="mob-summay" v-html="item.description"></div>
                     <div class="mob-author">
                         <span class="name"><a target="_blank" href="/member/303086.html">{{item.author}}</a></span>
                         <span class="time">2017-12-29 08:00</span>
                     </div>
                 </li>
-                <li>
-                    <h2><a href="/article/217973.html" target="_blank">搜狗招股说明书暗藏玄机，查尔斯迎来美股<em>搜狐</em>系三驾马车？</a></h2>
-                    <div class="mob-summay">随着搜狗即将上市，张朝阳的<em>搜狐</em>系将拥有：<em>搜狐</em>、畅游、搜狗三家。这对中国互联网大佬来说，几乎是前无古人的伟绩。看来，姜还是老的辣。nbsp;说完王小川和张朝阳，再来看看搜狗的天时地利人和怎么样。nbsp;首先说说...</div>
-                    <div class="mob-author">
-                        <span class="name"><a target="_blank" href="/member/293144.html">菠萝财经</a></span><span class="time">2017-10-14 10:52</span>
-                    </div>
-                </li>
-                <li>
+                <!-- <li>
                     <h2><a href="/article/197559.html" target="_blank">张朝阳的梦醒时分，与<em>搜狐</em>失去的黄金十年</a></h2>
                     <div class="mob-summay"><em>搜狐</em>也重复了这样的历史，从PC到移动互联网，<em>搜狐</em>布局很广，有畅游、<em>搜狐</em>视频、<em>搜狐</em>新闻客户端这样的好产品，但往往是开局不错，后续乏力，无法成为真正意义的第一。nbsp;于是就有了“千年老二”的戏谑之称。nbsp;这...</div>
                     <div class="mob-author">
                         <span class="name"><a target="_blank" href="/member/1871804.html">首席人物观©</a></span><span class="time">2017-05-31 13:25</span>
                     </div>
-                </li>
+                </li> -->
             </ul>
             <nav class="page-nav"><ul class="pagination"><li class="disabled"><a href="#" aria-label="First"><span aria-hidden="true"><i class="icon icon-first"></i></span></a></li><li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true"><i class="icon icon-lt"></i></span></a></li><li class="active"><a>1</a></li><li><a href="/search.html?s=%E6%90%9C%E7%8B%90&amp;sort=&amp;per_page=2">2</a></li><li><a href="/search.html?s=%E6%90%9C%E7%8B%90&amp;sort=&amp;per_page=3">3</a></li><li><a href="/search.html?s=%E6%90%9C%E7%8B%90&amp;sort=&amp;per_page=4">4</a></li><li><a href="/search.html?s=%E6%90%9C%E7%8B%90&amp;sort=&amp;per_page=2"><i class="icon icon-gt"></i></a></li><li><a href="/search.html?s=%E6%90%9C%E7%8B%90&amp;sort=&amp;per_page=217"><i class="icon icon-last"></i></a></li></ul></nav>                    </div>
    </div>
@@ -52,7 +45,7 @@
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate} from '../api/api.js'
+import {requestLogin, requestRegister,getInfoByDate,getInfoBySearchBar} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -143,12 +136,14 @@ export default {
             if(p!=undefined && p!=""){
                 this.searchContent = p
             }
-            getInfoByDate(1).then(res=>{
+            let param = new FormData()
+            param.append("searchContent", this.searchContent)
+            getInfoBySearchBar(param).then(res=>{
                 if(res.status === 1){
                     this.searchList = res.result
-                    for(let item of this.searchList){
-                        item.description = item.description.replace(new RegExp(this.searchContent,'gm'),`<em>${this.searchContent}</em>`)
-                    }
+                    // for(let item of this.searchList){
+                    //     item.description = item.description.replace(new RegExp(this.searchContent,'gm'),`<em>${this.searchContent}</em>`)
+                    // }
                     console.log(this.searchList)
                 } 
             })

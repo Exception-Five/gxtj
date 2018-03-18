@@ -50,7 +50,7 @@
         VALUES (#{userId}, #{infoId}, #{lookTime})
     </insert>
 
-    <select id="getLogInfoNowadays" parameterType="int">
+    <select id="getLogInfoNowadays" parameterType="int" resultMap="LogInfoMap">
         SELECT * FROM log_info
         WHERE user_id = #{userId}
         ORDER BY look_time DESC

@@ -321,7 +321,7 @@
 </template>
 
 <script>
-import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfoById} from '../api/api.js'
+import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfo} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
 import VFooter from '@/components/Footer.vue'
@@ -388,9 +388,9 @@ export default {
 				id: this.information.id,
 				reads: ++this.information.reads
 			}
-			// updateInfoById(param2).then(res=>{
-			// 	console.log(res)
-			// })
+			updateInfo(param2).then(res=>{
+				console.log(res)
+			})
 		}else{
 			// this.$router.push({path:'/404'})
 		}
@@ -496,10 +496,10 @@ export default {
 				this.hasLike = false
 			}
 			let param = {
-				id: this.information.id,
+				infoId: this.information.infoId,
 				likes: newLikes
 			}
-			updateInfoById(param).then((res)=>{
+			updateInfo(param).then((res)=>{
 				console.log(res)
 			})
 		},
