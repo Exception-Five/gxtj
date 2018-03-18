@@ -1,8 +1,8 @@
 package com.zhoulin.demo.controller;
 
-import com.zhoulin.demo.bean.LogInfo;
-import com.zhoulin.demo.bean.Message;
-import com.zhoulin.demo.bean.UserInfo;
+import com.zhoulin.demo.bean.*;
+import com.zhoulin.demo.mapper.InfoImageMapper;
+import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.LogInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +18,12 @@ public class LogInfoController {
 
     @Autowired
     private LogInfoService logInfoService;
+
+    @Autowired
+    private InfoService infoService;
+
+    @Autowired
+    private InfoImageMapper infoImageMapper;
 
     /**
      * 获取用户对应浏览信息
@@ -76,6 +82,51 @@ public class LogInfoController {
             }
         } catch (Exception e) {
             return new Message(Message.ERROR,"添加用户浏览记录>>>>>异常",e);
+        }
+
+    }
+
+    /**
+     * 用户浏览的新闻
+     * @return
+     */
+    @RequestMapping(value = "/getLogInfoNowadays", method = RequestMethod.POST)
+    @ResponseBody
+    public Message getLogInfoNowadays(){
+
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
+
+        int userId = userInfo.getUserId();
+
+        Info info = new Info();
+
+        InfoImage infoImage = new InfoImage();
+
+        List<Info> infoList = new ArrayList<>();
+
+        List<LogInfo> logInfos = new ArrayList<>();
+
+//        LogInfo logInfo = new LogInfo();
+
+        try {
+            logInfos = logInfoService.getLogInfoNowadays(userId);
+
+            for (LogInfo log : logInfos) {
+                info = infoService.getInfoByInfoId(log.getInfoId());
+                infoImage = infoImageMapper.getInfoImageByInfoId(log.getInfoId());
+                info.setInfoImage(infoImage);
+                infoList.add(info);
+            }
+
+            if (infoList.size()<1){
+                return new Message(Message.FAILURE,"获取用户浏览文章>>>>>成功","用户未浏览过文章！");
+            }
+
+            return new Message(Message.SUCCESS,"获取用户浏览文章>>>>>成功",infoList);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取用户浏览文章>>>>>异常",e.getMessage());
         }
 
     }

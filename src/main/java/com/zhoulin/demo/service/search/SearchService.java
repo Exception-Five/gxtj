@@ -1,5 +1,6 @@
 package com.zhoulin.demo.service.search;
 
+import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
 
@@ -35,6 +36,6 @@ public interface SearchService {
      * @param infoSearch
      * @return
      */
-    public ServiceMultiResult<String> queryMultiMatch(InfoSearch infoSearch);
+    public ServiceMultiResult<Information> queryMultiMatch(InfoSearch infoSearch);
 
 }

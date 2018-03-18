@@ -119,6 +119,11 @@ public class InformationController {
                 //用户模型修改
                 userModService.updateUserMod(userMod);
 
+                info.setReads(info.getReads() + 1);
+
+                //文章浏览数更新
+                infoService.updateInfo(info);
+
             }
 
             if (info != null){
@@ -172,6 +177,30 @@ public class InformationController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR,"获取资讯异常！",e);
+        }
+    }
+
+    /**
+     * 更新新闻 点赞数 浏览数
+     * @param info
+     * @return
+     */
+    @RequestMapping(value = "/updateInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Message updateInfo(@RequestBody Info info){
+
+        try {
+            Integer upStatus = infoService.updateInfo(info);
+
+            if (upStatus == 1){
+                return new Message(Message.SUCCESS,"修改新闻>>>>成功",upStatus);
+            } else if (upStatus == 0){
+                return new Message(Message.SUCCESS,"修改新闻>>>>失败",upStatus);
+            }
+            return new Message(Message.SUCCESS,"修改新闻>>>>异常",upStatus);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.SUCCESS,"修改新闻>>>>异常",e.getMessage());
         }
     }
 

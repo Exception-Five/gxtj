@@ -34,20 +34,26 @@
     </select>
 
     <update id="updateInfo" parameterType="Info">
-        update info
+        UPDATE info
         <set>
-
+            <if test="likes != null">
+                `likes` = #{likes,jdbcType=INTEGER},
+            </if>
+            <if test="reads != null">
+                `reads` = #{reads,jdbcType=INTEGER},
+            </if>
             <if test="keyword != null">
                 keyword = #{keyword,jdbcType=VARCHAR},
             </if>
 
         </set>
-        where id = #{id,jdbcType=INTEGER}
+        where info_id = #{infoId,jdbcType=INTEGER}
     </update>
 
     <delete id="deleteInfoById" parameterType="int">
         DELETE from info WHERE info_id = #{infoId}
     </delete>
+
 
     <insert id="addInfo" parameterType="com.zhoulin.demo.bean.Info" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO info (`info_id`, `title`,`author`,`description`, `keyword`, `reads`,`likes`,`score`,`source_url`,`source_site`,`publish_date`)

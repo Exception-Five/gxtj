@@ -5,6 +5,7 @@ import com.textrank.TextRankKeyword;
 import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.RecessiveGroupMapper;
 import com.zhoulin.demo.mapper.TypeMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
@@ -54,14 +55,17 @@ public class PushServiceImpl implements PushService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private InfoImageMapper infoImageMapper;
+
     @Override
-    public List<Information> pushInformation(long id) {
+    public List<Info> pushInformation(long id) {
 
         InfoSearch infoSearch = new InfoSearch();
 
         String keywords = "";
 
-        List<Information> informationList = new ArrayList<>();
+        List<Info> informationList = new ArrayList<>();
 
         try {
 
@@ -74,9 +78,14 @@ public class PushServiceImpl implements PushService {
             ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
 
             for (String rs:multiResult.getResult()) {
-                Information infor = objectMapper.readValue(rs, Information.class);
+                Info infor = objectMapper.readValue(rs, Info.class);
                 logger.info("最终关键词为 :  " + information.toString());
                 informationList.add(infor);
+            }
+
+            for (Info info : informationList) {
+                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
+                info.setInfoImage(image);
             }
 
             return informationList;
@@ -115,10 +124,10 @@ public class PushServiceImpl implements PushService {
      * @throws Exception
      */
     @Override
-    public List<Information> logAnalyzForPush(Integer userId){
-        List<Information> typeInformationList = new ArrayList<>();
-        List<Information> kwInformationList = new ArrayList<>();
-        List<Information> mergeInforList = new ArrayList<>();
+    public List<Info> logAnalyzForPush(Integer userId){
+        List<Info> typeInformationList = new ArrayList<>();
+        List<Info> kwInformationList = new ArrayList<>();
+        List<Info> mergeInforList = new ArrayList<>();
         List<LogInfo> logInfos = new ArrayList<>();
         List<TypeRelation> typeRelations = new ArrayList<>();
         TypeRelation typeRelation = new TypeRelation();
@@ -169,7 +178,7 @@ public class PushServiceImpl implements PushService {
 
             for (TypeRelation type : typeRelations) {
                 //通过类型找到的新闻列表
-                typeInformationList.add(informationService.getInfoByInfoId(type.getInfoId()));
+                typeInformationList.add(infoService.getInfoByInfoId(type.getInfoId()));
             }
 
             //根据关键词
@@ -178,7 +187,7 @@ public class PushServiceImpl implements PushService {
             ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
 
             for (String rs:multiResult.getResult()) {
-                Information information = objectMapper.readValue(rs, Information.class);
+                Info information = objectMapper.readValue(rs, Info.class);
 //                logger.info("最终关键词为 :  " + information.toString());
                 //通过关键词找到的新闻列表
                 kwInformationList.add(information);
@@ -187,7 +196,7 @@ public class PushServiceImpl implements PushService {
             //获取交叉内容
             for (int i=0;i<typeInformationList.size();i++) {
                 for (int j=0;j<kwInformationList.size();j++) {
-                    if (typeInformationList.get(i).getId() == kwInformationList.get(j).getId()){
+                    if (typeInformationList.get(i).getId().equals(kwInformationList.get(j).getId())){
                         logger.info("匹配到交叉内容 ！！！ " );
                         mergeInforList.add(typeInformationList.get(i));
                         //去掉重复内容
@@ -216,10 +225,15 @@ public class PushServiceImpl implements PushService {
 
             for (int i=0;i<mergeInforList.size();i++) {
                 for (int j=0;j<infoIds.size();j++) {
-                    if (mergeInforList.get(i).getId() == infoIds.get(j)){
+                    if (mergeInforList.get(i).getId().equals(infoIds.get(j))){
                         mergeInforList.remove(i);
                     }
                 }
+            }
+
+            for (Info info : mergeInforList) {
+                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
+                info.setInfoImage(image);
             }
 
             return mergeInforList;

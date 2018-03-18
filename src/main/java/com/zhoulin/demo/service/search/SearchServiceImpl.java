@@ -13,6 +13,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
@@ -22,6 +23,8 @@ import org.elasticsearch.index.reindex.DeleteByQueryAction;
 import org.elasticsearch.index.reindex.DeleteByQueryRequestBuilder;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
 import org.modelmapper.ModelMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,9 +37,12 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.Highlighter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SearchServiceImpl implements SearchService{
@@ -386,8 +392,19 @@ public class SearchServiceImpl implements SearchService{
         }
     }
 
+    /**
+     * 搜索 关键词高亮显示
+     * @param infoSearch
+     * @return
+     */
     @Override
-    public ServiceMultiResult<String> queryMultiMatch(InfoSearch infoSearch) {
+    public ServiceMultiResult<Information> queryMultiMatch(InfoSearch infoSearch) {
+
+        Information information = new Information();
+
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+
+        Map<String, Object> map = new HashMap<String,Object>();
 
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
@@ -396,11 +413,20 @@ public class SearchServiceImpl implements SearchService{
                 .setExplain(true)
 //                .setFetchSource(InformationIndexKey.ID, null)
                 ;
+
+        HighlightBuilder highlightBuilder = new HighlightBuilder().field("*").requireFieldMatch(false);;
+
+        highlightBuilder.preTags("<span style=\"color:red\">");
+        highlightBuilder.postTags("</span>");
+
+        //高亮回显
+        requestBuilder.highlighter(highlightBuilder);
+
         logger.info("！！！" + requestBuilder);
 
         logger.debug(requestBuilder.toString());
 
-        List<String> infoList = new ArrayList<>();
+        List<Information> infoList = new ArrayList<>();
 
         SearchResponse searchResponse = requestBuilder.get();
 
@@ -410,13 +436,55 @@ public class SearchServiceImpl implements SearchService{
         }
 
         for (SearchHit hit : searchResponse.getHits()) {
+            Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+
+            //title高亮
+            HighlightField titleField = highlightFields.get("title");
+            try {
+                information = objectMapper.readValue(hit.getSourceAsString(), Information.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(titleField!=null){
+                Text[] fragments = titleField.fragments();
+                String name = "";
+                for (Text text : fragments) {
+                    name+=text;
+                }
+                information.setTitle(name);
+            }
+
+            //describe高亮
+            HighlightField describeField = highlightFields.get("description");
+            if(describeField!=null){
+                Text[] fragments = describeField.fragments();
+                String describe = "";
+                for (Text text : fragments) {
+                    describe+=text;
+                }
+                information.setDescription(describe);
+            }
+
+            //describe高亮
+            HighlightField contentField = highlightFields.get("content");
+            if(contentField!=null){
+                Text[] fragments = contentField.fragments();
+                String content = "";
+                for (Text text : fragments) {
+                    content+=text;
+                }
+                information.setContent(content);
+            }
+
+            infoList.add(information);
+
             logger.debug(String.valueOf(hit.getSource()));
-//            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+
             logger.info("详细信息" + hit.getSourceAsString());
-            infoList.add(hit.getSourceAsString());
+
         }
 
-        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+        return new ServiceMultiResult<Information>(searchResponse.getHits().totalHits, infoList);
     }
 
 }
