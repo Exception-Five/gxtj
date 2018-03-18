@@ -24,7 +24,7 @@ public interface CommentMapper {
      * @return
      * @throws Exception
      */
-    public InfoComment getById(Integer id) throws Exception;
+    public InfoComment getCommentById(Integer id) throws Exception;
 
     /**
      * 根据TableMessage和资讯评论组别查询资讯评论
@@ -33,11 +33,11 @@ public interface CommentMapper {
      */
     //public List<InfoComment> getList(BaseTableMessage tableMessage) throws Exception;
     /**
-     * 根据TableMessage和资讯id查询资讯评论
-     * @param tableMessage
+     * 根据资讯id查询资讯评论
+     * @param
      * @return
      */
-    public List<InfoComment> getListByInfoId(@Param("infoId") Integer id , @Param("tableMessage") BaseTableMessage tableMessage) throws Exception;
+    public List<InfoComment> getListByInfoId(@Param("infoId") Integer id) throws Exception;
 
     /**
      * 根据TableMessage获取查询到的资讯评论数量
@@ -45,7 +45,7 @@ public interface CommentMapper {
      * @return
      * @throws Exception
      */
-   // public Integer searchArticleCount(ArticleTableMessage tableMessage) throws Exception;
+    // public Integer searchArticleCount(ArticleTableMessage tableMessage) throws Exception;
 
     /**
      * 新增一个资讯评论
@@ -57,12 +57,17 @@ public interface CommentMapper {
     /**
      * 修改一个资讯评论
      */
-    //public int update(Article article) throws Exception;
+    public int update(InfoComment comment) throws Exception;
 
     /**
      * 删除一个资讯评论
      */
     public int delete(Integer id) throws Exception;
+
+    /**
+     * 获取最多赞文章
+     */
+    public List<InfoComment> getMostLikesComments() throws Exception;
 
 
 }

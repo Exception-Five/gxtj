@@ -27,20 +27,26 @@ public interface CommentService {
     public List<InfoComment> getList(int page, int limit) throws Exception;
 
     /**
+     * 获取最多赞文章
+     *
+     */
+    public List<InfoComment> getMostLikesComments() throws Exception;
+
+    /**
      * 根据资讯id获取评论列表
      * @param infoId
      * @return
      * @throws Exception
      */
-    public List<InfoComment> getListByInfoId(Integer infoId,int page, int limit) throws Exception;
+    public List<InfoComment> getListByInfoId(Integer infoId) throws Exception;
 
-//    /**
-//     * 根据id获取资讯评论
-//     * @param id
-//     * @return
-//     * @throws Exception
-//     */
-//    public InfoComment getById(Integer id) throws Exception;
+    /**
+     * 根据id获取资讯评论
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public InfoComment getCommentById(Integer id) throws Exception;
 //
 //    /**
 //     * 根据TableMessage获取查询到的资讯评论
@@ -56,14 +62,14 @@ public interface CommentService {
      * @throws Exception
      */
     public InfoComment add(InfoComment comment) throws Exception;
-//    /**
-//     * 修改一个资讯评论
-//     * @param comment
-//     * @return
-//     * @throws Exception
-//     */
-//    public Info update(InfoComment comment) throws Exception;
-//
+    /**
+     * 修改一个资讯评论
+     * @param comment
+     * @return
+     * @throws Exception
+     */
+    public InfoComment update(InfoComment comment) throws Exception;
+
     /**
      * 删除一个资讯评论
      * @param id

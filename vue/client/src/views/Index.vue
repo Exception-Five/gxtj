@@ -6,11 +6,13 @@
         :userInfo="userInfo" 
         :isLoginShow="isLoginShow"
         :isRegisterShow="isRegisterShow"
+        :isSearchShow="isSearchShow"
         @handleForm="handleForm"
         @closeForm="closeForm"
         @loginConfirm="loginConfirm"
         @registerConfirm="registerConfirm"
         @logout="logout"
+        @handleSearch="handleSearch"
         ></VHeader>
 
 <div class="placeholder-height"></div>
@@ -54,14 +56,14 @@
             	 <div class="mod-angle">热</div>
                  <div class="mod-thumb ">
                        <a class="transition" title="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低" href="#" target="_blank">
-						  <img class="lazy" style="height:100%" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
+						  <!-- <img class="lazy" style="height:100%" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低"> -->
                        </a>
                  </div>
                  <div class="column-link-box">
                  	<a href="#" class="column-link" target="_blank">娱乐淘金</a>
                  </div>
                  <div class="mob-ctt">
-                    <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" target="_blank">{{info.title}}</router-link></h2>
+                    <h2><router-link :to="`/article/${info.id}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
 					<div class="mob-author">
                         <div class="author-face">
                             <a href="#" target="_blank"><img src="../assets/sy-img/59_1502432173.jpg"></a>
@@ -88,7 +90,7 @@
 <link rel="stylesheet" type="text/css" href="https://static.huxiucdn.com/www/css/moment.css">
 		<div id="moment"></div>
 		<div class="box-moder moder-story-list">
-    		<h3>24小时</h3>
+    		<h3>最近热评</h3>
     		<span class="pull-right project-more story-more"><a href="#" class="transition index-24-right js-index-24-right" target="_blank">查看全部</a></span>
     		<span class="span-mark"></span>
     		<div class="story-box-warp hour-box-warp">
@@ -96,7 +98,7 @@
             	<div class="overthrow nano-content description" tabindex="0">
                 	<ul class="box-list mt-box-list">
                     <!--公共24小时列表部分-->
-                    	<li>
+                    	<li v-for="comment in hotCommentList">
             				<div class="story-content">
                 				<div class="mt-story-title js-story-title" story-data-show="true">
                     				<p class="transition hour-arrow">
@@ -105,249 +107,26 @@
                     				<ul class="hour-head">
                         				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
                         				<li>
-                            				<p>果然黑</p>
+                            				<p>{{comment.userInfo.nickname}}</p>
                             				<p>3分钟前</p>
                         				</li>
                     				</ul>
                 				</div>
                 				<div class="mt-index-info-parent">
                     				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
+                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">
+                                            {{comment.content}}
+                                            <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
                                          </p>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。                                                            <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp] </a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。 <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。 <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
-                    				</div>
-                				</div>
-            				</div>
-        				</li>
-                        <li>
-            				<div class="story-content">
-                				<div class="mt-story-title js-story-title" story-data-show="true">
-                    				<p class="transition hour-arrow">
-                        				<span class="icon icon-caret js-mt-index-icon"></span>
-                   					</p>
-                    				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
-                        				<li>
-                            				<p>果然黑</p>
-                            				<p>3分钟前</p>
-                        				</li>
-                    				</ul>
-                				</div>
-                				<div class="mt-index-info-parent">
-                    				<div class="story-info mt-story-info">
-                        				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">#苹果至少要等到2019年才能摆脱对三星的依赖#  作为苹果现有LCD显示屏长期的供货商，LG Display可做到2019年实现OLED显示屏的全面发货，明年年底可以实现少量的发货。目前，LG与苹果就一些协商预付款的细节问题讨论到最后阶段。<a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
-                                         </p>
-                        				 <div class="mt-index-end">
-                            			 	<div class="mt-index-realend">...</div>
-                        				 </div>
                     				</div>
                 				</div>
             				</div>
         				</li>
 					</ul>
             	</div>
-            	<div class="nano-pane">
+            	<!-- <div class="nano-pane">
                 	<div class="nano-slider" style="height: 179px; transform: translate(0px, 0px);"></div>
-            	</div>
+            	</div> -->
         	</div>
     	</div>
     	<div class="js-more-moment" data-cur_page="0"></div>
@@ -598,56 +377,14 @@
     <div class="placeholder"></div>
 </div>
 </div>
-
-<footer class="footer">
-    <div class="modal-backdrop fade in js-modal-backdrop"></div>
-    <div class="container copy-right">
-        <div class="footer-tag-list">
-            <a href="#" target="_blank" class="transition">关于我们</a>
-            <a href="#" target="_blank" class="transition">加入我们</a>
-            <a href="#" target="_blank" class="transition">合作伙伴</a>
-            <a href="#" target="_blank" class="transition">广告及服务</a>
-            <a href="#" target="_blank" class="transition">常见问题解答</a>
-            <a href="#" target="_blank" class="transition">防网络诈骗专题</a>
-        </div>
-        <span style="text-align:left;">Copyright © <a href="#">虎嗅网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
-            &nbsp;<a href="#" target="_blank"><i class="i-wj"></i>京公网安备 11010102001402号</a>&nbsp;&nbsp;&nbsp;<em class="bull-right">本站由</em><i class="icon-aliyun" style="width: 70px;background-size: 100%;left: 7px;"></i><em class="bull-em">提供计算与安全服务</em>
-        </span>
-        <div class="footer-icon-list pull-right">
-            <ul class="Qr-codee">
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/weixin_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-wx"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                	<div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-ios"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-android"></i>
-                </li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅英文版">
-                    <li><i class="icon icon-footer icon-footer-inter"></i></li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅RSS订阅中心">
-                    <li><i class="icon icon-footer icon-footer-rss"></i></li>
-                </a>
-            </ul>
-        </div>
-    </div>
-<div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
-<div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
-</footer>
-
+<VFooter></VFooter>
     </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate} from '../api/api.js'
+import {requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
+import VFooter from '@/components/Footer.vue'
+
 import VueNotifications from 'vue-notifications'
 import {GetDateDiff} from '../utils/date.js'
 
@@ -664,37 +401,62 @@ export default {
             isLogined: false,
             isLoginShow: false,
             isRegisterShow: false,
-            
+            isSearchShow: false,
+
             isMsgAlert: true,
             isMsgAlertText: '',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: [],
+            logInfoList: [],
+            hotCommentList: [],
             page: 1
         }
     },
     components:{
-        VHeader
+        VHeader,VFooter
     },
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
             this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-            console.log(this.userInfo)
             this.isLogined = true
         }
-        getInfoByDate(this.page).then((res)=>{
-            console.log(res)
+        getHotComments().then(res=>{
             if(res.status === 1){
-                this.infoList = res.result
-                this.isMsgAlert = false
-                this.isMsgAlertText = "为您推荐了6条消息"
-                setTimeout(()=>{
-                    this.isMsgAlert = true
-                },3000)
-                
+                this.hotCommentList = res.result
             }
-            
         })
+        getLogInfos().then(res=>{
+            if(res.status === 1){
+                this.logInfoList = res.result
+                 pushUserByLogInfo().then((res)=>{
+                    if(res.status === 1){
+                        console.log("文章:",res.result)
+                        /* 设置文章为已读或未读 */
+                        let infos = res.result
+                        for(let info of infos){
+                            info.isRead = false
+                            for(let log of this.logInfoList){
+                                if(log.infoId === info.infoId){
+                                    console.log(info.title+"已经读过")
+                                    info.isRead = true
+                                }
+                            }
+                        }
+                        console.log(infos)
+                        this.infoList = infos
+                        this.isMsgAlert = false
+                        this.isMsgAlertText = "为您推荐了6条消息"
+                        setTimeout(()=>{
+                            this.isMsgAlert = true
+                        },3000)
+                        
+                    }
+                    
+                })
+            }
+        })
+       
     },
     methods: {
         handleForm(...data) {
@@ -740,6 +502,13 @@ export default {
             window.localStorage.removeItem("token")
             window.localStorage.removeItem("user")
             this.isLogined = false
+        },
+        handleSearch(...data){
+            if(data[0] === 0){//关闭
+                this.isSearchShow = false
+            }else if(data[0] === 1){
+                this.isSearchShow = true
+            }    
         },
         loadMore(){
             this.page += 1

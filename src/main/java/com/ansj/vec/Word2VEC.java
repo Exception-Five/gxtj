@@ -2,6 +2,8 @@ package com.ansj.vec;
 
 import com.ansj.vec.domain.WordEntry;
 
+import com.ansj.vec.util.FileUtil;
+import com.ansj.vec.util.MergeFile;
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
@@ -17,18 +19,22 @@ public class Word2VEC {
 
 	public static void dataProcess() {
 //		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
-		//010806 020806 030806D:\Java\generator\gxtj\src\main\resources\library\mod\aaa,tex
+		//010806 020806 030806
+
 		File commentFile = new File(Word2VEC.class.getResource("/library/merged.txt").getPath());
+		System.out.println("dasdasdasdasd");
 		long start = System.currentTimeMillis();
 		try {
 			StringBuilder vectorSB = new StringBuilder();
+			System.out.println("dasdasdasdsd");
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
-				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
+				System.out.println("yjyjyjyjy");
+				vectorSB.append(TokenizerAnalyzerUtils.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
 			}
 
-			File file = new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\comment\\1.txt");
+			File file = new File("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\comment\\21252tokenR.txt");
 			List<StringBuilder> list = new ArrayList<StringBuilder>();
 			list.add(vectorSB);
 			FileUtils.writeLines(file, list);
@@ -38,13 +44,35 @@ public class Word2VEC {
 			e.printStackTrace();
 		}
 	}
-
+	/*文本转换*/
+	public static void txtConvert() {
+		File f = new File("E:\\sougoudata");
+		for(File temp : f.listFiles()) {
+			if(temp.isFile()) {
+				FileUtil.saveTxtFile(FileUtil.Html2Txt(FileUtil.readTxtFile("E:\\sougoudata\\"+temp.getName())),temp.getName());
+			}
+		}
+		txtMerge();
+	}
+	public static void txtMerge() {
+		File f = new File("E:\\sougoudata\\convert");
+		int index = 0;
+		int length = f.listFiles().length;
+		String[] files=new String[length];
+		for(File temp : f.listFiles()) {
+			if(temp.isFile()) {
+				System.out.println(temp.getName());
+				files[index] = "E:\\sougoudata\\convert\\"+temp.getName();
+				index++;
+			}
+		}
+		String outfile="E:\\sougoudata\\convert\\merged.txt";
+		MergeFile.merge(outfile,files);
+	}
 	public static void main(String[] args) throws IOException {
-
-
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		dataProcess();
-
+//		dataProcess();
+		txtMerge();
 
 		//train the model and save model
 //		Learn learn = new Learn();
@@ -52,8 +80,9 @@ public class Word2VEC {
 //		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
 //
 //		//use the trained model to analyze
+
 //		Word2VEC vec = new Word2VEC();
-//		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector030806.mod");
+//		vec.loadJavaModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\vector030806.mod");
 //
 //		System.out.println("法律" + "\t" +
 //		Arrays.toString(vec.getWordVector("法律")));
@@ -61,7 +90,7 @@ public class Word2VEC {
 //		String str = "法律";
 //		for (int i = 0; i < 20; i++) {
 //			System.out.println(vec.distance(str));
-
+//
 //		}
 
 //		List<String> wordList = new ArrayList<String>();
@@ -80,7 +109,7 @@ public class Word2VEC {
 //					vec.distance(word));
 //		}
 
-//		System.out.println(vec.analogy("证据", "离婚", "涉及"));
+		//System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();
