@@ -1,16 +1,18 @@
 <template>
-  <section id="article">
-    <VHeader 
-    :isLogined="isLogined" 
-    :userInfo="userInfo" 
-    :isLoginShow="isLoginShow"
-    :isRegisterShow="isRegisterShow"
-    @handleForm="handleForm"
-    @closeForm="closeForm"
-    @loginConfirm="loginConfirm"
-    @registerConfirm="registerConfirm"
-    @logout="logout"
-    ></VHeader>
+	<section id="article">
+		<VHeader 
+		:isLogined="isLogined" 
+		:userInfo="userInfo" 
+		:isLoginShow="isLoginShow"
+		:isRegisterShow="isRegisterShow"
+		:isSearchShow="isSearchShow"
+		@handleForm="handleForm"
+		@closeForm="closeForm"
+		@loginConfirm="loginConfirm"
+		@registerConfirm="registerConfirm"
+		@logout="logout"
+		@handleSearch="handleSearch"
+		></VHeader>
 <div class="placeholder-height"></div>
 <div class="article-section-wrap">
     <div class="article-section" data-aid="197460">
@@ -59,7 +61,7 @@
 			</div> -->
             <div id="article_content197460" class="article-content-wrap">
                  <!-- <p>有些人和企业的厉害之处，在于从一个看似成熟、红海的领域，硬生生拓展出一片蓝海市场来，而且生意做到风生水起。</p><p><br/></p><p>而这种闯出一片新天地的方法，最常见的一种，就是将原有的产品或服务模式中的某个元素，推向极致，拓展出新的用户场景和产品价值，自然就拓展出了新的市场。</p><p><br/></p><p>今天来分析三个例子，来看看这种"单一元素推向极致"的手段有多厉害。</p><p><br/></p><p><strong>第一个例子，是前段时间非常火爆的电话亭式KTV。</strong></p><p><br/></p><p>我不知道现在还有多少人经常去KTV唱歌。我能看到的是，在一线城市，传统的量贩式KTV市场一再萎缩，以钱柜、麦乐迪为代表的老企业日渐衰败，新的主打小户型的唱吧麦颂半死不活。长盛不衰此起彼伏的KTV也有，但那是俗称商K的夜总会式KTV，你懂的。</p><p><br/></p><p>究其原因，现在娱乐的个性化和小群体化趋势日益明显，以前那种成群结队去唱歌，还要忍受别人五音不全的唱腔的娱乐形式，显得不够与时俱进。</p><p><br/></p><p>但是，朋友情侣三两出行，还是有唱歌娱乐的需求的。电话亭式KTV应运而生。</p><p><br/></p><p>电话亭式KTV，把时间和空间两个元素推向极致。仅容纳两到三个人的私密空间，少至一首歌或者一刻钟的欢唱时间，充分利用碎片化时间和空间，让唱歌这件事不那么仪式感和处心积虑，随时兴起就可以来一发，多么愉快。何况，曲库、音响效果并不亚于传统的KTV，甚至还有所超越。</p>                -->
-				<div v-html="information.infoContent.content"></div>
+				<div v-if="information.infoContent!=null" v-html="information.infoContent.content"></div>
                  <div class="neirong-shouquan">
                       <span class="c2">*文章为作者独立观点，不代表虎嗅网立场<br></span>
                       <span>本文由 <a href="#" target="_blank">判官</a> 授权 <a href="/">虎嗅网</a> 发表，并经虎嗅网编辑。转载此文请于文首标明作者姓名，保持文章完整性（包括虎嗅注及其余作者身份信息），并请附上出处</span>
@@ -156,68 +158,54 @@
 						</div>
     					<div class="pl-box-wrap" data-pid="644658" id="g_pid644658" v-for="(comment,index) in commentList">
 							<div class="pl-box-top">
-            					<div class="dropdown pull-right">
-                					<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    					<span class="caret"></span>
-                					</button>
-                					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li class="pl-report js-report-pl" aid="197460" pid="644658">举报</li>
-                					</ul>
-            					</div>
-            					<div class="author-info">
-                					<div class="author-face"><img src="https://img.huxiucdn.com/auth/data/avatar/001/68/30/86_1496144520.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></div>
-                					<span class="author-name">
-                    					<a href="#">{{comment.userInfo.nickname}}</a>
-                    					<a href="#" target="_blank"></a>
-                					</span>
-                					<span class="time">{{comment.publishDate | formatDateDiff}}</span>
-            					</div>
-            					<div class="pl-content">{{comment.content}}</div>
-                            	<div class="dp-box" v-show="comment.hasSubComment"> 
-                    				<span class="span-mark-author">点评</span>
-                                    <div class="dl-user dl-user-list  " data-type="dl-user" style="display:block">
-                            			 <!--只有一条点评时显示-->
-
-										<!-- <ul>
-                                            <li class="del-pl108924"><a href="#" target="_blank"><img src="https://img.huxiucdn.com/auth/data/avatar/3.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a></li>
-                                        </ul>
-										<div class="one-pl-content one-pl-content-box">
-                                    		<div class="pull-right time">6天前</div>
-											<p class="content">
-												<span class="name">寂地_</span>
-												<a href="#" target="_blank"></a>&nbsp;&nbsp;
-												<span class="author-content">@lingboxiu 马云家有，对我尔等来说确实是灰常贵</span>
-											</p>
-											<div class="js-hf-article-pl"><span>回复</span></div>
-											<div class="hu-pl-box">
-												<textarea class="form-control" placeholder="客官，8个字起评，不讲价哟"></textarea>
-												<button class="btn btn-article js-article-dp" data-type="hf">发表</button>
+								<div class="dropdown pull-right">
+									<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+													<li class="pl-report js-report-pl" aid="197460" pid="644658">举报</li>
+									</ul>
+								</div>
+								<div class="author-info">
+									<div class="author-face"><img src="https://img.huxiucdn.com/auth/data/avatar/001/68/30/86_1496144520.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></div>
+									<span class="author-name">
+										<a href="#">{{comment.userInfo.nickname}}</a>
+										<a href="#" target="_blank"></a>
+									</span>
+									<span class="time">{{comment.createTime | formatDateDiff}}</span>
+								</div>
+								<div class="pl-content">{{comment.content}}</div>
+									<div class="dp-box" v-show="comment.hasSubComment"> 
+									<span class="span-mark-author">点评</span>
+											<div class="dl-user dl-user-list  " data-type="dl-user" style="display:block">
+												
 											</div>
-                                		</div> -->
-                                    </div>
-									<div class="dp-list-box" style="display:block">
-										<div class="dl-user del-pl108924"  v-for="(subComment, subIndex) in comment.subCommentList">
-											<ul>
-												<li><a href="#" target="_blank"><img src="https://img.huxiucdn.com/auth/data/avatar/3.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a></li>
-											</ul>
-											<div class="one-pl-content">
-												<div class="pull-right time">{{subComment.publishDate | formatDateDiff}}</div>
-												<p class="content">
-													<span class="name">{{subComment.userInfo.nickname}}</span>
-													<a href="#" target="_blank"></a>&nbsp;&nbsp;
-													<span class="author-content"><a href="#" target="_blank">@{{subComment.replyUser.nickname}}</a> {{subComment.content}}</span>
-												</p>
-												<div class="js-hf-article-pl" @click="toComment(0, subIndex, index)"><span>回复</span></div>
-												<div class="hu-pl-box" v-show="subComment.isCommentClick">
-													<textarea class="form-control" placeholder="客官，8个字起评，不讲价哟" v-model="commentParam.content"></textarea>
-													<button class="btn btn-article js-article-dp" data-type="hf" @click="addComment(0,comment.id,subComment.userInfo.userId,index,subIndex)">发表</button>
-												</div>
+								<div class="dp-list-box" style="display:block"  v-if="comment.subCommentList != null">
+									<!-- 子评论 -->
+									<div class="dl-user del-pl108924"  v-for="(subComment, subIndex) in comment.subCommentList">
+										<ul>
+											<li><a href="#" target="_blank"><img src="https://img.huxiucdn.com/auth/data/avatar/3.jpg?|imageMogr2/strip/interlace/1/quality/85/format/jpg"></a></li>
+										</ul>
+										<div class="one-pl-content">
+											<div class="pull-right time">{{subComment.createTime | formatDateDiff}}</div>
+											<p class="content">
+												<span class="name" v-if="subComment.userInfo != null">{{subComment.userInfo.nickname}}</span>
+												<a href="#" ></a>&nbsp;&nbsp;
+													<span class="author-content">
+													<a href="#" v-if="subComment.replyUser != null">@{{subComment.replyUser.nickname}}</a>
+												{{subComment.content}}</span> 
+											</p>
+											<div class="js-hf-article-pl" @click="toComment(0, subIndex, index)"><span>回复</span></div>
+											<div class="hu-pl-box" v-show="subComment.isCommentClick">
+												<textarea class="form-control" placeholder="客官，8个字起评，不讲价哟" v-model="commentParam.content"></textarea>
+												<button class="btn btn-article js-article-dp" data-type="hf" @click="addComment(0,comment.id,subComment.userInfo.userId,index,subIndex)">发表</button>
 											</div>
 										</div>
-										<!-- <div class="close-dp-list-box js-show-hide-dp-box" data-buttom="true">收起</div> -->
 									</div>
-                				</div>
-                    		</div>
+									<!-- <div class="close-dp-list-box js-show-hide-dp-box" data-buttom="true">收起</div> -->
+								</div>
+								</div>
+							</div>
 							<div class="pl-box-btm">
 								<div class="article-type pull-right">
 									<div class="icon-like-prompt">
@@ -328,52 +316,7 @@
 <div class="article-section article-section-last"></div>
 </div>
 
-
-<footer class="footer">
-    <div class="modal-backdrop fade in js-modal-backdrop"></div>
-    <div class="container copy-right">
-        <div class="footer-tag-list">
-            <a href="#" target="_blank" class="transition">关于我们</a>
-            <a href="#" target="_blank" class="transition">加入我们</a>
-            <a href="#" target="_blank" class="transition">合作伙伴</a>
-            <a href="#" target="_blank" class="transition">广告及服务</a>
-            <a href="#" target="_blank" class="transition">常见问题解答</a>
-            <a href="#" target="_blank" class="transition">防网络诈骗专题</a>
-        </div>
-        <span>Copyright © <a href="#">虎嗅网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
-            &nbsp;<a href="#" target="_blank"><i class="i-wj"></i>京公网安备 11010102001402号</a>&nbsp;&nbsp;&nbsp;<em class="bull-right">本站由</em><i class="icon-aliyun" style="width: 70px;background-size: 100%;left: 7px;"></i><em class="bull-em">提供计算与安全服务</em>
-        </span>
-        <div class="footer-icon-list pull-right">
-            <ul class="Qr-codee">
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/weixin_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-wx"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                	<div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-ios"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-android"></i>
-                </li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅英文版">
-                    <li><i class="icon icon-footer icon-footer-inter"></i></li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅RSS订阅中心">
-                    <li><i class="icon icon-footer icon-footer-rss"></i></li>
-                </a>
-            </ul>
-        </div>
-    </div>
-<div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
-<div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
-</footer>
-
-<VueToast ref='toast'></VueToast>
+<VFooter></VFooter>
   </section>
 </template>
 
@@ -381,12 +324,9 @@
 import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
+import VFooter from '@/components/Footer.vue'
 
 import VHeader from '@/components/Header.vue'
-
-import 'vue-toast/dist/vue-toast.min.css';
-
-import VueToast from 'vue-toast'
 
 import VueNotifications from 'vue-notifications'
 
@@ -405,24 +345,20 @@ export default {
 		isLogined: false,
 		isLoginShow: false,
 		isRegisterShow: false,
-		
+		isSearchShow: false,
 		information:{},
-		maxToasts: 6,
-        position: 'bottom right',
-        theme: 'success',
-        timeLife: 3000,
-		closeBtn: true,
+
 		//已经点过赞
 		hasLike: false,
 		flag: false,
 		commentList: [],
 		commentCount: 0,
 		commentParam: {
-			// content:""
+			content:""
 		}
 	  }
   },
-  components: { VueToast,VHeader},
+  components: {VHeader,VFooter},
   mounted(){
 	let token = window.localStorage.getItem("token")
 	console.log( window.localStorage.getItem("dasd"))
@@ -441,20 +377,20 @@ export default {
 			this.information = res.result
 			let param = new FormData()
 			param.append("id",this.infoId)
-			getPushInfo(param).then(res => {
-				console.log(res)
-				console.log("推送"+res.result.title)
-				this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a><img src="https://mmbiz.qpic.cn/mmbiz_jpg/n9SYkDp4R65gpdLy7IJ1TGEHdib9zBF4KdYscAGLicDLibeY094DWNKib4jX2dyib0ibP6oiar5b6veW5dpOcALHQQniaA/640?wx_fmt=jpeg" width="100" height="100"></img>`)
-				this.resetOptions()
-			})
+			// getPushInfo(param).then(res => {
+			// 	console.log(res)
+			// 	console.log("推送"+res.result.title)
+			// 	this.showTime(`<a href="http://localhost:8085/#/article/${res.result.id}">${res.result.description}</a><img src="https://mmbiz.qpic.cn/mmbiz_jpg/n9SYkDp4R65gpdLy7IJ1TGEHdib9zBF4KdYscAGLicDLibeY094DWNKib4jX2dyib0ibP6oiar5b6veW5dpOcALHQQniaA/640?wx_fmt=jpeg" width="100" height="100"></img>`)
+			// 	this.resetOptions()
+			// })
 			//阅读量+1
 			let param2 = {
 				id: this.information.id,
 				reads: ++this.information.reads
 			}
-			updateInfoById(param2).then(res=>{
-				console.log(res)
-			})
+			// updateInfoById(param2).then(res=>{
+			// 	console.log(res)
+			// })
 		}else{
 			// this.$router.push({path:'/404'})
 		}
@@ -466,11 +402,11 @@ export default {
 			console.log(data)
 			console.log("dsadsadsa")
 			if(data[0] === 0){//点击登录
-				this.isLoginShow = true
-				this.isRegisterShow = false
+					this.isLoginShow = true
+					this.isRegisterShow = false
 			}else if(data[0] === 1){//点击注册
-				this.isLoginShow = false
-				this.isRegisterShow = true
+					this.isLoginShow = false
+					this.isRegisterShow = true
 			}
 		},
 		closeForm() {
@@ -479,50 +415,39 @@ export default {
 		},
 		loginConfirm () {
 			requestLogin(this.userInfo).then(res => {
-				console.log(requestLogin)
-				if(res.data.status === 1){
-					this.isLoginShow = false
-					this.isLogined = true
-					this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-					alert("登录成功!")
-				}else if(res.data.status === -1){
-					alert("用户名不存在")
-				}
+					console.log(res)
+					if(res.data.status === 1){
+						this.isLoginShow = false
+						this.isLogined = true
+						this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+						this.showSuccessMsg({title:"成功",message:"登录成功"})
+					}else if(res.data.status === -1){
+						this.showErrorMsg({title:"失败",message:"用户名不存在"})
+					}
 			})
 		},
 		registerConfirm () {
 			let param = this.userInfo
 			requestRegister(param).then(res => {
-				console.log(res)
-				if(res.status === 1){
-					alert("已成功向您的邮箱发送帐号激活邮件,请确认")
-				}else{
-					alert("发送邮件失败")
-				}
+					console.log(res)
+					if(res.status === 1){
+						this.showSuccessMsg({title:"成功",message:"已成功向您的邮箱发送帐号激活邮件,请确认"})
+					}else{
+						this.showErrorMsg({title:"失败",message:"发送邮件失败"})
+					}
 			})
 		},
 		logout () {
 			window.localStorage.removeItem("token")
-         window.localStorage.removeItem("user")
+			window.localStorage.removeItem("user")
 			this.isLogined = false
 		},
-		/* 弹窗 */
-		resetOptions() {
-			this.$refs.toast.setOptions({
-			delayOfJumps: this.delayOfJumps,
-			maxToasts: this.maxToasts,
-			position: this.position
-			})
-		},
-		showTime(description) {
-			this.$refs.toast.showToast(description, {
-				theme: this.theme,
-				timeLife: this.timeLife,
-				closeBtn: this.closeBtn
-			})
-		},
-		closeAll() {
-			this.$refs.toast.closeAll()
+		handleSearch(...data){
+			if(data[0] === 0){//关闭
+					this.isSearchShow = false
+			}else if(data[0] === 1){
+					this.isSearchShow = true
+			}    
 		},
 		initCommentList(id){
 			this.commentList = []
@@ -535,12 +460,12 @@ export default {
 						receiveComments[i].isCommentClick = false
 						receiveComments[i].isLikeClick = false
 						receiveComments[i].isDislikeClick = false
-						receiveComments[i].subCommentList = []
+						receiveComments[i].subCommentList = null
 						this.commentList.push(receiveComments[i])
-						
 					}
 				}
 				for(let i in this.commentList){
+					this.commentList[i].subCommentList = []
 					for(let j in receiveComments){
 						if(receiveComments[j].id === this.commentList[i].id){
 							continue
@@ -553,7 +478,7 @@ export default {
 					}
 				}
 				
-				//console.log(this.commentList)
+				console.log(this.commentList)
 			})
 		},
 		likeArticle () {

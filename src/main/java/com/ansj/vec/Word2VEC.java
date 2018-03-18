@@ -71,8 +71,8 @@ public class Word2VEC {
 	}
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		dataProcess();
-//		txtConvert();
+//		dataProcess();
+		txtMerge();
 
 		//train the model and save model
 //		Learn learn = new Learn();

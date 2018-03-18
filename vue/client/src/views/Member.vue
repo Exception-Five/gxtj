@@ -59,7 +59,7 @@
     <div class="user-menu-warp">
         <div class="menu-warp">
             <ul id=myTabs1>
-                <li class="active" onMouseDown=Tabs1(this,0);><a href="#menu">TA的文章</a></li>
+                <li class="active" onMouseDown=Tabs1(this,0);><a href="#menu">最近阅读</a></li>
                 <li class="" onMouseDown=Tabs1(this,1);><a href="#menu">TA的评论</a></li>
                 <li class="" onMouseDown=Tabs1(this,2);><a href="#menu">TA的收藏</a></li>
                 <li class="" onMouseDown=Tabs1(this,3);><a href="#menu">TA的关注</a></li>
@@ -344,7 +344,7 @@
 </template>
 
 <script>
-import {requestLogin, requestRegister,getInfoByDate} from '../api/api.js'
+import {requestLogin, requestRegister,getInfoByDate, getLogInfos} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -362,10 +362,27 @@ export default {
             isLoginShow: false,
             isRegisterShow: false,
             isSearchShow: false,
+
+            logInfoList: [],
         }
     },
     components:{
         VHeader,VFooter
+    },
+    mounted(){
+        let token = window.localStorage.getItem("token")
+        if(token!=null&&token!=""){
+            this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            this.isLogined = true
+        }
+        getLogInfos().then(res=>{
+            if(res.status === 1){
+                this.logInfoList = res.result
+                for(let log of this.logInfoList){
+                    
+                }
+            }
+        })
     },
     methods: {
         handleForm(...data) {

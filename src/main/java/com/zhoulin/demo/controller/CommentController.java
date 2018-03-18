@@ -24,8 +24,8 @@ public class CommentController {
     /**
      * 查询一篇资讯的所有评论
      * @param id
-     * @param limit
-     * @param page
+     * @param
+     * @param
      * @return
      */
     @RequestMapping(value = "/information/{id}/comment", method = RequestMethod.GET)
@@ -38,6 +38,58 @@ public class CommentController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR,"获取资讯评论失败！",null);
+        }
+    }
+    /**
+     * 查询最热评论
+     * @return
+     */
+    @RequestMapping(value = "/information/hotComments", method = RequestMethod.GET)
+    @ResponseBody
+    public Message getHotComments(){
+        List<InfoComment> commentList = new ArrayList<>();
+        try {
+            commentList = commentService.getMostLikesComments();
+            return new Message(Message.SUCCESS,"获取资讯评论成功！",commentList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取资讯评论失败！",null);
+        }
+    }
+
+    /**
+     * 新增一条评论
+     * @param
+     * @param comment
+     * @return
+     */
+    @RequestMapping(value = "/information/{infoId}/comment", method = RequestMethod.POST)
+    @ResponseBody
+    public Message add(@PathVariable(value = "infoId") Integer infoId, @RequestBody InfoComment comment){
+        try {
+            comment.setInfoId(infoId);
+            InfoComment result = commentService.add(comment);
+            return new Message(Message.SUCCESS,"增加资讯评论成功！",result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"增加资讯评论失败！",null);
+        }
+    }
+    /**
+     * 修改一条评论
+     * @param
+     * @param comment
+     * @return
+     */
+    @RequestMapping(value = "/information/comment", method = RequestMethod.PUT)
+    @ResponseBody
+    public Message update(@RequestBody InfoComment comment){
+        try {
+            InfoComment result = commentService.update(comment);
+            return new Message(Message.SUCCESS,"修改资讯评论成功！",result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"修改资讯评论失败！",null);
         }
     }
 }
