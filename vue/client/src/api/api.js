@@ -24,7 +24,7 @@ export const requestRegister = params => { return axios.post(`/public/user/regis
 
 export const activate = code => { return axios.post(`/public/user/activate/${code}`).then(res => res.data)};
 
-export const updateUser = params => { return axios.post(`/api/user/updateUser`, params)};
+export const updateUser = params => { return axios.post(`/api/user/updataUserInfo`, params)};
 
 export const addUser = params => { return axios.post(`/api/user/addUser`, params)};
 
