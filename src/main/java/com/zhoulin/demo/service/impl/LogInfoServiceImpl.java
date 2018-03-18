@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -187,6 +188,22 @@ public class LogInfoServiceImpl implements LogInfoService{
             e.printStackTrace();
 
             return addStatus;
+        }
+    }
+
+    @Override
+    public List<LogInfo> getLogInfoNowadays(Integer userId) {
+
+        List<LogInfo> userlogs = new ArrayList<>();
+
+        try {
+            userlogs = logInfoMapper.getLogInfoNowadays(userId);
+
+            return userlogs;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

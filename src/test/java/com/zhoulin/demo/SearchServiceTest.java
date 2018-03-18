@@ -1,5 +1,6 @@
 package com.zhoulin.demo;
 
+import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
@@ -13,6 +14,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -107,6 +109,22 @@ public class SearchServiceTest extends DemoApplicationTests {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testHightLight(){
+
+        InfoSearch infoSearch = new InfoSearch();
+
+        infoSearch.setMutiContent("周某,车门,女士,停车,交通,电瓶车,责任,法律,家属,路边,路边");
+
+        ServiceMultiResult<Information> multiResult = searchService.queryMultiMatch(infoSearch);
+
+        List<Information> list = multiResult.getResult();
+
+        for (Information information:list) {
+            System.out.println(information);
         }
 
 

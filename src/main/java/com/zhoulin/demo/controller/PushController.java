@@ -1,8 +1,10 @@
 package com.zhoulin.demo.controller;
 
+import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
+import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.LogInfoService;
 import com.zhoulin.demo.service.PushService;
@@ -25,7 +27,7 @@ public class PushController {
     private SearchService searchService;
 
     @Autowired
-    private InformationService informationService;
+    private InfoService infoService;
 
     @Autowired
     private LogInfoService logInfoService;
@@ -38,7 +40,7 @@ public class PushController {
     @ResponseBody
     public Message pushInfo(@RequestParam(value = "id") long id){
 
-        List<Information> informationList = new ArrayList<>();
+        List<Info> informationList = new ArrayList<>();
 
         long pushId = 0;
 
@@ -70,11 +72,12 @@ public class PushController {
     public Message pushUserByLogInfo(){
 
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        List<Information> informationList = new ArrayList<>();
+        List<Info> informationList = new ArrayList<>();
         try {
 
             if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1){
-                informationList = informationService.findInfoByDate();
+                //最新的20条
+                informationList = infoService.findInfoByDate(1);
                 return new Message(Message.SUCCESS, "实时热点>>>>>推送>>>>>成功", informationList);
             }
 
