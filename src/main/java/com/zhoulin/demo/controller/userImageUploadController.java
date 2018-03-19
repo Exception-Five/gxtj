@@ -22,10 +22,9 @@ import java.util.Map;
  * 用户头像上传 下载
  */
 @Controller
-@RequestMapping("/api/user/image")
-public class CourseInfoUploadController {
+public class userImageUploadController {
 
-    @RequestMapping(value = "/upload", method = RequestMethod.POST )
+    @RequestMapping(value = "/api/user/userImageUpload", method = RequestMethod.POST )
     @ResponseBody
     public Message upload(@RequestParam MultipartFile file) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -44,7 +43,7 @@ public class CourseInfoUploadController {
     }
 
 
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/download", method = RequestMethod.GET)
     @ResponseBody
     public void downFile(
             @RequestParam(value = "filename") String odexName,

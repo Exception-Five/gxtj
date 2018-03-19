@@ -1,7 +1,11 @@
 package com.zhoulin.demo.config.websocket;
 
+import com.zhoulin.demo.bean.UserInfo;
+import com.zhoulin.demo.config.security.JwtTokenUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -13,20 +17,25 @@ import java.util.Map;
 @Component
 public class SocketServer {
     private Session session;
-    private static Map<String, Session> sessionPool = new HashMap<String, Session>();
-    private static Map<String, String> sessionIds = new HashMap<String, String>();
+    private static Map<Integer, Session> sessionPool = new HashMap<Integer, Session>();
+    private static Map<String, Integer> sessionIds = new HashMap<String, Integer>();
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 用户连接时触发
      *
      * @param session
-     * @param token
+     * @param
      */
     @OnOpen
-    public void open(Session session, @PathParam(value = "token") String token) {
+    public void open(Session session,@PathParam(value="token")String token) {
         this.session = session;
-        sessionPool.put(token, session);
-        sessionIds.put(session.getId(), token);
+        UserInfo userInfo = jwtTokenUtil.parse(token);
+        Integer userId = userInfo.getUserId();
+        sessionPool.put(userId, session);
+        sessionIds.put(session.getId(), userId);
     }
 
     /**
@@ -63,10 +72,10 @@ public class SocketServer {
      * 信息发送的方法
      *
      * @param message
-     * @param token
+     * @param userId
      */
-    public static void sendMessage(String message, String token) {
-        Session s = sessionPool.get(token);
+    public static void sendMessage(String message, Integer userId) {
+        Session s = sessionPool.get(userId);
         if (s != null) {
             try {
                 s.getBasicRemote().sendText(message);

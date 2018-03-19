@@ -493,6 +493,7 @@ export default {
                     this.isLogined = true
                     this.userInfo = JSON.parse(window.localStorage.getItem("user"))
                     this.showSuccessMsg({title:"成功",message:"登录成功"})
+                    this.webSocketConnect();
                 }else if(res.data.status === -1){
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})
                 }
@@ -508,6 +509,33 @@ export default {
                     this.showErrorMsg({title:"失败",message:"发送邮件失败"})
                 }
             })
+        },
+        webSocketConnect(){
+            let token = window.localStorage.getItem("token")
+            let ws = null
+                if ('WebSocket' in window){
+                    ws = new WebSocket("ws://localhost:8000/socketServer/"+token);    
+                }    
+                else if ('MozWebSocket' in window){
+                    ws = new MozWebSocket("ws://localhost:8000/socketServer/"+token);    
+                }
+                else{
+                    alert("该浏览器不支持websocket");    
+                }    
+                    
+                    
+                ws.onmessage = function(evt) {    
+                    alert(evt.data);    
+                };    
+                    
+                ws.onclose = function(evt) {    
+                    alert("连接中断");    
+                };    
+                    
+                ws.onopen = function(evt) {    
+                    alert("连接成功");    
+                };  
+            
         },
         logout () {
             window.localStorage.removeItem("token")
