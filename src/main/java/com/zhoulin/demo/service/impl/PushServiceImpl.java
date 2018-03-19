@@ -187,21 +187,37 @@ public class PushServiceImpl implements PushService {
             ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
 
             for (String rs:multiResult.getResult()) {
-                Info information = objectMapper.readValue(rs, Info.class);
+                Information information = objectMapper.readValue(rs, Information.class);
 //                logger.info("最终关键词为 :  " + information.toString());
                 //通过关键词找到的新闻列表
-                kwInformationList.add(information);
+                Info info = new Info();
+
+                info.setInfoId(information.getId());
+                info.setTitle(information.getTitle());
+                info.setDescription(information.getDescription());
+                info.setKeyword(information.getKeyword());
+                info.setAuthor(information.getAuthor());
+                info.setReads(information.getReads());
+                info.setPublishDate(information.getPublishDate());
+                info.setLikes(information.getLikes());
+                info.setSourceSite(information.getSourceSite());
+                info.setScore(information.getScore());
+                info.setSourceUrl(information.getSourceUrl());
+
+                kwInformationList.add(info);
             }
 
+
+
             //获取交叉内容
-            for (int i=0;i<typeInformationList.size();i++) {
-                for (int j=0;j<kwInformationList.size();j++) {
-                    if (typeInformationList.get(i).getId().equals(kwInformationList.get(j).getId())){
+            for (int i=0;i<kwInformationList.size();i++) {
+                for (int j=0;j<typeInformationList.size();j++) {
+                    if (typeInformationList.get(j).getInfoId() == kwInformationList.get(i).getInfoId()){
                         logger.info("匹配到交叉内容 ！！！ " );
-                        mergeInforList.add(typeInformationList.get(i));
+                        mergeInforList.add(kwInformationList.get(i));
                         //去掉重复内容
-                        typeInformationList.remove(i);
-                        kwInformationList.remove(j);
+                        kwInformationList.remove(i);
+                        typeInformationList.remove(j);
                     }
                 }
 //                if (kwInformationList.contains(typeInformationList.get(i))){
@@ -225,7 +241,7 @@ public class PushServiceImpl implements PushService {
 
             for (int i=0;i<mergeInforList.size();i++) {
                 for (int j=0;j<infoIds.size();j++) {
-                    if (mergeInforList.get(i).getId().equals(infoIds.get(j))){
+                    if (mergeInforList.get(i).getInfoId() == infoIds.get(j)){
                         mergeInforList.remove(i);
                     }
                 }

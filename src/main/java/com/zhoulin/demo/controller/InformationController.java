@@ -65,6 +65,8 @@ public class InformationController {
 
 //        Information information = new Information();
 
+        List<Integer> infoIdList = new ArrayList<>();
+
         Integer addLStatus = 0;
 
         Integer upLStatus = 0;
@@ -93,10 +95,13 @@ public class InformationController {
 
                 typeRelation = typeRelationMapper.getInfoByTRId(infoId);
 
-
                 logInfos = logInfoService.getLogInfoByUserId(userId);
 
-                if(logInfos.size()>0){
+                for (LogInfo log:logInfos) {
+                    infoIdList.add(log.getInfoId());
+                }
+
+                if (infoIdList.contains(infoId)){
                     logInfo.setLookTime(new Date());
                     upLStatus = logInfoService.updateLogInfo(logInfo);
                     if (upLStatus==1){

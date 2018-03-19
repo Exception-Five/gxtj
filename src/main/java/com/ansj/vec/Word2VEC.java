@@ -30,7 +30,7 @@ public class Word2VEC {
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
 				System.out.println("yjyjyjyjy");
-				vectorSB.append(TokenizerAnalyzerUtils.getAnalyzerResult(line.trim()) + "\r\n");
+				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
 			}
 
