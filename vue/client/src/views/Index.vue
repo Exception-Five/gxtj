@@ -397,11 +397,11 @@ export default {
     data () {
         return {
             userInfo: {
-                username: "",
-                password: "",
-                nickname: "",
-                userMail: "",
-                userGroupId: 1
+                // username: "",
+                // password: "",
+                // nickname: "",
+                // userMail: "",
+                // userGroupId: 1
             },
             isLogined: false,
             isLoginShow: false,

@@ -5,14 +5,13 @@ import Index from '@/views/Index'
 import Article from '@/views/Article'
 import Member from '@/views/Member'
 import Search from '@/views/Search'
-import UserInfo from '@/views/UserInfo'
+import UserInfo from '@/views/userinfo/UserInfo'
 import UserMod from '@/views/UserMod'
 import TypeArticleList from '@/views/TypeArticleList'
 
 
 import RegisterSuccess from '@/views/RegisterSuccess'
 import Test from '@/views/test/Test'
-import Test1 from '@/views/test/Test1'
 
 import Page404 from '@/views/Page404'
 
@@ -69,11 +68,6 @@ export default new Router({
       path: '/test',
       name: 'Test',
       component: Test
-    },
-    {
-      path: '/test1',
-      name: 'Test1',
-      component: Test1
     },
     {
       path: '/404',
