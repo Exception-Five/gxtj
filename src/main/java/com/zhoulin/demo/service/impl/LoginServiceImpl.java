@@ -4,6 +4,7 @@ import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserGroup;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
+import com.zhoulin.demo.config.websocket.SocketServer;
 import com.zhoulin.demo.mapper.UserGroupMapper;
 import com.zhoulin.demo.mapper.UserInfoMapper;
 import com.zhoulin.demo.service.LoginService;

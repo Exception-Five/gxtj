@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "index")
+@RequestMapping(value = "/public")
 public class WebSocketController {
     @Autowired
     private SocketServer socketServer;
 
-    @RequestMapping(value = "/")
+    @RequestMapping(value = "/index")
     public String idnex() {
 
         return "index";
     }
 
-    @RequestMapping(value = "admin")
+    @RequestMapping(value = "/admin")
     public String admin(Model model) {
         int num = SocketServer.getOnlineNum();
         String str = SocketServer.getOnlineUsers();
@@ -34,10 +34,10 @@ public class WebSocketController {
      */
     @RequestMapping("sendmsg")
     @ResponseBody
-    public String sendmsg(String msg, String username) {
+    public String sendmsg(String msg, Integer userId) {
         //第一个参数 :msg 发送的信息内容
         //第二个参数为用户长连接传的username
-        SocketServer.sendMessage(msg, username);
+        SocketServer.sendMessage(msg, userId);
         return "success";
     }
 
