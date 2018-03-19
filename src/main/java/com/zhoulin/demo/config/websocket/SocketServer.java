@@ -3,6 +3,7 @@ package com.zhoulin.demo.config.websocket;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,8 @@ public class SocketServer {
     private static Map<Integer, Session> sessionPool = new HashMap<Integer, Session>();
     private static Map<String, Integer> sessionIds = new HashMap<String, Integer>();
 
+    @Value("${jwt.secret}")
+    private String secret;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
@@ -30,9 +33,11 @@ public class SocketServer {
      * @param
      */
     @OnOpen
-    public void open(Session session,@PathParam(value="token")String token) {
+    public void open(Session session,@PathParam(value="token") String token) {
         this.session = session;
-        UserInfo userInfo = jwtTokenUtil.parse(token);
+        UserInfo userInfo = new UserInfo();
+//        userInfo = new JwtTokenUtil().parse(token);
+        userInfo = jwtTokenUtil.parse(token);
         Integer userId = userInfo.getUserId();
         sessionPool.put(userId, session);
         sessionIds.put(session.getId(), userId);

@@ -133,7 +133,7 @@ public class UserInfoServiceImpl implements UserInfoService{
      * -1: 修改数据出现异常
      */
     @Override
-    public Integer updateUserInfo(UserInfo userInfo) {
+    public UserInfo updateUserInfo(UserInfo userInfo) {
 
         ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
 
@@ -153,14 +153,15 @@ public class UserInfoServiceImpl implements UserInfoService{
                 updateStatus = 1;
                 operations.set(key, userInfo, 6, TimeUnit.HOURS);
                 LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
-            }else if (updateStatus == 0){
-                updateStatus = 0;
+                return userInfo;
             }
-            return updateStatus;
+
+            return null;
+
         } catch (Exception e) {
             e.printStackTrace();
 //            throw new RuntimeException("修改用户信息失败");
-            return -1;
+            return null;
         }
     }
 
