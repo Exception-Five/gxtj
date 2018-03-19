@@ -64,7 +64,7 @@ public class LoginServiceImpl implements LoginService {
                 user.setLastLoginTime(stamp);
 
                 try {
-                    Integer loginStatus = userInfoService.updateUserInfo(user);
+                    Integer loginStatus = userInfoMapper.updateUserInfo(user);
                     if (loginStatus == 1){
                         loginTimeMsg = "登录时间已经更新：" + loginTime;
                     }

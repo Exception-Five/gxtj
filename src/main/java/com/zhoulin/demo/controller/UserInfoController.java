@@ -97,16 +97,15 @@ public class UserInfoController {
     @RequestMapping(value = "/updataUserInfo", method = RequestMethod.POST)
     @ResponseBody
     public Message updataUserInfo(@RequestBody UserInfo userInfo){
-        Integer updateStatus = 0;
+        UserInfo upUserInfo = new UserInfo();
         try {
-            updateStatus = userInfoService.updateUserInfo(userInfo);
-            if (updateStatus == 1){
-                return new Message(Message.SUCCESS,"修改/编辑用户信息--成功",updateStatus);
-            } else if(updateStatus == 0){
-                return new Message(Message.FAILURE,"修改/编辑用户信息--失败",updateStatus);
-            } else {
-                return new Message(Message.ERROR,"修改/编辑用户信息--异常",updateStatus);
+            upUserInfo = userInfoService.updateUserInfo(userInfo);
+            if (upUserInfo != null){
+                return new Message(Message.SUCCESS,"修改/编辑用户信息--成功",upUserInfo);
             }
+
+            return new Message(Message.FAILURE,"修改/编辑用户信息--失败",null);
+
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR,"修改/编辑用户信息--异常",null);

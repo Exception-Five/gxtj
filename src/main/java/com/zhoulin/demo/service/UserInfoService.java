@@ -12,7 +12,7 @@ public interface UserInfoService {
 
     Integer addUserInfo(UserInfo userInfo) throws Exception;
 
-    Integer updateUserInfo(UserInfo userInfo) throws Exception;
+    UserInfo updateUserInfo(UserInfo userInfo) throws Exception;
 
     Integer deleteUserInfoById(Integer userId) throws Exception;
 

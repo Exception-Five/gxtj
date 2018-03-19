@@ -91,7 +91,7 @@ public class JwtTokenUtil {
      */
     public UserInfo parse(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey("zhoulinSecret")
                 .parseClaimsJws(token)
                 .getBody();
         UserInfo userDTO = new UserInfo();
