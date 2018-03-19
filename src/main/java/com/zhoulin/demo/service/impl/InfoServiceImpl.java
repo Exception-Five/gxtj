@@ -49,14 +49,15 @@ public class InfoServiceImpl implements InfoService{
 
         try {
             info = infoMapper.getInfoByInfoId(infoId);
+            if(info!=null){
+                infoContent = infoContentMapper.getInfoContentByInfoId(infoId);
+                infoImage = infoImageMapper.getInfoImageByInfoId(infoId);
 
-            infoContent = infoContentMapper.getInfoContentByInfoId(infoId);
-            infoImage = infoImageMapper.getInfoImageByInfoId(infoId);
-
-            info.setInfoContent(infoContent);
-            info.setInfoImage(infoImage);
-
-            return info;
+                info.setInfoContent(infoContent);
+                info.setInfoImage(infoImage);
+                return info;
+            }
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

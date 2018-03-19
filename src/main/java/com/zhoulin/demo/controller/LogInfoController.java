@@ -113,9 +113,11 @@ public class LogInfoController {
 
             for (LogInfo log : logInfos) {
                 info = infoService.getInfoByInfoId(log.getInfoId());
-                infoImage = infoImageMapper.getInfoImageByInfoId(log.getInfoId());
-                info.setInfoImage(infoImage);
-                infoList.add(info);
+                if (info != null ){
+                    infoImage = infoImageMapper.getInfoImageByInfoId(log.getInfoId());
+                    info.setInfoImage(infoImage);
+                    infoList.add(info);
+                }
             }
 
             if (infoList.size()<1){
