@@ -9,7 +9,9 @@ background-color:#fff;
 color:#333;
 font-family:Arial,微软雅黑,"Microsoft yahei","Hiragino Sans GB","冬青黑体简体中文 w3","Microsoft Yahei","Hiragino Sans GB","冬青黑体简体中文 w3",STXihei,华文细黑,SimSun,宋体,Heiti,黑体,sans-serif;
 }
-
+#index .icon-close{
+    
+}
 header {
     position:fixed;
     z-index:500;
@@ -860,11 +862,19 @@ line-height:1.5;
 
 .column-link-box {
 position:absolute;
-bottom:25px;
+/* bottom:25px; */
+top:65px;
 right:0;
 text-align:right;
 }
-
+.column-link-box .icon-not-interst{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background: url('../images/iclose.png');
+    background-repeat:no-repeat;
+    background-size: 22px 22px; 
+}
 .column-link-big-box {
 width:300px;
 }
@@ -875,14 +885,30 @@ display:inline-block;
 }
 
 .column-link {
-font-size:12px;
-color:#3ca5f6;
+font-size:15px;
+color:#3a2d2d;
 text-align:center;
 line-height:1;
 z-index:10;
 margin-left:20px;
+color: #fff;
+/* padding: 4px; */
 }
-
+.column-link-box:hover{
+    background: #f63756;
+    
+}
+.column-link-box:hover .icon-not-interst{
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    background-repeat:no-repeat;
+    background-size: 22px 22px; 
+    background: url('../images/iclose-hover.png');
+}
+.column-link a{
+    
+}
 .column-link .report-vip-qr {
 position:absolute;
 width:240px;

@@ -42,7 +42,7 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a href="#" title="首页"><img src="../assets/images/logo.png" alt="虎嗅网" title="首页" /></a>
+                    <a @click="flush" title="首页"><img src="../assets/images/logo.png" alt="虎嗅网" title="首页" /></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <li class="nav-news js-show-menu">
@@ -239,11 +239,14 @@ export default {
         requestSearch(){
             this.$emit('handleSearch', 0)
             this.$router.push({name:'search',params: { searchContent: this.searchContent }})
+        },
+        flush(){
+            this.$router.push({name:'home'})
         }
     }
 }
 </script>
-<style>
+<style scoped>
 @import '../assets/bootstrap/css/bootstrap.min.css';
 @import '../assets/css/build.css';
 @import '../assets/css/login.css';

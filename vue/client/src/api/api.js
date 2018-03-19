@@ -29,7 +29,7 @@ export const updateUser = params => { return axios.post(`/api/user/updataUserInf
 export const addUser = params => { return axios.post(`/api/user/addUser`, params)};
 
 //头像上传
-export const uploadAvatar = params => { return axios.post(`/api/user/image/upload`, params).then(res => res.data).catch(function (error) {alert(error)});};
+export const uploadAvatar = params => { return axios.post(`/api/user/userImageUpload`, params).then(res => res.data).catch(function (error) {alert(error)});};
 
 /* information */
 export const getInfoByInfoId = id => { return axios.post(`/public/information/getInfoByInfoId/${id}`).then(res => res.data); };

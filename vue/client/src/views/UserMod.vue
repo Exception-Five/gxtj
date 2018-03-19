@@ -27,7 +27,7 @@
             <div class="user-face-box">
                 <img src="https://img.huxiucdn.com/auth/data/avatar/2.jpg">
             </div>
-            <a class="edit-face" href="/user/setting/account.html#mdf_head">点击更换头像</a>
+            <!-- <a class="edit-face" href="/user/setting/account.html#mdf_head">点击更换头像</a> -->
         </div>
 
 <!-- 兴趣模型 -->

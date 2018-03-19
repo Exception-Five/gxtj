@@ -34,7 +34,8 @@
                 <div class="control-box under-control account" >{{userInfo.nickname}}</div>
 
                 <div class="btn-group  btn-group-box pull-right js-edit-user-info " @click="extendContent(0)">
-                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-if="!contentShowFlags[0]">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-else>收起</span>
                     <button type="button" class="btn btn-default dropdown-toggle">
                         <span class="icon" :class="{'icon-add': !contentShowFlags[0],'icon-del': contentShowFlags[0]}"></span>
                     </button>
@@ -57,11 +58,12 @@
 
                 <div class="control-box under-control account">
                     <div class="face-box">
-                        <img :src="`/public/upload/${userInfo.userImageUrl}`" :onerror="defaultAvatar">
+                        <img :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
                     </div>
                 </div>
                 <div class="btn-group  btn-group-box pull-right js-edit-user-info " @click="extendContent(1)">
-                    <span class="btn btn-default  btn-dropdown-show js-edit-user-head">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-if="!contentShowFlags[1]">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-else>收起</span>
                     <button type="button" class="btn btn-default dropdown-toggle">
                         <span class="icon" :class="{'icon-add': !contentShowFlags[1],'icon-del': contentShowFlags[1]}"></span>
                     </button>
@@ -105,7 +107,8 @@
 
                 </div>
                 <div class="btn-group  btn-group-box pull-right js-edit-user-info  disabled" @click="extendContent(2)">
-                    <span class="btn btn-default  btn-dropdown-show js-edit-user-pw">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-if="!contentShowFlags[2]">修改</span>
+                    <span class="btn btn-default  btn-dropdown-show js-edit-user-name" v-else>收起</span>
                     <button type="button" class="btn btn-default dropdown-toggle">
                         <span class="icon" :class="{'icon-add': !contentShowFlags[2],'icon-del': contentShowFlags[2]}"></span>
                     </button>
@@ -115,15 +118,15 @@
                 <ul class="under-ul" v-show="contentShowFlags[2]">
                     <div class="form-warp">
                         <label class="control-label">密&nbsp;&nbsp;&nbsp;码：</label>
-                        <input class="control-input" type="password" id="oldpassword" placeholder="密码">
+                        <input class="control-input" type="password" id="oldpassword" placeholder="密码" v-model="inputPwd">
                     </div>
                     <div class="form-warp">
                         <label class="control-label">新密码：</label>
-                        <input class="control-input" type="password" id="password1" placeholder="新密码">
+                        <input class="control-input" type="password" id="password1" placeholder="新密码" v-model="userInfo.newPwd">
                     </div>
                     <div class="form-warp">
                         <label class="control-label">确认密码：</label>
-                        <input class="control-input" type="password" id="password2" placeholder="确认密码">
+                        <input class="control-input" type="password" id="password2" placeholder="确认密码" v-model="userInfo.confirmPwd">
                     </div>
                     <button class="btn btn-blue js-reset-pw" @click="updateUserInfo(2)">完成</button>
                 </ul>
@@ -159,12 +162,15 @@ export default {
                 userId:1,
                 username: "",
                 password: "",
+                newPwd: "",
+                confirmPwd:"",
                 nickname: "",
                 newNickname:"",
                 userMail: "",
                 userGroupId: 1,
                 userImageUrl: ""
             },
+            inputPwd: "",
             defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
             isLogined: false,
             isLoginShow: false,
@@ -268,15 +274,23 @@ export default {
             param.append("file",(data[0]))
             uploadAvatar(param).then(res=>{
                 if(res.status === 1){
-                    let path = res.result.replace('/public/download?filename=',``)
-                    this.userInfo.userImageUrl = path
+                    // let path = res.result.replace('/public/download?filename=',``)
+                    this.userInfo.userImageUrl = res.result
                     this.updateUserInfo(1)
                 }
             })
         },
         
         extendContent(index){
-            this.contentShowFlags.splice(index, 1, !this.contentShowFlags[index])
+            this.contentShowFlags.forEach((ele,eIndex) => {
+                console.log(index,eIndex)
+                console.log(index === eIndex)
+                if(index === eIndex){
+                    this.contentShowFlags.splice(index, 1, !this.contentShowFlags[index])
+                }else{
+                    this.contentShowFlags.splice(eIndex, 1, false)
+                }
+            })
             console.log(this.contentShowFlags)
             switch(index){
                 case 0:
@@ -308,6 +322,21 @@ export default {
                     })
                     break
                 case 2:
+                    if(this.userInfo.password !== this.inputPwd){
+                        this.showErrorMsg({title:"失败",message:"修改失败,密码输入不正确"})
+                        return
+                    }
+                    if(this.userInfo.newPwd !== this.userInfo.confirmPwd){
+                        this.showErrorMsg({title:"失败",message:"修改失败,两次密码输入不一致"})
+                        return
+                    }
+                    param.password = this.userInfo.newPwd
+                    updateUser(param).then(res=>{
+                        if(res.data.status === 1){
+                            this.showSuccessMsg({title:"成功",message:"修改成功"})
+                            this.contentShowFlags.splice(2, 1, false)
+                        }
+                    })
                     break 
             }
         }

@@ -65,7 +65,9 @@
                        </a>
                  </div>
                  <div class="column-link-box">
-                 	<a href="#" class="column-link" target="_blank">娱乐淘金</a>
+                 	<a href="#" class="column-link" target="_blank">不感兴趣
+                         <i class="icon-not-interst"></i>
+                     </a>
                  </div>
                  <div class="mob-ctt">
                     <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
@@ -121,7 +123,7 @@
                     				<div class="story-info mt-story-info">
                         				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">
                                             {{comment.content}}
-                                            <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
+                                            <router-link :to="`/article/${comment.infoId}`" class="mt-index-cont2-a">[&nbsp原文&nbsp]</router-link>
                                          </p>
                     				</div>
                 				</div>

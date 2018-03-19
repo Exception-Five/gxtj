@@ -18,7 +18,9 @@
 <div class="container per_center_body" id="per_center">
     <div class="user-info-warp">
         <div class="user-head-box">
-            <div class="user-face"><img src="../assets/images/58_avatar_big.jpg"></div>
+            <div class="user-face">
+                <img :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
+            </div>
             <div class="user-name">{{userInfo.nickname}}<a href="#" target="_blank"><i class="i-vip icon-vip" title="虎嗅黑卡会员"></i></a></div>
             <div class="user-one">产品老司机</div>
                  <div class="user-one user-auth">虎嗅认证作者<i class="i-icon icon-auth3" title="虎嗅认证作者"></i></div>
@@ -74,7 +76,7 @@
             <div class="message-box" >
                 <div class="mod-b mod-art " v-for="info in recentReadInfos">
                     <a class="transition" href="/article/197348.html?f=member_article" target="_blank">
-                        <div class="mod-thumb"><img class="lazy" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt='冷眼看快手、陌陌们的"短视频社交"' style="display: inline;"></div>
+                        <div class="mod-thumb"><img class="lazy" :src="`${info.infoImage.image}`" :onerror="defaultInfoImg" alt='冷眼看快手、陌陌们的"短视频社交"' style="display: inline;"></div>
                     </a>
                     <div class="mob-ctt">
                             <h3><a href="/article/197348.html?f=member_article" class="transition" target="_blank">{{info.title}}</a></h3>
@@ -276,7 +278,8 @@ export default {
             isLoginShow: false,
             isRegisterShow: false,
             isSearchShow: false,
-            defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
+            defaultInfoImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
+            defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
             logInfoList: [],
             //用户最近浏览的资讯
             recentReadInfos: []
