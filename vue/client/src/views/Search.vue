@@ -42,10 +42,11 @@
    </div>
 </div>
 <div style="clear:both;"></div>
+<VFooter></VFooter>
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate,getInfoBySearchBar} from '../api/api.js'
+import {getUserInfoById,requestLogin, requestRegister,getInfoByDate,getInfoBySearchBar} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -72,6 +73,17 @@ export default {
   },
   components: {VHeader,VFooter},
   mounted(){
+    let token = window.localStorage.getItem("token")
+    if(token!=null&&token!=""){
+        // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+        this.userInfo.userId = window.localStorage.getItem("user");
+        getUserInfoById(this.userInfo.userId).then(res=>{
+            if(res.status === 1){
+                this.userInfo = res.result
+            }
+        })
+        this.isLogined = true
+    }
     this.init()
   },
   methods: {
@@ -93,15 +105,20 @@ export default {
 		},
 		loginConfirm () {
 			requestLogin(this.userInfo).then(res => {
-				console.log(requestLogin)
-				if(res.status === 1){
-					this.isLoginShow = false
-					this.isLogined = true
-					this.userInfo = res.result
-					alert("登录成功!")
-				}else if(res.status === -1){
-					alert("用户名不存在")
-				}
+					console.log(res)
+					if(res.data.status === 1){
+						this.isLoginShow = false
+						this.isLogined = true
+						getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+					}else if(res.data.status === -1){
+						this.showErrorMsg({title:"失败",message:"用户名不存在"})
+					}
 			})
 		},
 		registerConfirm () {

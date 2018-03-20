@@ -836,13 +836,27 @@ font-size:28px;
 line-height:1.5;
 }
 
-.column-link-box {
-position:absolute;
-bottom:25px;
-right:0;
-text-align:right;
+.column-link-box:hover{
+    background: #f63756;
+    
 }
-
+.column-link-box:hover .icon-not-interst{
+    background: url('../images/iclose-hover.png');
+}
+.column-link-box {
+    position:absolute;
+    /* bottom:25px; */
+    top:65px;
+    right:0;
+    text-align:right;
+    }
+    .column-link-box .icon-not-interst{
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: url('../images/iclose.png');
+        background-repeat:no-repeat;
+    }
 .column-link-big-box {
 width:300px;
 }

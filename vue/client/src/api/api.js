@@ -15,7 +15,8 @@ export const requestLogin = params => {
    return axios.post(`/public/login`, params).then((res)=>{
       let token = res.headers.refresh
       window.localStorage.setItem('token',token);
-      window.localStorage.setItem('user',JSON.stringify(res.data.result))
+      // window.localStorage.setItem('user',JSON.stringify(res.data.result))
+      window.localStorage.setItem('user',res.data.result.userId)
       return res
    }); 
 };
@@ -27,6 +28,9 @@ export const activate = code => { return axios.post(`/public/user/activate/${cod
 export const updateUser = params => { return axios.post(`/api/user/updataUserInfo`, params)};
 
 export const addUser = params => { return axios.post(`/api/user/addUser`, params)};
+
+export const getUserInfoById = id => { 
+  return axios.get(`/api/user/getUserInfoById/${id}`).then(res => res.data)};
 
 //头像上传
 export const uploadAvatar = params => { return axios.post(`/api/user/userImageUpload`, params).then(res => res.data).catch(function (error) {alert(error)});};

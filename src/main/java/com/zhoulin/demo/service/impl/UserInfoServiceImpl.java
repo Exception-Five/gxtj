@@ -73,19 +73,19 @@ public class UserInfoServiceImpl implements UserInfoService{
         ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
 
         // 缓存存在
-        boolean hasKey = redisTemplate.hasKey(key);
-        if (hasKey) {
-            userInfo = operations.get(key);
-            LOGGER.info("userInfoMapper.getUserInfoById(userId) : 从缓存中获取了用户信息 >> " + userInfo.toString());
-            return userInfo;
-        }
+//        boolean hasKey = redisTemplate.hasKey(key);
+//        if (hasKey) {
+//            userInfo = operations.get(key);
+//            LOGGER.info("userInfoMapper.getUserInfoById(userId) : 从缓存中获取了用户信息 >> " + userInfo.toString());
+//            return userInfo;
+//        }
 
         try {
             userInfo = userInfoMapper.getUserInfoById(userId);
 
             // 插入缓存
-            operations.set(key, userInfo, 10, TimeUnit.SECONDS);
-            LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
+//            operations.set(key, userInfo, 10, TimeUnit.SECONDS);
+//            LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
 
             return userInfo;
         } catch (Exception e) {

@@ -63,11 +63,11 @@
                             <li><a href="#" target="_blank">生活腔调</a></li>
                         </ul>
                     </li>
-                    <li class="nav-news"><a href="#" target="_blank">热议<span class="nums-prompt nums-prompt-topic"></span></a></li>
+                    <!-- <li class="nav-news"><a href="#" target="_blank">热议<span class="nums-prompt nums-prompt-topic"></span></a></li>
                     <li class="nav-news"><a href="#" target="_blank">活动</a></li>
                     <li class="nav-news"><a href="#" target="_blank">创业白板<span class="nums-prompt"></span></a></li>
                     <li class="nav-news"><a href="#" target="_blank">会员专享<em class="nums-prompt"></em></a></li>
-                    <li class="nav-news"><a href="#" target="_blank">官方Blog</a></li>
+                    <li class="nav-news"><a href="#" target="_blank">官方Blog</a></li> -->
                 </ul>
                 <ul class="nav navbar-nav navbar-right transition  xiala main_nav">
                     <li class="app-guide js-app-guide" >
@@ -246,7 +246,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 @import '../assets/bootstrap/css/bootstrap.min.css';
 @import '../assets/css/build.css';
 @import '../assets/css/login.css';

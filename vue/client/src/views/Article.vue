@@ -321,7 +321,7 @@
 </template>
 
 <script>
-import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfo} from '../api/api.js'
+import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfo,getUserInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
 import VFooter from '@/components/Footer.vue'
@@ -361,10 +361,14 @@ export default {
   components: {VHeader,VFooter},
   mounted(){
 	let token = window.localStorage.getItem("token")
-	console.log( window.localStorage.getItem("dasd"))
 	if(token!=null&&token!=""){
-		this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-		console.log(this.userInfo)
+		// this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+		this.userInfo.userId = window.localStorage.getItem("user");
+		getUserInfoById(this.userInfo.userId).then(res=>{
+				if(res.status === 1){
+					this.userInfo = res.result
+				}
+		})
 		this.isLogined = true
 	}
 	this.infoId  = this.$route.params.id
@@ -419,8 +423,13 @@ export default {
 					if(res.data.status === 1){
 						this.isLoginShow = false
 						this.isLogined = true
-						this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-						this.showSuccessMsg({title:"成功",message:"登录成功"})
+						getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
 					}else if(res.data.status === -1){
 						this.showErrorMsg({title:"失败",message:"用户名不存在"})
 					}

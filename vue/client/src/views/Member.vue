@@ -260,7 +260,7 @@
 </template>
 
 <script>
-import {requestLogin, requestRegister,getInfoByDate, getLogInfos,getLogInfoNowadays} from '../api/api.js'
+import {getUserInfoById,requestLogin, requestRegister,getInfoByDate, getLogInfos,getLogInfoNowadays} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
@@ -291,8 +291,16 @@ export default {
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
-            this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            this.userInfo.userId = window.localStorage.getItem("user");
+            getUserInfoById(this.userInfo.userId).then(res=>{
+                if(res.status === 1){
+                    this.userInfo = res.result
+                }
+            })
             this.isLogined = true
+        }else{
+            this.handleForm(0)
         }
         getLogInfoNowadays().then(res=>{
             if(res.status === 1){
@@ -323,8 +331,13 @@ export default {
                 if(res.data.status === 1){
                     this.isLoginShow = false
                     this.isLogined = true
-                    this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-                    this.showSuccessMsg({title:"成功",message:"登录成功"})
+                    getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
                 }else if(res.data.status === -1){
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})
                 }

@@ -148,7 +148,7 @@
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister,updateUser,uploadAvatar} from '../../api/api.js'
+import {requestLogin, requestRegister,updateUser,uploadAvatar,getUserInfoById} from '../../api/api.js'
 
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
@@ -168,7 +168,8 @@ export default {
                 newNickname:"",
                 userMail: "",
                 userGroupId: 1,
-                userImageUrl: ""
+                userImageUrl: "",
+                newUserImageUrl: ""
             },
             inputPwd: "",
             defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
@@ -210,7 +211,13 @@ export default {
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
-            this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            this.userInfo.userId = window.localStorage.getItem("user");
+            getUserInfoById(this.userInfo.userId).then(res=>{
+                if(res.status === 1){
+                    this.userInfo = res.result
+                }
+            })
             this.isLogined = true
         }else{
             this.handleForm(0)
@@ -239,8 +246,13 @@ export default {
                 if(res.data.status === 1){
                     this.isLoginShow = false
                     this.isLogined = true
-                    this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-                    this.showSuccessMsg({title:"成功",message:"登录成功"})
+                    getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
                 }else if(res.data.status === -1){
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})
                 }
@@ -275,7 +287,7 @@ export default {
             uploadAvatar(param).then(res=>{
                 if(res.status === 1){
                     // let path = res.result.replace('/public/download?filename=',``)
-                    this.userInfo.userImageUrl = res.result
+                    this.userInfo.newUserImageUrl = res.result
                     this.updateUserInfo(1)
                 }
             })
@@ -308,35 +320,58 @@ export default {
             }
             switch(flag){
                 case 0: 
-                    param.nickname = this.userInfo.nickname
+                    param.nickname = this.userInfo.newNickname
                     updateUser(param).then(res=>{
-                        console.log(res.result)
+                        if(res.data.status === 1){
+                            this.contentShowFlags.splice(0, 1, false)
+                            getUserInfoById(this.userInfo.userId).then(res=>{
+                                this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                this.userInfo.nickname = res.result.nickname
+                            })
+                        }
                     })
                     break
                 case 1:
-                    param.userImageUrl = this.userInfo.userImageUrl
+                    param.userImageUrl = this.userInfo.newUserImageUrl
                     updateUser(param).then(res=>{
                         if(res.data.status === 1){
-                            this.showSuccessMsg({title:"成功",message:"修改成功"})
+                            this.contentShowFlags.splice(1, 1, false)
+                            getUserInfoById(this.userInfo.userId).then(res=>{
+                                this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                this.userInfo.userImageUrl = res.result.userImageUrl
+                            })
                         }
                     })
                     break
                 case 2:
-                    if(this.userInfo.password !== this.inputPwd){
-                        this.showErrorMsg({title:"失败",message:"修改失败,密码输入不正确"})
-                        return
+                    let loginParam = {
+                        username: this.userInfo.username,
+                        password: this.userInfo.password
                     }
-                    if(this.userInfo.newPwd !== this.userInfo.confirmPwd){
-                        this.showErrorMsg({title:"失败",message:"修改失败,两次密码输入不一致"})
-                        return
-                    }
-                    param.password = this.userInfo.newPwd
-                    updateUser(param).then(res=>{
-                        if(res.data.status === 1){
-                            this.showSuccessMsg({title:"成功",message:"修改成功"})
-                            this.contentShowFlags.splice(2, 1, false)
+                    requestLogin(loginParam).then(res=>{
+                        if(res.data.status !== 1){
+                            this.showErrorMsg({title:"失败",message:"修改失败,密码输入不正确"})
+                            return
+                        }else{
+
+                            if(this.userInfo.newPwd !== this.userInfo.confirmPwd){
+                                this.showErrorMsg({title:"失败",message:"修改失败,两次密码输入不一致"})
+                                return
+                            }
+                            param.password = this.userInfo.newPwd
+                            updateUser(param).then(res=>{
+                                if(res.data.status === 1){
+                                    this.contentShowFlags.splice(2, 1, false)
+                                    getUserInfoById(this.userInfo.userId).then(res=>{
+                                        this.showSuccessMsg({title:"成功",message:"修改成功"})
+                                        this.userInfo.password = res.result
+                                    })
+                                }
+                            })
+
                         }
                     })
+                    
                     break 
             }
         }

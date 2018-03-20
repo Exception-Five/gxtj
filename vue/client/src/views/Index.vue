@@ -20,10 +20,10 @@
 	<div class="wrap-left pull-left">
         <div class="big-pic-box" v-if="threeRecommendInfos != null">
             <div class="big-pic">
-                <a href="#" target="_blank" class="transition" title="醒醒吧，腾讯、网易称霸的游戏行业，谁都没机会成为第三">
+                <a href="#" target="_blank" class="transition" :title="threeRecommendInfos[0].title">
                     <div class="back-img">
                         <img class="lazy" style="height:100%" v-if="threeRecommendInfos[0].infoImage!=null" 
-                        :src="`${threeRecommendInfos[0].infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
+                        :src="`${threeRecommendInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[0].title">
                     </div>
                     <div class="big-pic-content">
                         <h1 class="t-h1">{{threeRecommendInfos[0].title}}</h1>
@@ -31,22 +31,22 @@
                 </a>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-top">
-                <a href="#" class="back-img transition" target="_blank" title="嘘！Facebook 正在上海悄悄寻找办公室">
+                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[1].title">
                     <img class="lazy" style="height:100%" v-if="threeRecommendInfos[1].infoImage!=null" 
-                    :src="`${threeRecommendInfos[1].infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
+                    :src="`${threeRecommendInfos[1].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[1].title">
                 </a>
-                <a href="#" target="_blank" title="嘘！Facebook 正在上海悄悄寻找办公室">
+                <a href="#" target="_blank" :title="threeRecommendInfos[1].title">
                     <div class="big2-pic-content">
                         <h2 class="t-h1">{{threeRecommendInfos[1].title}}</h2>
                     </div>
                 </a>
             </div>
             <div class="big2-pic big2-pic-index big2-pic-index-bottom">
-                <a href="#" class="back-img transition" target="_blank" title="马云在人生最艰难时去了延安，在革命根据地决定建立淘宝">
+                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[2].title">
                     <img class="lazy" style="height:100%" v-if="threeRecommendInfos[2].infoImage!=null" 
-                    :src="`${threeRecommendInfos[2].infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
+                    :src="`${threeRecommendInfos[2].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[2].title">
                 </a>
-                <a href="#" target="_blank" title="马云在人生最艰难时去了延安，在革命根据地决定建立淘宝">
+                <a href="#" target="_blank" :title="threeRecommendInfos[2].title">
                     <div class="big2-pic-content">
                         <h2 class="t-h1">{{threeRecommendInfos[2].title}}</h2>
                     </div>
@@ -388,7 +388,7 @@
     </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
+import {getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 
@@ -426,7 +426,13 @@ export default {
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
-            this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            this.userInfo.userId = window.localStorage.getItem("user");
+            getUserInfoById(this.userInfo.userId).then(res=>{
+                if(res.status === 1){
+                    this.userInfo = res.result
+                }
+            })
             this.isLogined = true
         }
         getHotComments().then(res=>{
@@ -493,8 +499,13 @@ export default {
                 if(res.data.status === 1){
                     this.isLoginShow = false
                     this.isLogined = true
-                    this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-                    this.showSuccessMsg({title:"成功",message:"登录成功"})
+                    getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
                     this.webSocketConnect();
                 }else if(res.data.status === -1){
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})

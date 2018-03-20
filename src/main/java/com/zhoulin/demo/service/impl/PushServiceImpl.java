@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 推送功能模块
@@ -216,8 +218,12 @@ public class PushServiceImpl implements PushService {
                         logger.info("匹配到交叉内容 ！！！ " );
                         mergeInforList.add(kwInformationList.get(i));
                         //去掉重复内容
-                        kwInformationList.remove(i);
-                        typeInformationList.remove(j);
+//                        kwInformationList.remove(i);
+                        Info kwInfo = new Info(new Date().getTime());
+                        kwInformationList.set(i, kwInfo);
+                        Info tyInfo = new Info(new Date().getTime());
+                        typeInformationList.set(j, tyInfo);
+//                        typeInformationList.remove(j);
                     }
                 }
 //                if (kwInformationList.contains(typeInformationList.get(i))){
