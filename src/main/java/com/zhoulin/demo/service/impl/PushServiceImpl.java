@@ -190,44 +190,7 @@ public class PushServiceImpl implements PushService {
             //全局抓取
             ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
 
-//            for (String rs:multiResult.getResult()) {
-//                Information information = objectMapper.readValue(rs, Information.class);
-////                logger.info("最终关键词为 :  " + information.toString());
-//                //通过关键词找到的新闻列表
-//                Info info = new Info();
-//
-//                info.setInfoId(information.getId());
-//                info.setTitle(information.getTitle());
-//                info.setDescription(information.getDescription());
-//                info.setKeyword(information.getKeyword());
-//                info.setAuthor(information.getAuthor());
-//                info.setReads(information.getReads());
-//                info.setPublishDate(information.getPublishDate());
-//                info.setLikes(information.getLikes());
-//                info.setSourceSite(information.getSourceSite());
-//                info.setScore(information.getScore());
-//                info.setSourceUrl(information.getSourceUrl());
-//
-//                kwInformationList.add(info);
-//            }
-
-//            List<Long> kwInfoIds = new ArrayList<>();
             kwInfoIds = multiResult.getResult();
-//            List<Long> mergeInfoIds = new ArrayList<>();
-//            List<Long> tyInfoIds = new ArrayList<>();
-
-//            System.out.println(l3 + "><" +l3.size());
-
-            //获取交叉内容
-//            for (int i=0;i<kwInformationList.size();i++) {
-//                for (int j=0;j<typeInformationList.size();j++) {
-//                    if (typeInformationList.get(j).getInfoId() == kwInformationList.get(i).getInfoId()){
-//                        logger.info("匹配到交叉内容 ！！！ " );
-//                        mergeInforList.add(kwInformationList.get(i));
-//                        mergeInfoIds.add(kwInformationList.get(i).getInfoId());
-//                    }
-//                }
-//            }
 
             for (int i=0;i<kwInfoIds.size();i++){
                 for (int j=0;j<tyInfoIds.size();j++){
@@ -239,14 +202,7 @@ public class PushServiceImpl implements PushService {
                 }
             }
 
-
             Set set = new HashSet();
-//            for (Info info:kwInformationList) {
-//                kwInfoIds.add(info.getInfoId());
-//            }
-//            for (Info info:typeInformationList) {
-//                tyInfoIds.add(info.getInfoId());
-//            }
 
             for (Long z : kwInfoIds){
                 set.add(z);
@@ -256,20 +212,12 @@ public class PushServiceImpl implements PushService {
                 set.add(z);
             }
             ArrayList<Long> l3 = new ArrayList<Long>(set);
-            System.out.println("<>" + l3.size());
 
             l3.removeAll(mergeInfoIds);
-            System.out.println("<>" + mergeInfoIds.size());
-            System.out.println("<>" + l3.size());
 
             mergeInfoIds.addAll(l3);
-            System.out.println("<>" + mergeInfoIds);
-            System.out.println("<>" + mergeInfoIds.size());
-            mergeInfoIds.removeAll(infoIds);
-            System.out.println("<>" + infoIds);
-            System.out.println("<>" + infoIds.size());
 
-            System.out.println("<>" + mergeInfoIds.size());
+            mergeInfoIds.removeAll(infoIds);
 
             List<Info> afterMergeInfoList = new ArrayList<>();
 
@@ -278,24 +226,6 @@ public class PushServiceImpl implements PushService {
 
                 afterMergeInfoList.add(info);
             }
-
-            //最终新闻列表
-//            mergeInforList.addAll(afterMergeInfoList);
-//            mergeInforList.addAll(onlyTypeInformationList);
-
-            //日志去重
-//            for (int i=0;i<infoIds.size();i++) {
-//                for (int j=0;j<mergeInforList.size();j++) {
-//                    if (mergeInforList.get(i).getInfoId() != infoIds.get(j)){
-//                        mergeInforList.remove(i);
-//                    }
-//                }
-//            }
-//
-//            for (Info info : mergeInforList) {
-//                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
-//                info.setInfoImage(image);
-//            }
 
             return afterMergeInfoList;
 
@@ -306,9 +236,31 @@ public class PushServiceImpl implements PushService {
 
     }
 
+    /**
+     * 根据类型推送
+     * @param typeId
+     * @return
+     * @throws Exception
+     */
     @Override
-    public List<Info> pushInfoByTypeId(Integer typeId) throws Exception {
-        return null;
+    public List<Info> pushInfoByTypeId(Integer typeId) {
+
+        List<TypeRelation> typeRelations = new ArrayList<>();
+
+        List<Info> infoList = new ArrayList<>();
+
+        try {
+            typeRelations = typeRelationMapper.getInfoByTypeId(typeId);
+
+            for (TypeRelation typeRelation : typeRelations) {
+                Info info = infoService.getInfoByInfoId(typeRelation.getInfoId());
+                infoList.add(info);
+            }
+            return infoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
