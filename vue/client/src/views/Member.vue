@@ -21,9 +21,9 @@
             <div class="user-face">
                 <img :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
             </div>
-            <div class="user-name">{{userInfo.nickname}}<a href="#" target="_blank"><i class="i-vip icon-vip" title="虎嗅黑卡会员"></i></a></div>
+            <div class="user-name">{{userInfo.nickname}}<a href="#" target="_blank"><i class="i-vip icon-vip" title="Oreo黑卡会员"></i></a></div>
             <div class="user-one">产品老司机</div>
-                 <div class="user-one user-auth">虎嗅认证作者<i class="i-icon icon-auth3" title="虎嗅认证作者"></i></div>
+                 <div class="user-one user-auth">Oreo认证作者<i class="i-icon icon-auth3" title="Oreo认证作者"></i></div>
                  <a href="javascript:" class="btn btn-messages js-login" uid="1373658" name="判官">给TA发私信</a>
                  <div class="admin-btn-warp"></div>
         	</div>

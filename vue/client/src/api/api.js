@@ -43,6 +43,8 @@ export const getPushInfo = param => { return axios.post(`/public/pushInfo`,param
 
 export const pushUserByLogInfo = () => { return axios.post(`/api/push/pushUserByLogInfo`).then(res => res.data); };
 
+export const pushInfoByTypeId = (typeId) => { return axios.get(`/public/push/pushInfoByTypeId/${typeId}`).then(res => res.data); };
+
 
 //根据资讯发布时间获取资讯（ 20 条）
 export const getInfoByDate = page => { return axios.get(`/public/information/findInfoByDate/${page}`).then(res => res.data); };
@@ -72,3 +74,8 @@ export const getLogInfos = () => {return axios.get(`/api/logInfo/getLogInfos`).t
 //获取用户最近浏览新闻
 export const getLogInfoNowadays = () => {return axios.post(`/api/logInfo/getLogInfoNowadays`).then(res => res.data); };
 
+
+/* type */
+export const getAllType = () => { return axios.get(`/public/type/getAllType`).then(res => res.data); };
+
+export const getTypeById = id => { return axios.get(`/public/type/getTypeById/${id}`).then(res => res.data); };

@@ -222,7 +222,8 @@ top:1px;
 header .navbar-left .nav-news {
 position:relative;
 width:auto;
-margin-right:50px;
+/* margin-right:50px; */
+margin-right:25px;
 height:80px;
 }
 

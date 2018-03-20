@@ -112,7 +112,9 @@
                         				<span class="icon icon-caret js-mt-index-icon"></span>
                    					</p>
                     				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
+                        				<li>
+                                            <img style="width:25px;" :src="`${comment.userInfo.userImageUrl}`" :onerror="defaultAvatar">
+                                        </li>
                         				<li>
                             				<p>{{comment.userInfo.nickname}}</p>
                             				<p>3分钟前</p>
@@ -146,7 +148,7 @@
     <div class="placeholder"></div>
 <!--传言-->
 <!--传言部分开始-->
-    <div id="rumor_center"></div>
+    <!-- <div id="rumor_center"></div>
     <div class="box-moder moder-rumors-list">
         <h3>传言</h3>
         <span class="span-mark"></span>
@@ -171,15 +173,15 @@
         </ul>
         <div class="rumor-more">
             <p><a href="#" target="_blank">详情>></a></p>
-        </div>
+        </div> -->
                     <!--24小时不展示此按钮-->
-            <div class="rumor-brunt-box">
+            <!-- <div class="rumor-brunt-box">
                 <a class="btn btn-blue-cy js-update-cy transition  js-show-bruntback-box1" >我要爆料</a>
             </div>
-            </div>
+            </div> -->
     <div class="placeholder"></div>
     <!--传言部分结束-->
-	<div class="ad-wrap">
+	<!-- <div class="ad-wrap">
     	<div class="ad-title">广告</div>
 	</div>
     <div class="placeholder"></div>
@@ -251,7 +253,7 @@
             <li>创业公司立即报名提交信息的好处：</li>
             <li>1.优质的展示和访谈机会</li>
             <li>2.获得投资人的关注</li>
-            <li>3.虎嗅提供的创业支持服务</li>
+            <li>3.Oreo提供的创业支持服务</li>
         </ul>
     </div>
     <div class="placeholder"></div>
@@ -297,11 +299,11 @@
             </li>
          </ul>
     </div>
-    <div class="placeholder"></div>
+    <div class="placeholder"></div> -->
 
 
 <!--研究报告部分开始-->
-    <div class="box-moder hot-article">
+    <!-- <div class="box-moder hot-article">
         <h3>创新案例</h3>
         <span class="pull-right project-more story-more">
             <a href="#" class="transition" target="_blank">全部</a></span>
@@ -318,7 +320,7 @@
                 	<span class="author-face">
                     	<img src="../assets/sy-img/97.jpg">
                 	</span>
-                	<span>虎嗅会员小秘书</span>
+                	<span>Oreo会员小秘书</span>
                 	<div style="margin-left: 40px;margin-top: 5px;">微信号：huxiuvip302</div>
             	</div>
         	</li>
@@ -380,7 +382,7 @@
             </li>
             
          </ul>
-    </div>
+    </div> -->
     <div class="placeholder"></div>
 </div>
 </div>
@@ -388,7 +390,7 @@
     </section>
 </template>
 <script>
-import {getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
+import {getAllType, getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 
@@ -412,11 +414,13 @@ export default {
 
             isMsgAlert: true,
             isMsgAlertText: '',
+            defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
             infoList: null,
             threeRecommendInfos: null,
             logInfoList: [],
             hotCommentList: [],
+            typeList: [],
             page: 1,
         }
     },

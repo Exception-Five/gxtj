@@ -10,7 +10,7 @@
             <a href="#" target="_blank" class="transition">常见问题解答</a>
             <a href="#" target="_blank" class="transition">防网络诈骗专题</a>
         </div>
-        <span style="text-align:left;">Copyright © <a href="#">虎嗅网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
+        <span style="text-align:left;">Copyright © <a href="#">Oreo网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
             &nbsp;<a href="#" target="_blank"><i class="i-wj"></i>京公网安备 11010102001402号</a>&nbsp;&nbsp;&nbsp;<em class="bull-right">本站由</em><i class="icon-aliyun" style="width: 70px;background-size: 100%;left: 7px;"></i><em class="bull-em">提供计算与安全服务</em>
         </span>
         <div class="footer-icon-list pull-right">
@@ -30,10 +30,10 @@
                     <i class="icon icon-footer icon-footer-android"></i>
                 </li>
                 </a>
-                <a href="#" target="_blank" title="虎嗅英文版">
+                <a href="#" target="_blank" title="Oreo英文版">
                     <li><i class="icon icon-footer icon-footer-inter"></i></li>
                 </a>
-                <a href="#" target="_blank" title="虎嗅RSS订阅中心">
+                <a href="#" target="_blank" title="OreoRSS订阅中心">
                     <li><i class="icon icon-footer icon-footer-rss"></i></li>
                 </a>
             </ul>

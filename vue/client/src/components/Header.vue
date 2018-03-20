@@ -42,26 +42,17 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a @click="flush" title="首页"><img src="../assets/images/logo.png" alt="虎嗅网" title="首页" /></a>
+                    <a @click="flush" title="首页"><img src="../assets/images/logo.png" alt="Oreo网" title="首页" /></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <li class="nav-news js-show-menu">
                         <a href="#">资讯 <span class="caret"></span></a>
-                        <ul>
-                            <li><a href="#" target="_blank">电商消费</a></li>
-                            <li><a href="#" target="_blank">娱乐淘金</a></li>
-                            <li><a href="#" target="_blank">雪花一代</a></li>
-                            <li><a href="#" target="_blank">人工智能</a></li>
-                            <li><a href="#" target="_blank">车与出行</a></li>
-                            <li><a href="#" target="_blank">智能终端</a></li>
-                            <li><a href="#" target="_blank">医疗健康</a></li>
-                            <li><a href="#" target="_blank">金融地产</a></li>
-                            <li><a href="#" target="_blank">企业服务</a></li>
-                            <li><a href="#" target="_blank">创业维艰</a></li>
-                            <li><a href="#" target="_blank">社交通讯</a></li>
-                            <li><a href="#" target="_blank">全球热点</a></li>
-                            <li><a href="#" target="_blank">生活腔调</a></li>
-                        </ul>
+                        <!-- <ul>
+                            <li v-for="type in typeList"><a href="#">{{type.typeName}}</a></li>
+                        </ul> -->
+                    </li>
+                    <li class="nav-news" v-for="type in typeList">
+                        <router-link :to="`type/${type.typeId}`">{{type.typeName}}</router-link>
                     </li>
                     <!-- <li class="nav-news"><a href="#" target="_blank">热议<span class="nums-prompt nums-prompt-topic"></span></a></li>
                     <li class="nav-news"><a href="#" target="_blank">活动</a></li>
@@ -75,7 +66,7 @@
                             <img src="../assets/images/1448211685.png">
                             <div class="app-guide-title">
                                 <span>微信扫一扫</span><br>
-                                <span>下载虎嗅APP</span>
+                                <span>下载OreoAPP</span>
                             </div>
                         </div>
                         <i class="icon icon-sm-phone"></i>APP下载<em class="guide-prompt"></em>
@@ -86,6 +77,9 @@
                     <li class="logined-info" v-show="isLogined">
                         <router-link :to="`#`"> 
                             您好，{{userInfo.nickname}}
+                            <a class="avatar transition">
+                                <img style="width:35px;border-radius:100%;" :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
+                            </a>
                             <span class="caret"></span>
                             <ul class="logined-show-menu">
                                 <li><router-link :to="`/member`">个人中心</router-link></li>
@@ -100,14 +94,14 @@
             <div class="cd-user-modal" :class="{'is-visible': isLoginShow || isRegisterShow}"> 
                 <div class="cd-user-modal-container">
                     <div id="cd-login" v-show="isLoginShow"> <!-- 登录表单 -->
-                        <div class="modal-alert-title">登录虎嗅</div>
+                        <div class="modal-alert-title">登录</div>
                         <div class="register" >
                             <div class="register-top" id="reg-top"><i><a id="qrcode" href="#"></a></i></div>
                             <div class="register-con" id="rc">
                                 <div class="login-form username-box " style="margin-top:52px;">
                                     <a class="js-open-sms-login sms-text">短信快捷登录</a>
                                     <label class="login-label transition" >
-                                        <input id="login_username"  class="login-input" placeholder="手机号／邮箱／虎嗅账号" v-model="userInfo.username">
+                                        <input id="login_username"  class="login-input" placeholder="手机号／邮箱／Oreo账号" v-model="userInfo.username">
                                     </label>
                                     <label class="login-label">
                                         <input id="login_password" class="login-input password" type="password" placeholder="输入6～24位密码" v-model="userInfo.password">
@@ -137,7 +131,7 @@
                                     <div class="info">
                                         <div class="status status_browser js_status" id="wx_default_tip">
                                             <p>请使用微信扫描二维码登录</p>
-                                            <p>"虎嗅网"</p>
+                                            <p>"Oreo网"</p>
                                         </div>
                                     </div>
                                 </div>
@@ -200,7 +194,7 @@
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister} from '../api/api.js'
+import {requestLogin, requestRegister,getAllType} from '../api/api.js'
 
 export default {
     props:['isLogined','userInfo','isLoginShow','isRegisterShow','isSearchShow'],
@@ -211,11 +205,17 @@ export default {
             // // isLogined:false,
 			// isLoginShow: false,
             // isRegisterShow: false
-            searchContent: ""
+            searchContent: "",
+            defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
+            typeList: []
         }
     },
     mounted(){
-        //console.log(this.isLogined)
+         getAllType().then(res=>{
+            if(res.status === 1){
+                this.typeList = res.result
+            }
+        })
     },
     methods: {
         handleForm(flag) {
@@ -261,12 +261,13 @@ li.logined-info ul{
     position: absolute; 
     visibility: hidden; 
     background:#fff; 
-    width:100px;  
+    width:150px;  
     top:40px; 
     left:0; 
     z-index:9999; 
     box-shadow:0 1px 15px rgba(18,21,21,.2);
-    padding:10px 5px;
+    padding:10px 15px;
+    text-align: center;
 }
 
 #jsddm ul li{ float:left; width:105px; padding-left:20px; line-height:40px;}

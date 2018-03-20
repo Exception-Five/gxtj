@@ -5,11 +5,13 @@
     :userInfo="userInfo" 
     :isLoginShow="isLoginShow"
     :isRegisterShow="isRegisterShow"
+    :isSearchShow="isSearchShow"
     @handleForm="handleForm"
     @closeForm="closeForm"
     @loginConfirm="loginConfirm"
     @registerConfirm="registerConfirm"
     @logout="logout"
+    @handleSearch="handleSearch"
     ></VHeader>
 <div class="placeholder-height"></div>
 <div class="edit-warp" id="per_center" style="text-align:left">
@@ -85,6 +87,7 @@ export default {
 		isLogined: false,
 		isLoginShow: false,
         isRegisterShow: false,
+        isSearchShow: false,
         defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
 
         userMod: '',
@@ -202,6 +205,13 @@ export default {
         window.localStorage.removeItem("token")
         window.localStorage.removeItem("user")
         this.isLogined = false
+    },        
+    handleSearch(...data){
+        if(data[0] === 0){//关闭
+            this.isSearchShow = false
+        }else if(data[0] === 1){
+            this.isSearchShow = true
+        }    
     },
     initChart() {
       this.chart = echarts.init(this.$refs.myEchart);

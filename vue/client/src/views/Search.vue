@@ -27,7 +27,7 @@
                     <div class="mob-summay" v-html="item.description"></div>
                     <div class="mob-author">
                         <span class="name"><a target="_blank" href="/member/303086.html">{{item.author}}</a></span>
-                        <span class="time">2017-12-29 08:00</span>
+                        <span class="time">{{item.publishDate | formatDate}}</span>
                     </div>
                 </li>
                 <!-- <li>
@@ -50,6 +50,7 @@ import {getUserInfoById,requestLogin, requestRegister,getInfoByDate,getInfoBySea
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 import VueNotifications from 'vue-notifications'
+import {formatDate} from '../utils/date.js';
 
 export default {
     data(){
@@ -165,7 +166,13 @@ export default {
                 } 
             })
         }
-  }
+    },
+      filters: {
+		formatDate(time) {
+			var date = new Date(time);
+			return formatDate(date, "yyyy-MM-dd");
+		}
+	}
 }
 </script>
 <style>

@@ -30,7 +30,7 @@ export default new Router({
       component: Index
     },
     {
-      path: '/type/:id',
+      path: '/type/:typeId',
       name: 'typeList',
       component: TypeArticleList
     },
