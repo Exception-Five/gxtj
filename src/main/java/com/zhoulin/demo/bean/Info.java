@@ -36,6 +36,10 @@ public class Info implements Serializable {
     public Info() {
     }
 
+    public Info(Long infoId) {
+        this.infoId = infoId;
+    }
+
     public long getInfoId() {
         return infoId;
     }

@@ -14,4 +14,6 @@ public interface PushService {
 
     public List<Info> logAnalyzForPush(Integer userId) throws Exception;
 
+    public List<Info> pushInfoByTypeId(Integer typeId) throws Exception;
+
 }

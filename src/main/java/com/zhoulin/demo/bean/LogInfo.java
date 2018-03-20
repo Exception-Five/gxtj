@@ -12,7 +12,7 @@ public class LogInfo implements Serializable{
 
     private Integer userId;
 
-    private Integer infoId;
+    private Long infoId;
 
     private Date lookTime;
 
@@ -32,11 +32,11 @@ public class LogInfo implements Serializable{
         this.userId = userId;
     }
 
-    public Integer getInfoId() {
+    public Long getInfoId() {
         return infoId;
     }
 
-    public void setInfoId(Integer infoId) {
+    public void setInfoId(Long infoId) {
         this.infoId = infoId;
     }
 
