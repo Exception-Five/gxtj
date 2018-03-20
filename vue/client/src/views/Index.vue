@@ -524,7 +524,7 @@ export default {
                 ws.onopen = function(evt) {    
                     alert("连接成功");    
                 };  
-            
+
         },
         logout () {
             window.localStorage.removeItem("token")
