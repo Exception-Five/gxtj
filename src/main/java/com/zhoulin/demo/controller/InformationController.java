@@ -61,11 +61,11 @@ public class InformationController {
      */
     @RequestMapping(value = "/getInfoByInfoId/{infoId}", method = RequestMethod.POST)
     @ResponseBody
-    public Message getUserInfoById(@PathVariable(value = "infoId") Integer infoId, HttpServletRequest request){
+    public Message getUserInfoById(@PathVariable(value = "infoId") Long infoId, HttpServletRequest request){
 
 //        Information information = new Information();
 
-        List<Integer> infoIdList = new ArrayList<>();
+        List<Long> infoIdList = new ArrayList<>();
 
         Integer addLStatus = 0;
 

@@ -72,7 +72,7 @@ public class CheckType {
                 relation.setId(i+1);
                 relation.setContent(maxNum);
                 relationList.add(relation);
-                list.set(i,0);
+                list.set(i,-1);
             }
         }
         maxNum = Collections.max(list);
@@ -83,7 +83,7 @@ public class CheckType {
                 relation.setId(i+1);
                 relation.setContent(maxNum);
                 relationList.add(relation);
-                list.set(i,0);
+                list.set(i,-2);
             }
         }
         maxNum = Collections.max(list);
@@ -94,7 +94,7 @@ public class CheckType {
                 relation.setId(i+1);
                 relation.setContent(maxNum);
                 relationList.add(relation);
-                list.set(i,0);
+                list.set(i,-3);
             }
         }
 

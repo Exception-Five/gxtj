@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/push")
+//@RequestMapping("/api/push")
 public class PushController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class PushController {
      * @param id 资讯id
      * @return
      */
-    @RequestMapping(value = "/pushInfoByKeyword", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/push/pushInfoByKeyword", method = RequestMethod.POST)
     @ResponseBody
     public Message pushInfo(@RequestParam(value = "id") long id){
 
@@ -67,7 +67,7 @@ public class PushController {
      * 登录即可推送
      * @return
      */
-    @RequestMapping(value = "/pushUserByLogInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/push/pushUserByLogInfo", method = RequestMethod.POST)
     @ResponseBody
     public Message pushUserByLogInfo(){
 
@@ -88,6 +88,26 @@ public class PushController {
             e.printStackTrace();
             return new Message(Message.ERROR, "日志兴趣点抓取成功>>>>>推送>>>>>失败", e);
         }
+    }
+
+    /**
+     * 根据新闻类型推送
+     * 无需登录
+     */
+    @RequestMapping(value = "/public/push/pushInfoByTypeId/{typeId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Message pushInfoByTypeId(@PathVariable(value = "typeId") Integer typeId){
+
+        List<Info> infoList = new ArrayList<>();
+
+        try {
+            infoList = pushService.pushInfoByTypeId(typeId);
+            return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", infoList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR, "日志兴趣点抓取成功>>>>>推送>>>>>失败", e);
+        }
+
     }
 
 }

@@ -78,14 +78,14 @@ public class keyWordTest extends DemoApplicationTests{
 
             infoSearch.setMutiContent(keywords);
 
-            ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
+            ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
 
             multiResult.getResult();
 
-            for (String rs:multiResult.getResult()) {
+            for (Long rs:multiResult.getResult()) {
 //                System.out.println(rs);
-                Info information1 = objectMapper.readValue(rs, Info.class);
-                System.out.println("转换结果："  +  information1.toString());
+//                Info information1 = objectMapper.readValue(rs, Info.class);
+//                System.out.println("转换结果："  +  information1.toString());
             }
 
             System.out.println("<><><>" + multiResult.getTotal() );
