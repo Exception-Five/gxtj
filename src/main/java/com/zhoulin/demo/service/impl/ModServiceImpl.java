@@ -136,14 +136,14 @@ public class ModServiceImpl implements ModService{
      * @return json
      */
     @Override
-    public ServiceMultiResult<String> queryMuti(InfoSearch infoSearch) {
+    public ServiceMultiResult<Long> queryMuti(InfoSearch infoSearch) {
 
         SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
                 .setTypes(INDEX_TYPE)
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content").type("best_fields").operator(Operator.OR))
                 .setExplain(true)
-//                .setFetchSource(InformationIndexKey.ID, null)
+                .setFetchSource(InformationIndexKey.ID, null)
                 ;
         logger.info("！！！" + requestBuilder);
 
@@ -151,23 +151,26 @@ public class ModServiceImpl implements ModService{
 
         List<String> infoList = new ArrayList<>();
 
+        List<Long> infoIds = new ArrayList<>();
+
         SearchResponse searchResponse = requestBuilder.get();
 
         if(searchResponse.status() != RestStatus.OK){
             logger.warn("Search status is no ok for " + requestBuilder);
-            return new ServiceMultiResult<>(0, null);
+            return new ServiceMultiResult<>(0, infoIds);
         }
 
         for (SearchHit hit : searchResponse.getHits()) {
             logger.debug(String.valueOf(hit.getSource()));
-//            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
-            logger.info("详细信息" + hit.getSourceAsString());
-            infoList.add(hit.getSourceAsString());
+            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+//            logger.info("详细信息" + hit.getSourceAsString());
+//            infoList.add(hit.getSourceAsString());
         }
 
 
 
-        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+//        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+        return new ServiceMultiResult<Long>(searchResponse.getHits().totalHits, infoIds);
 
     }
 

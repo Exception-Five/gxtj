@@ -17,10 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 推送功能模块
@@ -77,18 +74,19 @@ public class PushServiceImpl implements PushService {
 
             infoSearch.setMutiContent(keywords);
 
-            ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
+            ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
 
-            for (String rs:multiResult.getResult()) {
-                Info infor = objectMapper.readValue(rs, Info.class);
-                logger.info("最终关键词为 :  " + information.toString());
+            for (Long infoId:multiResult.getResult()) {
+//                Info infor = objectMapper.readValue(rs, Info.class);
+//                logger.info("最终关键词为 :  " + information.toString());
+                Info infor = infoService.getInfoByInfoIdForImage(infoId);
                 informationList.add(infor);
             }
 
-            for (Info info : informationList) {
-                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
-                info.setInfoImage(image);
-            }
+//            for (Info info : informationList) {
+//                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
+//                info.setInfoImage(image);
+//            }
 
             return informationList;
 
@@ -127,14 +125,17 @@ public class PushServiceImpl implements PushService {
      */
     @Override
     public List<Info> logAnalyzForPush(Integer userId){
-        List<Info> typeInformationList = new ArrayList<>();
-        List<Info> kwInformationList = new ArrayList<>();
-        List<Info> mergeInforList = new ArrayList<>();
+        List<Long> kwInfoIds = new ArrayList<>();
+        List<Long> mergeInfoIds = new ArrayList<>();
+        List<Long> tyInfoIds = new ArrayList<>();
+//        List<Info> typeInformationList = new ArrayList<>();
+//        List<Info> kwInformationList = new ArrayList<>();
+//        List<Info> mergeInforList = new ArrayList<>();
         List<LogInfo> logInfos = new ArrayList<>();
         List<TypeRelation> typeRelations = new ArrayList<>();
         TypeRelation typeRelation = new TypeRelation();
         InfoSearch infoSearch = new InfoSearch();
-        List<Integer> infoIds = new ArrayList<>();
+        List<Long> infoIds = new ArrayList<>();
         List<Integer> types = new ArrayList<>();
         List<Integer> typeIds = new ArrayList<>();
         String keywords = "";
@@ -168,6 +169,7 @@ public class PushServiceImpl implements PushService {
             List<TypeRelation> typeRelations2 = typeRelationMapper.getInfoByTypeId(rl.get(1).getId());
             List<TypeRelation> typeRelations3 = typeRelationMapper.getInfoByTypeId(rl.get(2).getId());
 
+
             for (TypeRelation type : typeRelations1) {
                 typeRelations.add(type);
             }
@@ -180,91 +182,85 @@ public class PushServiceImpl implements PushService {
 
             for (TypeRelation type : typeRelations) {
                 //通过类型找到的新闻列表
-                typeInformationList.add(infoService.getInfoByInfoId(type.getInfoId()));
+                tyInfoIds.add(infoService.getInfoByInfoId(type.getInfoId()).getInfoId());
             }
 
             //根据关键词
             infoSearch.setMutiContent(keywordsString);
             //全局抓取
-            ServiceMultiResult<String> multiResult = modService.queryMuti(infoSearch);
+            ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
 
-            for (String rs:multiResult.getResult()) {
-                Information information = objectMapper.readValue(rs, Information.class);
-//                logger.info("最终关键词为 :  " + information.toString());
-                //通过关键词找到的新闻列表
-                Info info = new Info();
+            kwInfoIds = multiResult.getResult();
 
-                info.setInfoId(information.getId());
-                info.setTitle(information.getTitle());
-                info.setDescription(information.getDescription());
-                info.setKeyword(information.getKeyword());
-                info.setAuthor(information.getAuthor());
-                info.setReads(information.getReads());
-                info.setPublishDate(information.getPublishDate());
-                info.setLikes(information.getLikes());
-                info.setSourceSite(information.getSourceSite());
-                info.setScore(information.getScore());
-                info.setSourceUrl(information.getSourceUrl());
-
-                kwInformationList.add(info);
-            }
-
-
-
-            //获取交叉内容
-            for (int i=0;i<kwInformationList.size();i++) {
-                for (int j=0;j<typeInformationList.size();j++) {
-                    if (typeInformationList.get(j).getInfoId() == kwInformationList.get(i).getInfoId()){
+            for (int i=0;i<kwInfoIds.size();i++){
+                for (int j=0;j<tyInfoIds.size();j++){
+                    if (tyInfoIds.get(j).equals(kwInfoIds.get(i))){
                         logger.info("匹配到交叉内容 ！！！ " );
-                        mergeInforList.add(kwInformationList.get(i));
-                        //去掉重复内容
-//                        kwInformationList.remove(i);
-                        Info kwInfo = new Info(new Date().getTime());
-                        kwInformationList.set(i, kwInfo);
-                        Info tyInfo = new Info(new Date().getTime());
-                        typeInformationList.set(j, tyInfo);
-//                        typeInformationList.remove(j);
-                    }
-                }
-//                if (kwInformationList.contains(typeInformationList.get(i))){
-//                    logger.info("匹配到交叉内容 ！！！ " );
-//                    mergeInforList.add(typeInformationList.get(i));
-//                    typeInformationList.remove(i);
-//                }
-            }
-
-            //去掉重复内容
-//            for (int i=0;i<kwInformationList.size();i++) {
-//                if (mergeInforList.contains(kwInformationList.get(i))){
-//                    logger.info("匹配到交叉内容 ！！！ " );
-//                    kwInformationList.remove(i);
-//                }
-//            }
-
-            //最终新闻列表
-            mergeInforList.addAll(kwInformationList);
-            mergeInforList.addAll(typeInformationList);
-
-            for (int i=0;i<mergeInforList.size();i++) {
-                for (int j=0;j<infoIds.size();j++) {
-                    if (mergeInforList.get(i).getInfoId() == infoIds.get(j)){
-                        mergeInforList.remove(i);
+//                        mergeInforList.add(kwInformationList.get(i));
+                        mergeInfoIds.add(kwInfoIds.get(i));
                     }
                 }
             }
 
-            for (Info info : mergeInforList) {
-                InfoImage image = infoImageMapper.getInfoImageByInfoId(info.getInfoId());
-                info.setInfoImage(image);
+            Set set = new HashSet();
+
+            for (Long z : kwInfoIds){
+                set.add(z);
             }
 
-            return mergeInforList;
+            for(Long z : tyInfoIds){
+                set.add(z);
+            }
+            ArrayList<Long> l3 = new ArrayList<Long>(set);
+
+            l3.removeAll(mergeInfoIds);
+
+            mergeInfoIds.addAll(l3);
+
+            mergeInfoIds.removeAll(infoIds);
+
+            List<Info> afterMergeInfoList = new ArrayList<>();
+
+            for (Long infoId:mergeInfoIds) {
+                Info info = infoService.getInfoByInfoIdForImage(infoId);
+
+                afterMergeInfoList.add(info);
+            }
+
+            return afterMergeInfoList;
 
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
+    }
+
+    /**
+     * 根据类型推送
+     * @param typeId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<Info> pushInfoByTypeId(Integer typeId) {
+
+        List<TypeRelation> typeRelations = new ArrayList<>();
+
+        List<Info> infoList = new ArrayList<>();
+
+        try {
+            typeRelations = typeRelationMapper.getInfoByTypeId(typeId);
+
+            for (TypeRelation typeRelation : typeRelations) {
+                Info info = infoService.getInfoByInfoId(typeRelation.getInfoId());
+                infoList.add(info);
+            }
+            return infoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
