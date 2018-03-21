@@ -46,7 +46,7 @@ public class WebSocketController {
      *
      * @return
      */
-    @RequestMapping("sendAll")
+    @RequestMapping("/sendAll")
     @ResponseBody
     public String sendAll(String msg) {
         SocketServer.sendAll(msg);

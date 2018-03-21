@@ -23,8 +23,8 @@ public class SocketServer {
 
     @Value("${jwt.secret}")
     private String secret;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
+//    @Autowired
+//    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 用户连接时触发
@@ -36,8 +36,8 @@ public class SocketServer {
     public void open(Session session,@PathParam(value="token") String token) {
         this.session = session;
         UserInfo userInfo = new UserInfo();
-//        userInfo = new JwtTokenUtil().parse(token);
-        userInfo = jwtTokenUtil.parse(token);
+        userInfo = new JwtTokenUtil().parse(token);
+//        userInfo = jwtTokenUtil.parse(token);
         Integer userId = userInfo.getUserId();
         sessionPool.put(userId, session);
         sessionIds.put(session.getId(), userId);
