@@ -16,7 +16,7 @@ public class SpiderTest extends DemoApplicationTests{
     private SpiderService spiderService;
     @Test
     public void test() {
-        spiderService.run(1);
+        spiderService.run(5);
 
     }
 

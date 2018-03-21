@@ -18,52 +18,59 @@
 <div class="placeholder-height"></div>
 <div class="container" id="index">
 	<div class="wrap-left pull-left">
-        <div class="big-pic-box">
-             <div class="big-pic">
-                  <a href="#" target="_blank" class="transition" title="醒醒吧，腾讯、网易称霸的游戏行业，谁都没机会成为第三">
-                     <div class="back-img"><img src="../assets/sy-img/061708387437.jpg"  alt="醒醒吧，腾讯、网易称霸的游戏行业，谁都没机会成为第三"></div>
-                     <div class="big-pic-content">
-                          <h1 class="t-h1">醒醒吧，腾讯、网易称霸的游戏行业，谁都没机会成为第三</h1>
-                      </div>
-                  </a>
-             </div>
-             <div class="big2-pic big2-pic-index big2-pic-index-top">
-                  <a href="#" class="back-img transition" target="_blank" title="嘘！Facebook 正在上海悄悄寻找办公室">
-                     <img class="lazy" src="../assets/sy-img/142618969973.jpg" alt="嘘！Facebook 正在上海悄悄寻找办公室">
-                  </a>
-                  <a href="#" target="_blank" title="嘘！Facebook 正在上海悄悄寻找办公室">
-                     <div class="big2-pic-content">
-                          <h2 class="t-h1">嘘！Facebook 正在上海悄悄寻找办公室</h2>
-                     </div>
-                  </a>
-             </div>
-             <div class="big2-pic big2-pic-index big2-pic-index-bottom">
-                  <a href="#" class="back-img transition" target="_blank" title="马云在人生最艰难时去了延安，在革命根据地决定建立淘宝">
-                     <img class="lazy" src="../assets/sy-img/093433055013.jpg" alt="马云在人生最艰难时去了延安，在革命根据地决定建立淘宝">
-                  </a>
-                  <a href="#" target="_blank" title="马云在人生最艰难时去了延安，在革命根据地决定建立淘宝">
-                     <div class="big2-pic-content">
-                          <h2 class="t-h1">马云在人生最艰难时去了延安，在革命根据地决定建立淘宝</h2>
-                     </div>
-                  </a>
-             </div>
+        <div class="big-pic-box" v-if="threeRecommendInfos != null">
+            <div class="big-pic">
+                <a href="#" target="_blank" class="transition" :title="threeRecommendInfos[0].title">
+                    <div class="back-img">
+                        <img class="lazy" style="height:100%" v-if="threeRecommendInfos[0].infoImage!=null" 
+                        :src="`${threeRecommendInfos[0].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[0].title">
+                    </div>
+                    <div class="big-pic-content">
+                        <h1 class="t-h1">{{threeRecommendInfos[0].title}}</h1>
+                    </div>
+                </a>
+            </div>
+            <div class="big2-pic big2-pic-index big2-pic-index-top">
+                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[1].title">
+                    <img class="lazy" style="height:100%" v-if="threeRecommendInfos[1].infoImage!=null" 
+                    :src="`${threeRecommendInfos[1].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[1].title">
+                </a>
+                <a href="#" target="_blank" :title="threeRecommendInfos[1].title">
+                    <div class="big2-pic-content">
+                        <h2 class="t-h1">{{threeRecommendInfos[1].title}}</h2>
+                    </div>
+                </a>
+            </div>
+            <div class="big2-pic big2-pic-index big2-pic-index-bottom">
+                <a href="#" class="back-img transition" target="_blank" :title="threeRecommendInfos[2].title">
+                    <img class="lazy" style="height:100%" v-if="threeRecommendInfos[2].infoImage!=null" 
+                    :src="`${threeRecommendInfos[2].infoImage.image}`" :onerror="defaultImg" :alt="threeRecommendInfos[2].title">
+                </a>
+                <a href="#" target="_blank" :title="threeRecommendInfos[2].title">
+                    <div class="big2-pic-content">
+                        <h2 class="t-h1">{{threeRecommendInfos[2].title}}</h2>
+                    </div>
+                </a>
+            </div>
        </div>
     <div class="msgAlert" :class="{'active': isMsgAlert}">
            <p class="msgAlert-text">{{isMsgAlertText}}</p>
        </div>
-       <div class="mod-info-flow">
+       <div class="mod-info-flow"  v-if="infoList != null">
             <div class="mod-b mod-art" data-aid="213665" v-for="info in infoList">
             	 <div class="mod-angle">热</div>
                  <div class="mod-thumb ">
                        <a class="transition" title="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低" href="#" target="_blank">
-						  <!-- <img class="lazy" style="height:100%" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低"> -->
+						  <img class="lazy" style="height:100%" v-if="info.infoImage!=null" :src="`${info.infoImage.image}`" :onerror="defaultImg" alt="你的公司够前沿吗？至少在AI这件事上，多数企业都眼高手低">
                        </a>
                  </div>
                  <div class="column-link-box">
-                 	<a href="#" class="column-link" target="_blank">娱乐淘金</a>
+                 	<a href="#" class="column-link" target="_blank">不感兴趣
+                         <i class="icon-not-interst"></i>
+                     </a>
                  </div>
                  <div class="mob-ctt">
-                    <h2><router-link :to="`/article/${info.id}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
+                    <h2><router-link :to="`/article/${info.infoId}`" class="transition msubstr-row2" :class="{'isRead': info.isRead}">{{info.title}}</router-link></h2>
 					<div class="mob-author">
                         <div class="author-face">
                             <a href="#" target="_blank"><img src="../assets/sy-img/59_1502432173.jpg"></a>
@@ -105,7 +112,9 @@
                         				<span class="icon icon-caret js-mt-index-icon"></span>
                    					</p>
                     				<ul class="hour-head">
-                        				<li><img class="hour-tx" src="../assets/sy-img/touxiang.jpg" alt="头像"></li>
+                        				<li>
+                                            <img style="width:25px;" :src="`${comment.userInfo.userImageUrl}`" :onerror="defaultAvatar">
+                                        </li>
                         				<li>
                             				<p>{{comment.userInfo.nickname}}</p>
                             				<p>3分钟前</p>
@@ -116,7 +125,7 @@
                     				<div class="story-info mt-story-info">
                         				<p class="story-detail-hide hour-detail-hide mt-index-cont mt-index-cont2 js-mt-index-cont2">
                                             {{comment.content}}
-                                            <a href="#" target="_blank" class="mt-index-cont2-a">[&nbsp原文&nbsp]</a>
+                                            <router-link :to="`/article/${comment.infoId}`" class="mt-index-cont2-a">[&nbsp原文&nbsp]</router-link>
                                          </p>
                     				</div>
                 				</div>
@@ -139,7 +148,7 @@
     <div class="placeholder"></div>
 <!--传言-->
 <!--传言部分开始-->
-    <div id="rumor_center"></div>
+    <!-- <div id="rumor_center"></div>
     <div class="box-moder moder-rumors-list">
         <h3>传言</h3>
         <span class="span-mark"></span>
@@ -164,15 +173,15 @@
         </ul>
         <div class="rumor-more">
             <p><a href="#" target="_blank">详情>></a></p>
-        </div>
+        </div> -->
                     <!--24小时不展示此按钮-->
-            <div class="rumor-brunt-box">
+            <!-- <div class="rumor-brunt-box">
                 <a class="btn btn-blue-cy js-update-cy transition  js-show-bruntback-box1" >我要爆料</a>
             </div>
-            </div>
+            </div> -->
     <div class="placeholder"></div>
     <!--传言部分结束-->
-	<div class="ad-wrap">
+	<!-- <div class="ad-wrap">
     	<div class="ad-title">广告</div>
 	</div>
     <div class="placeholder"></div>
@@ -183,7 +192,7 @@
         <ul>
             <li>
                 <div class="project-pic">
-                        <img src="../assets/sy-img/1503478306719861.png">
+                    <img src="../assets/sy-img/1503478306719861.png">
                 </div>
                 <div class="project-content">
                      <div class="project-title">
@@ -244,7 +253,7 @@
             <li>创业公司立即报名提交信息的好处：</li>
             <li>1.优质的展示和访谈机会</li>
             <li>2.获得投资人的关注</li>
-            <li>3.虎嗅提供的创业支持服务</li>
+            <li>3.Oreo提供的创业支持服务</li>
         </ul>
     </div>
     <div class="placeholder"></div>
@@ -290,11 +299,11 @@
             </li>
          </ul>
     </div>
-    <div class="placeholder"></div>
+    <div class="placeholder"></div> -->
 
 
 <!--研究报告部分开始-->
-    <div class="box-moder hot-article">
+    <!-- <div class="box-moder hot-article">
         <h3>创新案例</h3>
         <span class="pull-right project-more story-more">
             <a href="#" class="transition" target="_blank">全部</a></span>
@@ -311,7 +320,7 @@
                 	<span class="author-face">
                     	<img src="../assets/sy-img/97.jpg">
                 	</span>
-                	<span>虎嗅会员小秘书</span>
+                	<span>Oreo会员小秘书</span>
                 	<div style="margin-left: 40px;margin-top: 5px;">微信号：huxiuvip302</div>
             	</div>
         	</li>
@@ -373,7 +382,7 @@
             </li>
             
          </ul>
-    </div>
+    </div> -->
     <div class="placeholder"></div>
 </div>
 </div>
@@ -381,7 +390,7 @@
     </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
+import {getAllType, getUserInfoById,requestLogin, requestRegister,getInfoByDate,getLogInfos,getHotComments,pushUserByLogInfo} from '../api/api.js'
 import VHeader from '@/components/Header.vue'
 import VFooter from '@/components/Footer.vue'
 
@@ -392,11 +401,11 @@ export default {
     data () {
         return {
             userInfo: {
-                username: "",
-                password: "",
-                nickname: "",
-                userMail: "",
-                userGroupId: 1
+                // username: "",
+                // password: "",
+                // nickname: "",
+                // userMail: "",
+                // userGroupId: 1
             },
             isLogined: false,
             isLoginShow: false,
@@ -405,11 +414,14 @@ export default {
 
             isMsgAlert: true,
             isMsgAlertText: '',
+            defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
             defaultImg: 'this.src="' + require('../assets/sy-img/150611228857.jpg') + '"',
-            infoList: [],
+            infoList: null,
+            threeRecommendInfos: null,
             logInfoList: [],
             hotCommentList: [],
-            page: 1
+            typeList: [],
+            page: 1,
         }
     },
     components:{
@@ -418,7 +430,13 @@ export default {
     mounted(){
         let token = window.localStorage.getItem("token")
         if(token!=null&&token!=""){
-            this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+            this.userInfo.userId = window.localStorage.getItem("user");
+            getUserInfoById(this.userInfo.userId).then(res=>{
+                if(res.status === 1){
+                    this.userInfo = res.result
+                }
+            })
             this.isLogined = true
         }
         getHotComments().then(res=>{
@@ -445,8 +463,13 @@ export default {
                         }
                         console.log(infos)
                         this.infoList = infos
+                        this.threeRecommendInfos = []
+                        this.threeRecommendInfos.push(infos[0])
+                        this.threeRecommendInfos.push(infos[1])
+                        this.threeRecommendInfos.push(infos[2])
+                        this.infoList.splice(0,3)
                         this.isMsgAlert = false
-                        this.isMsgAlertText = "为您推荐了6条消息"
+                        this.isMsgAlertText = `为您推荐了${infos.length}条文章`
                         setTimeout(()=>{
                             this.isMsgAlert = true
                         },3000)
@@ -480,8 +503,13 @@ export default {
                 if(res.data.status === 1){
                     this.isLoginShow = false
                     this.isLogined = true
-                    this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-                    this.showSuccessMsg({title:"成功",message:"登录成功"})
+                    getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
                     this.webSocketConnect();
                 }else if(res.data.status === -1){
                     this.showErrorMsg({title:"失败",message:"用户名不存在"})
