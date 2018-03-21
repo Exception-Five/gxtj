@@ -24,3 +24,5 @@ nbdist/
 /src/main/resources/library/merged.txt
 /src/main/resources/library/33tokenR.txt
 
+/src/main/resources/library/comment/1.txt
+/vue/client/node_modules/
