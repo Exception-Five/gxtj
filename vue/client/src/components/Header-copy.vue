@@ -44,7 +44,7 @@
             </div>
             <div class="container">
                 <div class="navbar-header transition">
-                    <a href="#" title="首页"><img src="../assets/images/logo.jpg" alt="虎嗅网" title="首页" /></a>
+                    <a href="#" title="首页"><img src="../assets/images/logo.jpg" alt="Oreo网" title="首页" /></a>
                 </div>
                 <ul class="nav navbar-nav navbar-left" id="jsddm">
                     <li class="nav-news js-show-menu">
@@ -77,7 +77,7 @@
                             <img src="../assets/images/1448211685.png">
                             <div class="app-guide-title">
                                 <span>微信扫一扫</span><br>
-                                <span>下载虎嗅APP</span>
+                                <span>下载OreoAPP</span>
                             </div>
                         </div>
                         <i class="icon icon-sm-phone"></i>APP下载<em class="guide-prompt"></em>
@@ -92,14 +92,14 @@
             <div class="cd-user-modal" :class="{'is-visible': isLoginShow || isRegisterShow}"> 
                 <div class="cd-user-modal-container">
                     <div id="cd-login" v-show="isLoginShow"> <!-- 登录表单 -->
-                        <div class="modal-alert-title">登录虎嗅</div>
+                        <div class="modal-alert-title">登录Oreo</div>
                         <div class="register" >
                             <div class="register-top" id="reg-top"><i><a id="qrcode" href="#"></a></i></div>
                             <div class="register-con" id="rc">
                                 <div class="login-form username-box " style="margin-top:52px;">
                                     <a class="js-open-sms-login sms-text">短信快捷登录</a>
                                     <label class="login-label transition" >
-                                        <input id="login_username"  class="login-input" placeholder="手机号／邮箱／虎嗅账号" v-model="userInfo.username">
+                                        <input id="login_username"  class="login-input" placeholder="手机号／邮箱／Oreo账号" v-model="userInfo.username">
                                     </label>
                                     <label class="login-label">
                                         <input id="login_password" class="login-input password" type="password" placeholder="输入6～24位密码" v-model="userInfo.password">
@@ -129,7 +129,7 @@
                                     <div class="info">
                                         <div class="status status_browser js_status" id="wx_default_tip">
                                             <p>请使用微信扫描二维码登录</p>
-                                            <p>"虎嗅网"</p>
+                                            <p>"Oreo网"</p>
                                         </div>
                                     </div>
                                 </div>

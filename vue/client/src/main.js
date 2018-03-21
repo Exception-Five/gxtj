@@ -6,7 +6,7 @@ import Notify from 'vue2-notify'
 import VueNotifications from 'vue-notifications'
 import Noty from 'noty'
 import './assets/css/noty.css'
-
+import vueCropper from './components/cropper/vueCropper.vue'
 Vue.use(VueMeta)
 Vue.config.productionTip = false
 

@@ -5,11 +5,13 @@
     :userInfo="userInfo" 
     :isLoginShow="isLoginShow"
     :isRegisterShow="isRegisterShow"
+    :isSearchShow="isSearchShow"
     @handleForm="handleForm"
     @closeForm="closeForm"
     @loginConfirm="loginConfirm"
     @registerConfirm="registerConfirm"
     @logout="logout"
+    @handleSearch="handleSearch"
     ></VHeader>
 <div class="placeholder-height"></div>
 <div class="edit-warp" id="per_center" style="text-align:left">
@@ -25,9 +27,10 @@
         </div>
         <div class="section-box">
             <div class="user-face-box">
-                <img src="https://img.huxiucdn.com/auth/data/avatar/2.jpg">
+                <!-- <img src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"> -->
+                <img :src="`${userInfo.userImageUrl}`" :onerror="defaultAvatar">
             </div>
-            <a class="edit-face" href="/user/setting/account.html#mdf_head">点击更换头像</a>
+            <!-- <a class="edit-face" href="/user/setting/account.html#mdf_head">点击更换头像</a> -->
         </div>
 
 <!-- 兴趣模型 -->
@@ -41,56 +44,14 @@
     </div>
 </div>
 <div style="clear:both;"></div>
-<footer class="footer">
-    <div class="modal-backdrop fade in js-modal-backdrop"></div>
-    <div class="container copy-right">
-        <div class="footer-tag-list">
-            <a href="#" target="_blank" class="transition">关于我们</a>
-            <a href="#" target="_blank" class="transition">加入我们</a>
-            <a href="#" target="_blank" class="transition">合作伙伴</a>
-            <a href="#" target="_blank" class="transition">广告及服务</a>
-            <a href="#" target="_blank" class="transition">常见问题解答</a>
-            <a href="#" target="_blank" class="transition">防网络诈骗专题</a>
-        </div>
-        <span>Copyright © <a href="#">虎嗅网</a> <a href="#" target="_blank">京ICP备12013432号-1</a>
-            &nbsp;<a href="#" target="_blank"><i class="i-wj"></i>京公网安备 11010102001402号</a>&nbsp;&nbsp;&nbsp;<em class="bull-right">本站由</em><i class="icon-aliyun" style="width: 70px;background-size: 100%;left: 7px;"></i><em class="bull-em">提供计算与安全服务</em>
-        </span>
-        <div class="footer-icon-list pull-right">
-            <ul class="Qr-codee">
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/weixin_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-wx"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                	<div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-ios"></i>
-                </li>
-                </a>
-                <a><li class="Qr-code-footer">
-                    <div class="app-qrcode"><img src="../assets/images/app_erweima.png"></div>
-                    <i class="icon icon-footer icon-footer-android"></i>
-                </li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅英文版">
-                    <li><i class="icon icon-footer icon-footer-inter"></i></li>
-                </a>
-                <a href="#" target="_blank" title="虎嗅RSS订阅中心">
-                    <li><i class="icon icon-footer icon-footer-rss"></i></li>
-                </a>
-            </ul>
-        </div>
-    </div>
-<div id="moquu_wxin" class="moquu_wxin"><a href="javascript:void(0)"><div class="moquu_wxinh"></div></a></div>
-<div id="moquu_wshare" class="moquu_wshare"><a href="javascript:void(0)"><div class="moquu_wshareh"></div></a></div>
-</footer>
-
-
+<VFooter></VFooter>
   </section>
 </template>
 <script>
-import {requestLogin, requestRegister,getUserMod} from '../api/api.js'
+import {getUserInfoById,requestLogin, requestRegister,getUserMod} from '../api/api.js'
 import echarts from 'echarts'
+import VFooter from '@/components/Footer.vue'
+
 import VHeader from '@/components/Header.vue'
 import VueNotifications from 'vue-notifications'
 
@@ -126,20 +87,28 @@ export default {
 		isLogined: false,
 		isLoginShow: false,
         isRegisterShow: false,
-        
+        isSearchShow: false,
+        defaultAvatar: 'this.src="https://img.huxiucdn.com/auth/data/avatar/2.jpg"',
 
         userMod: '',
         chart: null,
         echartsData: []
 	  }
   },
-  components: {VHeader},
+  components: {VHeader,VFooter},
   mounted(){
     let token = window.localStorage.getItem("token")
-	if(token!=null&&token!=""){
-		this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-		console.log(this.userInfo)
-		this.isLogined = true
+    if(token!=null&&token!=""){
+        // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+        this.userInfo.userId = window.localStorage.getItem("user");
+        getUserInfoById(this.userInfo.userId).then(res=>{
+            if(res.status === 1){
+                this.userInfo = res.result
+            }
+        })
+        this.isLogined = true
+    }else{
+        this.handleForm(0)
     }
     
     getUserMod().then((res)=>{
@@ -205,11 +174,17 @@ export default {
     },
     loginConfirm () {
         requestLogin(this.userInfo).then(res => {
+            console.log(res)
             if(res.data.status === 1){
                 this.isLoginShow = false
                 this.isLogined = true
-                this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-                this.showSuccessMsg({title:"成功",message:"登录成功"})
+                getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                if(res.status === 1){
+                    this.userInfo = res.result
+                    this.showSuccessMsg({title:"成功",message:"登录成功"})
+                }
+            })
+            // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
             }else if(res.data.status === -1){
                 this.showErrorMsg({title:"失败",message:"用户名不存在"})
             }
@@ -230,6 +205,13 @@ export default {
         window.localStorage.removeItem("token")
         window.localStorage.removeItem("user")
         this.isLogined = false
+    },        
+    handleSearch(...data){
+        if(data[0] === 0){//关闭
+            this.isSearchShow = false
+        }else if(data[0] === 1){
+            this.isSearchShow = true
+        }    
     },
     initChart() {
       this.chart = echarts.init(this.$refs.myEchart);

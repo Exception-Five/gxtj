@@ -1,170 +1,162 @@
 <template>
-  <div :class="className" :id="id" :style="{height:height,width:width}" ref="myEchart">
-  </div>
+  <section>
+
+     <vueCropper
+                  ref="cropper"
+                  :img="option.img"
+                  :outputSize="option.size"
+                  :outputType="option.outputType"
+                  :info="option.info"
+                  :canScale="option.canScale"
+                  :autoCrop="option.autoCrop"
+                  :autoCropWidth="option.width"
+                  :autoCropHeight="option.height"
+                  :fixed="option.fixed"
+                  :fixedNumber="option.fixedNumber"
+                  :original = "option.original"
+               ></vueCropper>
+  </section>
 </template>
 <script>
-import echarts from 'echarts'
-import {getUserMod,requestLogin} from '../../api/api.js'
+import vueCropper from '../userinfo/vueCropper.vue'
 export default {
-  props: {
-    className: {
-      type: String,
-      default: 'yourClassName'
-    },
-    id: {
-      type: String,
-      default: 'yourID'
-    },
-    width: {
-      type: String,
-      default: '500px'
-    },
-    height: {
-      type: String,
-      default: '500px'
-    }
-  },
+  props: ['img'],
   data() {
     return {
-        userMod: '',
-        chart: null,
-        echartsData: []
+      model: false,
+      modelSrc: '',
+      crap: false,
+      previews: {},
+      option: {
+        img: '',
+        info: true,
+        size: 1,
+        outputType: 'jpeg',
+        canScale: true,
+        autoCrop: true,
+        // 只有自动截图开启 宽度高度才生效
+        width: 200,
+        height: 200,
+        fixed: true,
+        original: false
+      },
+      downImg: '#',
+      filters: {
+        searchName: 'nickname',
+        search:'a',
+        groupValue: ''
+      },
+      isModelShow: false
     }
-  },
-  mounted() {
-    requestLogin({
-        'username': 'yaojiayang',
-        'password': '123456'
-    }).then(res => {
-        if(res.data.status === 1){
-            getUserMod().then((res)=>{
-                console.log(res)
-                let userMod = res.result
-                this.echartsData.push({
-                    value:userMod.entertainment, name:'娱乐'
-                })
-                this.echartsData.push({
-                    value:userMod.politics, name:'政治'
-                })
-                this.echartsData.push({
-                    value:userMod.sports, name:'运动',
-                })
-                this.echartsData.push({
-                    value:userMod.business, name:'商业',
-                })
-                this.echartsData.push({
-                    value:userMod.technology, name:'技术',
-                })
-                this.echartsData.push({
-                    value:userMod.car, name:'汽车',
-                })
-                this.echartsData.push({
-                    value:userMod.military , name:'军事',
-                })
-                this.echartsData.push({
-                    value:userMod.travel, name:'旅行',
-                })
-                this.echartsData.push({
-                    value:userMod.life, name:'生活',
-                })
-                this.echartsData.push({
-                    value:userMod.other, name:'其他',
-                })
-                this.initChart();
-
-            })
-        }else if(res.data.status === -1){
-            
-        }
-    })
-
-  },
-  beforeDestroy() {
-    if (!this.chart) {
-      return
-    }
-    this.chart.dispose();
-    this.chart = null;
+  },	
+  components:{
+    vueCropper
   },
   methods: {
-    initChart() {
-      this.chart = echarts.init(this.$refs.myEchart);
-      // 把配置和数据放这里
-      let echartsData = this.echartsData
-      this.chart.setOption({
-        backgroundColor: '#2c343c',
-
-        title: {
-            text: 'Customized Pie',
-            left: 'center',
-            top: 20,
-            textStyle: {
-                color: '#ccc'
-            }
-        },
-
-        tooltip : {
-            trigger: 'item',
-            formatter: "{a} <br/>{b} : {c} ({d}%)"
-        },
-
-        visualMap: {
-            show: false,
-            min: 0,
-            max: 100,
-            inRange: {
-                colorLightness: [0, 1]
-            }
-        },
-        series : [
-            {
-                name:'访问来源',
-                type:'pie',
-                radius : '55%',
-                center: ['50%', '50%'],
-                // data:[
-                //     {value:1, name:'直接访问'},
-                //     {value:0, name:'邮件营销'},
-                //     {value:1, name:'联盟广告'},
-                //     {value:1, name:'视频广告'},
-                //     {value:2, name:'搜索引擎'}
-                // ].sort(function (a, b) { return a.value - b.value; }),
-                data:echartsData.sort(function (a, b) { return a.value - b.value; }),
-                roseType: 'radius',
-                label: {
-                    normal: {
-                        textStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
-                        }
-                    }
-                },
-                labelLine: {
-                    normal: {
-                        lineStyle: {
-                            color: 'rgba(255, 255, 255, 0.3)'
-                        },
-                        smooth: 0.2,
-                        length: 10,
-                        length2: 20
-                    }
-                },
-                itemStyle: {
-                    normal: {
-                        color: '#c23531',
-                        shadowBlur: 200,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                },
-
-                animationType: 'scale',
-                animationEasing: 'elasticOut',
-                animationDelay: function (idx) {
-                    return Math.random() * 200;
-                }
-            }
-        ]
+    startCrop () {
+      this.crop = true
+      // console.log('开始截图')
+    },
+    changeScale (num) {
+      num = num || 1
+      this.$refs.cropper.changeScale(num)
+    },
+    clearCrop () {
+      this.$refs.cropper.clearCrop()
+    },
+    finish (type) {
+      // 输出
+      // var test = window.open('about:blank')
+      // test.document.body.innerHTML = '图片生成中..'
+      if (type === 'blob') {
+          this.$refs.cropper.getCropBlob((data) => {
+            var img = window.URL.createObjectURL(data)
+            this.model = true
+            this.modelSrc = img
+          })
+      } else {
+          this.$refs.cropper.getCropData((data) => {
+            this.model = true
+            this.modelSrc = data
+          })
+      }
+    },
+    // 实时预览函数
+    realTime (data) {
+      this.previews = data
+    },
+    finish2 (type) {
+      this.$refs.cropper2.getCropData((data) => {
+          this.model = true
+          this.modelSrc = data
       })
+    },
+    finish3 (type) {
+      this.$refs.cropper3.getCropData((data) => {
+          this.model = true
+          this.modelSrc = data
+      })
+    },
+    down (type) {
+      // event.preventDefault()
+      var aLink = document.createElement('a')
+      aLink.download = 'demo'
+      // 输出
+      if (type === 'blob') {
+          this.$refs.cropper.getCropBlob((data) => {
+            this.downImg = window.URL.createObjectURL(data)
+            aLink.href = window.URL.createObjectURL(data)
+            aLink.click()
+          })
+      } else {
+          this.$refs.cropper.getCropData((data) => {
+            this.downImg = data
+            aLink.href = data
+            aLink.click()
+          })
+      }
+    },
+    uploadImg (e, num) {
+      //上传图片
+      // this.option.img
+      var file = e.target.files[0]
+      if (!/\.(gif|jpg|jpeg|png|bmp|GIF|JPG|PNG)$/.test(e.target.value)) {
+          alert('图片类型必须是.gif,jpeg,jpg,png,bmp中的一种')
+          return false
+      }
+      var reader = new FileReader()
+      reader.onload = (e) => {
+          let data
+          if (typeof e.target.result === 'object') {
+            // 把Array Buffer转化为blob 如果是base64不需要
+            data = window.URL.createObjectURL(new Blob([e.target.result]))
+          } else {
+            data = e.target.result
+          }
+          if (num === 1) {
+            this.option.img = data
+          } else if (num === 2) {
+            this.option.img = data
+          }
+      }
+      // 转化为base64
+      // reader.readAsDataURL(file)
+      // 转化为blob
+      reader.readAsArrayBuffer(file)
+      this.$refs.cropper.changeScale(200)
+      this.startCrop()
+    },
+    realTime (data) {
+      this.previews = data
+    },
+    confirm(){
+      this.model = false
+      this.$emit('transfer',this.option.img)
+      this.$emit("isModelShow",this.isModelShow)
     }
   }
 }
 </script>
+<style>
+
+</style>

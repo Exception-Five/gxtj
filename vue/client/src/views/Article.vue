@@ -63,13 +63,13 @@
                  <!-- <p>有些人和企业的厉害之处，在于从一个看似成熟、红海的领域，硬生生拓展出一片蓝海市场来，而且生意做到风生水起。</p><p><br/></p><p>而这种闯出一片新天地的方法，最常见的一种，就是将原有的产品或服务模式中的某个元素，推向极致，拓展出新的用户场景和产品价值，自然就拓展出了新的市场。</p><p><br/></p><p>今天来分析三个例子，来看看这种"单一元素推向极致"的手段有多厉害。</p><p><br/></p><p><strong>第一个例子，是前段时间非常火爆的电话亭式KTV。</strong></p><p><br/></p><p>我不知道现在还有多少人经常去KTV唱歌。我能看到的是，在一线城市，传统的量贩式KTV市场一再萎缩，以钱柜、麦乐迪为代表的老企业日渐衰败，新的主打小户型的唱吧麦颂半死不活。长盛不衰此起彼伏的KTV也有，但那是俗称商K的夜总会式KTV，你懂的。</p><p><br/></p><p>究其原因，现在娱乐的个性化和小群体化趋势日益明显，以前那种成群结队去唱歌，还要忍受别人五音不全的唱腔的娱乐形式，显得不够与时俱进。</p><p><br/></p><p>但是，朋友情侣三两出行，还是有唱歌娱乐的需求的。电话亭式KTV应运而生。</p><p><br/></p><p>电话亭式KTV，把时间和空间两个元素推向极致。仅容纳两到三个人的私密空间，少至一首歌或者一刻钟的欢唱时间，充分利用碎片化时间和空间，让唱歌这件事不那么仪式感和处心积虑，随时兴起就可以来一发，多么愉快。何况，曲库、音响效果并不亚于传统的KTV，甚至还有所超越。</p>                -->
 				<div v-if="information.infoContent!=null" v-html="information.infoContent.content"></div>
                  <div class="neirong-shouquan">
-                      <span class="c2">*文章为作者独立观点，不代表虎嗅网立场<br></span>
-                      <span>本文由 <a href="#" target="_blank">判官</a> 授权 <a href="/">虎嗅网</a> 发表，并经虎嗅网编辑。转载此文请于文首标明作者姓名，保持文章完整性（包括虎嗅注及其余作者身份信息），并请附上出处</span>
+                      <span class="c2">*文章为作者独立观点，不代表Oreo网立场<br></span>
+                      <span>本文由 <a href="#" target="_blank">判官</a> 授权 <a href="/">Oreo网</a> 发表，并经Oreo网编辑。转载此文请于文首标明作者姓名，保持文章完整性（包括Oreo注及其余作者身份信息），并请附上出处</span>
                       <br />
-                      <span><b>未按照规范转载者，虎嗅保留追究相应责任的权利</b></span>
+                      <span><b>未按照规范转载者，Oreo保留追究相应责任的权利</b></span>
                  </div>
                  <div class="neirong-shouquan-public">
-                      <span><b>未来面前，你我还都是孩子，还不去下载 <a href="#" target="_blank">虎嗅App </a>猛嗅创新！</b></span>
+                      <span><b>未来面前，你我还都是孩子，还不去下载 <a href="#" target="_blank">OreoApp </a>猛嗅创新！</b></span>
                  </div>
             </div>
 			<div class="Qr-code">
@@ -239,8 +239,8 @@
     		</div>
     		<div class="author-name">
         		<a href="#" target="_blank">判官</a>
-        		<a href="#" target="_blank"><i class="i-vip icon-vip" title="虎嗅黑卡会员"></i></a>
-        		<i class="i-icon icon-auth3" title="虎嗅认证作者"></i>    
+        		<a href="#" target="_blank"><i class="i-vip icon-vip" title="Oreo黑卡会员"></i></a>
+        		<i class="i-icon icon-auth3" title="Oreo认证作者"></i>    
         	</div>
     		<div class="author-one">产品老司机</div>
     		<div class="author-one">产品个体户</div>
@@ -321,7 +321,7 @@
 </template>
 
 <script>
-import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfoById} from '../api/api.js'
+import {getInfoByInfoId, getPushInfo,getCommentsByInfoId,addComment,updateComment, updateInfo,getUserInfoById} from '../api/api.js'
 import {GetDateDiff,formatDate} from '../utils/date.js';
 import {requestLogin, requestRegister} from '../api/api.js'
 import VFooter from '@/components/Footer.vue'
@@ -361,10 +361,14 @@ export default {
   components: {VHeader,VFooter},
   mounted(){
 	let token = window.localStorage.getItem("token")
-	console.log( window.localStorage.getItem("dasd"))
 	if(token!=null&&token!=""){
-		this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-		console.log(this.userInfo)
+		// this.userInfo = JSON.parse(window.localStorage.getItem("user"))
+		this.userInfo.userId = window.localStorage.getItem("user");
+		getUserInfoById(this.userInfo.userId).then(res=>{
+				if(res.status === 1){
+					this.userInfo = res.result
+				}
+		})
 		this.isLogined = true
 	}
 	this.infoId  = this.$route.params.id
@@ -388,9 +392,9 @@ export default {
 				id: this.information.id,
 				reads: ++this.information.reads
 			}
-			// updateInfoById(param2).then(res=>{
-			// 	console.log(res)
-			// })
+			updateInfo(param2).then(res=>{
+				console.log(res)
+			})
 		}else{
 			// this.$router.push({path:'/404'})
 		}
@@ -419,8 +423,13 @@ export default {
 					if(res.data.status === 1){
 						this.isLoginShow = false
 						this.isLogined = true
-						this.userInfo = JSON.parse(window.localStorage.getItem("user"))
-						this.showSuccessMsg({title:"成功",message:"登录成功"})
+						getUserInfoById(window.localStorage.getItem("user")).then(res=>{
+                        if(res.status === 1){
+                            this.userInfo = res.result
+                            this.showSuccessMsg({title:"成功",message:"登录成功"})
+                        }
+                    })
+                    // this.userInfo = JSON.parse(window.localStorage.getItem("user"))
 					}else if(res.data.status === -1){
 						this.showErrorMsg({title:"失败",message:"用户名不存在"})
 					}
@@ -496,10 +505,10 @@ export default {
 				this.hasLike = false
 			}
 			let param = {
-				id: this.information.id,
+				infoId: this.information.infoId,
 				likes: newLikes
 			}
-			updateInfoById(param).then((res)=>{
+			updateInfo(param).then((res)=>{
 				console.log(res)
 			})
 		},
