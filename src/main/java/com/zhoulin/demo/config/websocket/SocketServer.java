@@ -12,17 +12,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ServerEndpoint(value = "/socketServer/{token}")
+@ServerEndpoint(value = "/socketServer/{token}",configurator=MyEndpointConfigure.class)
 @Component
 public class SocketServer {
     private Session session;
@@ -30,9 +30,12 @@ public class SocketServer {
     private static Map<String, Integer> sessionIds = new HashMap<String, Integer>();
 
     @Value("${jwt.secret}")
-    private static String secret;
+    private String secret;
 
-
+    @Autowired
+    private PushUserGroupService pushUserGroupService;
+    @Autowired
+    private ReckonUserGroup reckonUserGroup;
     /**
      * 用户连接时触发
      *
@@ -48,8 +51,24 @@ public class SocketServer {
         Integer userId = userInfo.getUserId();
         sessionPool.put(userId, session);
         sessionIds.put(session.getId(), userId);
-//        List<Integer> integers = reckonUserGroup.reckonTypeArea(userId);
-//        System.out.println(integers);
+        try {
+            List<Integer> typeGroups = pushUserGroupService.pushUserGroupByInfoCreate();
+            List<Integer> userGroups = reckonUserGroup.reckonTypeArea(userId);
+            sendMessage("接收", userId);
+            if(typeGroups == null || userGroups == null){return;}
+
+            List<Integer> resultUserGroups = reckonUserGroup.findUserGroupByUpTypeList(userGroups,typeGroups);
+
+            if(resultUserGroups != null){return;}
+
+            for(Integer i : resultUserGroups){
+                System.out.println("应该推送的资讯类别:"+i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
