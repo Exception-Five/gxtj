@@ -13,10 +13,4 @@ public class WebSocketConfig {
     public ServerEndpointExporter serverEndpointExporter(){
         return new ServerEndpointExporter();
     }
-
-//    @Bean
-//    public ReckonUserGroup reckonUserGroup(){
-//        return new ReckonUserGroup();
-//    }
-
 }

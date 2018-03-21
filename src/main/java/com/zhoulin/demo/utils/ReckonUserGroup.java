@@ -53,8 +53,9 @@ public class ReckonUserGroup {
             double rate = 0;
 
             for (int i=0;i<mods.size();i++) {
-                rate = mods.get(i)/sumNum;
-                if ((double)mods.get(i)/(double)sumNum >= 0.15){
+                System.out.println((double)mods.get(i)/(double)sumNum);
+                rate = (double)mods.get(i)/(double)sumNum;
+                if (rate >= 0.15){
                     groups.add(i+1);
                 }
             }
