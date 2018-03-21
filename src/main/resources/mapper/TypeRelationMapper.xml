@@ -36,4 +36,10 @@
         </set>
         where info_id = #{infoId,jdbcType=INTEGER}
     </update>
+
+    <select id="getCountByTypeId" parameterType="long" resultMap="TypeRelationMap">
+        SELECT COUNT(*) FROM type_relation
+        WHERE info_id = #{infoId}
+        ORDER BY publish_date DESC
+    </select>
 </mapper>

@@ -23,8 +23,6 @@ public class SocketServer {
 
     @Value("${jwt.secret}")
     private String secret;
-//    @Autowired
-//    private JwtTokenUtil jwtTokenUtil;
 
     /**
      * 用户连接时触发
