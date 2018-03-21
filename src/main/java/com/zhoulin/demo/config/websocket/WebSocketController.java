@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping(value = "/public")
 public class WebSocketController {
+
     @Autowired
     private SocketServer socketServer;
 
@@ -32,7 +33,7 @@ public class WebSocketController {
      *
      * @return
      */
-    @RequestMapping("sendmsg")
+    @RequestMapping("/sendmsg")
     @ResponseBody
     public String sendmsg(String msg, Integer userId) {
         //第一个参数 :msg 发送的信息内容
@@ -46,7 +47,7 @@ public class WebSocketController {
      *
      * @return
      */
-    @RequestMapping("sendAll")
+    @RequestMapping("/sendAll")
     @ResponseBody
     public String sendAll(String msg) {
         SocketServer.sendAll(msg);
@@ -58,7 +59,7 @@ public class WebSocketController {
      *
      * @return
      */
-    @RequestMapping("webstatus")
+    @RequestMapping("/webstatus")
     public String webstatus() {
         //当前用户个数
         int count = SocketServer.getOnlineNum();

@@ -2,6 +2,9 @@ package com.zhoulin.demo.config.websocket;
 
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
+import com.zhoulin.demo.service.PushUserGroupService;
+import com.zhoulin.demo.service.impl.PushUserGroupServiceImpl;
+import com.zhoulin.demo.utils.ReckonUserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,10 +14,12 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@ServerEndpoint(value = "/socketServer/{token}")
+@ServerEndpoint(value = "/socketServer/{token}",configurator=MyEndpointConfigure.class)
 @Component
 public class SocketServer {
     private Session session;
@@ -23,9 +28,11 @@ public class SocketServer {
 
     @Value("${jwt.secret}")
     private String secret;
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private PushUserGroupService pushUserGroupService;
+    @Autowired
+    private ReckonUserGroup reckonUserGroup;
     /**
      * 用户连接时触发
      *
@@ -36,11 +43,29 @@ public class SocketServer {
     public void open(Session session,@PathParam(value="token") String token) {
         this.session = session;
         UserInfo userInfo = new UserInfo();
-//        userInfo = new JwtTokenUtil().parse(token);
-        userInfo = jwtTokenUtil.parse(token);
+        userInfo = new JwtTokenUtil().parse(token);
+//        userInfo = jwtTokenUtil.parse(token);
         Integer userId = userInfo.getUserId();
         sessionPool.put(userId, session);
         sessionIds.put(session.getId(), userId);
+        try {
+            List<Integer> typeGroups = pushUserGroupService.pushUserGroupByInfoCreate();
+            List<Integer> userGroups = reckonUserGroup.reckonTypeArea(userId);
+            sendMessage("接收", userId);
+            if(typeGroups == null || userGroups == null){return;}
+
+            List<Integer> resultUserGroups = reckonUserGroup.findUserGroupByUpTypeList(userGroups,typeGroups);
+
+            if(resultUserGroups != null){return;}
+
+            for(Integer i : resultUserGroups){
+                System.out.println("应该推送的资讯类别:"+i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     /**
