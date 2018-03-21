@@ -72,12 +72,12 @@ public class Word2VEC {
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
 //		dataProcess();
-		txtMerge();
+//		txtMerge();
 
 		//train the model and save model
-//		Learn learn = new Learn();
-//		learn.learnFile(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\21252tokenR.txt"));
-//		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
+		Learn learn = new Learn();
+		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
+		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
 //
 //		//use the trained model to analyze
 

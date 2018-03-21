@@ -18,4 +18,6 @@ public interface TypeRelationMapper {
 
     public Integer updateTypeRelationByInfoId(TypeRelation typeRelation) throws Exception;
 
+    public Integer getCountByTypeId(Integer typeId) throws Exception;
+
 }
