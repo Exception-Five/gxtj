@@ -2,16 +2,24 @@ package com.zhoulin.demo.config.websocket;
 
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
+import com.zhoulin.demo.service.PushUserGroupService;
+import com.zhoulin.demo.utils.ApplicationContextRegister;
+import com.zhoulin.demo.utils.ReckonUserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.socket.server.standard.SpringConfigurator;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @ServerEndpoint(value = "/socketServer/{token}")
@@ -22,7 +30,8 @@ public class SocketServer {
     private static Map<String, Integer> sessionIds = new HashMap<String, Integer>();
 
     @Value("${jwt.secret}")
-    private String secret;
+    private static String secret;
+
 
     /**
      * 用户连接时触发
@@ -39,6 +48,8 @@ public class SocketServer {
         Integer userId = userInfo.getUserId();
         sessionPool.put(userId, session);
         sessionIds.put(session.getId(), userId);
+//        List<Integer> integers = reckonUserGroup.reckonTypeArea(userId);
+//        System.out.println(integers);
     }
 
     /**
