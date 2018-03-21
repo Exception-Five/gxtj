@@ -40,11 +40,11 @@ public class UserModServiceImpl implements UserModService {
 
         boolean haskey = redisTemplate.hasKey(key);
 
-        if (haskey){
-            userMod = operations.get(key);
-            logger.info("从缓存中取出用户模型>>>>>" + userMod);
-            return userMod;
-        }
+//        if (haskey){
+//            userMod = operations.get(key);
+//            logger.info("从缓存中取出用户模型>>>>>" + userMod);
+//            return userMod;
+//        }
 
         try {
             userMod = userModMapper.getUserModByUserId(userId);
