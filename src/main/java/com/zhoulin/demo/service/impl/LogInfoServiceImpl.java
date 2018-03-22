@@ -206,4 +206,22 @@ public class LogInfoServiceImpl implements LogInfoService{
             return null;
         }
     }
+
+    @Override
+    public boolean isReadInfo(Integer userId, Long infoId) {
+
+        boolean isRead = false;
+        try {
+            int count = logInfoMapper.isReadInfo(userId, infoId);
+            if (count>0){
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return isRead;
+        }
+
+
+    }
 }

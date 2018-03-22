@@ -59,7 +59,7 @@ public class InformationController {
      * @param infoId 资讯编号
      * @return
      */
-    @RequestMapping(value = "/getInfoByInfoId/{infoId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/getInfoByInfoId/{infoId}", method = RequestMethod.GET)
     @ResponseBody
     public Message getUserInfoById(@PathVariable(value = "infoId") Long infoId, HttpServletRequest request){
 
@@ -111,6 +111,11 @@ public class InformationController {
                     logInfo.setUserId(userId);
                     logInfo.setInfoId(infoId);
                     logInfo.setLookTime(new Date());
+
+                    //通过日志 判断文章是否已读
+                    boolean isRead = logInfoService.isReadInfo(userId, infoId);
+
+                    info.setRead(isRead);
 
                     //日志插入
                     addLStatus = logInfoService.addLogInfo(logInfo);
