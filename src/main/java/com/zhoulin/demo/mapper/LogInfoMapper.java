@@ -22,4 +22,6 @@ public interface LogInfoMapper {
 
     public List<LogInfo> getLogInfoNowadays(Integer userId) throws Exception;
 
+    public int isReadInfo(Integer userId, Long infoId) throws Exception;
+
 }

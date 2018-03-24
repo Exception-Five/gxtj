@@ -112,6 +112,11 @@ public class InformationController {
                     logInfo.setInfoId(infoId);
                     logInfo.setLookTime(new Date());
 
+                    //通过日志 判断文章是否已读
+                    boolean isRead = logInfoService.isReadInfo(userId, infoId);
+
+                    info.setRead(isRead);
+
                     //日志插入
                     addLStatus = logInfoService.addLogInfo(logInfo);
                     if (addLStatus==1){

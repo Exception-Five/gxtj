@@ -20,6 +20,12 @@
         WHERE log_id = #{logId}
     </select>
 
+    <select id="isReadInfo" resultType="int">
+        SELECT COUNT(*) FROM log_info
+        WHERE info_id = #{infoId}
+        AND user_id = #{userId}
+    </select>
+
     <select id="getLogInfoByInfoId" parameterType="int" resultMap="LogInfoMap">
         SELECT * FROM log_info
         WHERE info_id = #{infoId}

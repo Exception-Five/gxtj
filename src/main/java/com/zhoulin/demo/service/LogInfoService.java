@@ -20,5 +20,6 @@ public interface LogInfoService {
 
     public List<LogInfo> getLogInfoNowadays(Integer userId) throws Exception;
 
+    public boolean isReadInfo(Integer userId, Long infoId) throws Exception;
 
 }
