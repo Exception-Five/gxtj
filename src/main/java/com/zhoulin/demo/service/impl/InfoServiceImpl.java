@@ -7,10 +7,12 @@ import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.service.InfoService;
+import com.zhoulin.demo.service.JcsegService;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class InfoServiceImpl implements InfoService{
 
     @Autowired
     private VerificationUtils verificationUtils;
+
+    @Autowired
+    private JcsegService jcsegService;
 
     /**
      * 完整版
@@ -153,6 +158,31 @@ public class InfoServiceImpl implements InfoService{
             }
 
             return dateList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    @Scheduled(fixedRate = 600000)
+    public List<String> getHotWords(){
+
+        List<Info> dateList = new ArrayList<>();
+        List<String> hotWords = new ArrayList<>();
+
+        try {
+            dateList = infoMapper.findInfoByDate(0);
+            for (Info info:dateList) {
+                String content = info.getTitle() + info.getDescription();
+                List<String> phrase = jcsegService.getKeyphrase(content);
+                if (phrase != null){
+                    for (String word:phrase) {
+                        hotWords.add(word);
+                    }
+                }
+            }
+            return hotWords;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

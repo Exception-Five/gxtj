@@ -59,7 +59,7 @@ public class InformationController {
      * @param infoId 资讯编号
      * @return
      */
-    @RequestMapping(value = "/getInfoByInfoId/{infoId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getInfoByInfoId/{infoId}", method = RequestMethod.POST)
     @ResponseBody
     public Message getUserInfoById(@PathVariable(value = "infoId") Long infoId, HttpServletRequest request){
 

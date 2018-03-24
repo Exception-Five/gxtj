@@ -14,6 +14,7 @@ import com.zhoulin.demo.mapper.*;
 import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.SpiderService;
+import com.zhoulin.demo.service.search.SearchService;
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Author: YannYao
- * @Description:
- * @Date Created in 12:19 2018/3/15
+ * 实时爬虫模块
  */
 @Component
 public class SpiderServiceImpl implements SpiderService{
+
+    @Autowired
+    private SearchService searchService;
     @Autowired
     private InformationMapper informationMapper;
     @Autowired
@@ -152,8 +154,14 @@ public class SpiderServiceImpl implements SpiderService{
                 keyword = "";
                 logger.info("获取的关键词为 >>>>> " + tokenizerResult);
 
+                //插入mysql
                 informationMapper.addInformation(information);
+
                 infoId = information.getId();
+
+                //插入es
+                searchService.indexPro(infoId);
+
                 info.setInfoId(infoId);
                 String[] imageList = images.split(",");
                 if (imageList.length > 0) {

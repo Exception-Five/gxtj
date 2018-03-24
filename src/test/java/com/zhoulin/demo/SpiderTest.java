@@ -28,7 +28,7 @@ public class SpiderTest extends DemoApplicationTests{
     @Test
     public void test() {
 //        for(int i=1;i<=5;i++){
-            spiderService.run(8);
+            spiderService.run(1);
 //        }
 
 
