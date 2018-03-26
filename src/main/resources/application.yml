@@ -31,7 +31,7 @@ spring:
 
   redis:                              #配置redis数据库连接
     host: 127.0.0.1
-    port: 6379
+    port: 63791
     pool:
       max-active: 8
       min-idle: 0
@@ -40,6 +40,10 @@ spring:
     database: 0                       #默认是索引为0的数据库
     password:
     timeout: 0
+    sentinel:
+      master: mymaster                #哨兵模式
+      nodes: 127.0.0.1:26279,127.0.0.1:63794,127.0.0.1:26379
+
   kafka:
     bootstrap-servers: 127.0.0.1:9092
     consumer:
