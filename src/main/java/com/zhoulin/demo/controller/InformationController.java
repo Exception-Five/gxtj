@@ -5,14 +5,14 @@ import com.zhoulin.demo.config.security.JwtTokenUtil;
 import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
-import com.zhoulin.demo.service.InfoService;
-import com.zhoulin.demo.service.InformationService;
-import com.zhoulin.demo.service.LogInfoService;
-import com.zhoulin.demo.service.UserModService;
+import com.zhoulin.demo.service.*;
+import com.zhoulin.demo.service.impl.RedisServiceImpl;
 import com.zhoulin.demo.utils.CheckType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +53,9 @@ public class InformationController {
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private RedisServiceImpl redisTemplate;
 
     /**
      * 根据【资讯编号】获取对应资讯信息
@@ -212,6 +215,20 @@ public class InformationController {
             e.printStackTrace();
             return new Message(Message.SUCCESS,"修改新闻>>>>异常",e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/getHotWords", method = RequestMethod.GET)
+    @ResponseBody
+    public Message getHotWords(){
+
+        String key = "hotWords_1";
+        ValueOperations<String, List<String>> operations = redisTemplate.getRedisTemplate().opsForValue();
+        List<String> hotWords = operations.get(key);
+
+        logger.info("获取实时热词>>>" + hotWords.toString());
+
+        return new Message(Message.SUCCESS,"获取实时热词>>>>成功",hotWords);
+
     }
 
 }

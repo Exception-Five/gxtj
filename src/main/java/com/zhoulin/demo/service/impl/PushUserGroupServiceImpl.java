@@ -28,7 +28,7 @@ public class PushUserGroupServiceImpl implements PushUserGroupService {
     private InfoService infoService;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisServiceImpl redisTemplate;
 
     /**
      * 检测各个类型新闻是否有增加
@@ -53,10 +53,10 @@ public class PushUserGroupServiceImpl implements PushUserGroupService {
 //        redisTemplate.delete("size_8");
 //        redisTemplate.delete("size_9");
         try {
-            ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
+            ValueOperations<String, Integer> operations = redisTemplate.getRedisTemplate().opsForValue();
             for (int i=0;i<9;i++){
                 String key = "size_" + (i+1);
-                boolean hasKey = redisTemplate.hasKey(key);
+                boolean hasKey = redisTemplate.getRedisTemplate().hasKey(key);
                 size[i] = typeRelationMapper.getCountByTypeId(i+1);
                 logger.info("类型： " + (i+1) + " 新闻数量： " + size[i]);
                 if (hasKey) {
