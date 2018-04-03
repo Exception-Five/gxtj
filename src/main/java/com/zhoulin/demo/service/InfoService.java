@@ -18,4 +18,6 @@ public interface InfoService {
 
     public List<Info> findInfoByDate(int limitNum) throws Exception;
 
+    public List<String> getHotWords() throws Exception;
+
 }

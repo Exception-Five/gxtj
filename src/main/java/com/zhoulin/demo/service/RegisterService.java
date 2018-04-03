@@ -18,4 +18,12 @@ public interface RegisterService {
      */
     public UserInfo activationUserInfo(String code) throws Exception;
 
+    /**
+     * 密码找回
+     * @param emailUrl
+     * @param token
+     * @throws Exception
+     */
+    public void findUserPassword(String emailUrl, String token) throws Exception;
+
 }

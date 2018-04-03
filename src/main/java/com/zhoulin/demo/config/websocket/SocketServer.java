@@ -3,18 +3,15 @@ package com.zhoulin.demo.config.websocket;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
 import com.zhoulin.demo.service.PushUserGroupService;
-import com.zhoulin.demo.service.impl.PushUserGroupServiceImpl;
 import com.zhoulin.demo.utils.ReckonUserGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

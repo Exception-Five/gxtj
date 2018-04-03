@@ -3,18 +3,25 @@ package com.zhoulin.demo.service.impl;
 import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.InfoContent;
 import com.zhoulin.demo.bean.InfoImage;
+import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.service.InfoService;
+import com.zhoulin.demo.service.JcsegService;
+import com.zhoulin.demo.service.RedisService;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class InfoServiceImpl implements InfoService{
@@ -32,6 +39,12 @@ public class InfoServiceImpl implements InfoService{
 
     @Autowired
     private VerificationUtils verificationUtils;
+
+    @Autowired
+    private JcsegService jcsegService;
+
+    @Autowired
+    private RedisServiceImpl redisTemplate;
 
     /**
      * 完整版
@@ -153,6 +166,42 @@ public class InfoServiceImpl implements InfoService{
             }
 
             return dateList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    @Scheduled(fixedRate = 600000)
+    public List<String> getHotWords(){
+
+        List<Info> dateList = new ArrayList<>();
+        List<String> hotWords = new ArrayList<>();
+
+        String key = "hotWords_1";
+        ValueOperations<String, List<String>> operations = redisTemplate.getRedisTemplate().opsForValue();
+
+        // 缓存存在
+        boolean hasKey = redisTemplate.getRedisTemplate().hasKey(key);
+        if (hasKey) {
+            redisTemplate.getRedisTemplate().delete(key);
+        }
+
+        try {
+            dateList = infoMapper.findInfoByDate(0);
+            for (Info info:dateList) {
+                String content = info.getTitle() + info.getDescription();
+                List<String> phrase = jcsegService.getKeyphrase(content);
+                if (phrase != null){
+                    for (String word:phrase) {
+                        hotWords.add(word);
+                    }
+                }
+            }
+            logger.info("HotWords:   " + hotWords);
+            operations.set(key, hotWords, 2, TimeUnit.HOURS);
+            return hotWords;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

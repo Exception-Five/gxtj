@@ -37,13 +37,11 @@ public class ReckonUserGroup {
         try {
             userMod = userModService.getUserModByUserId(userId);
             mods.add(userMod.getEntertainment());
-            mods.add(userMod.getPolitics());
-            mods.add(userMod.getSports());
+            mods.add(userMod.getLaw());
             mods.add(userMod.getBusiness());
             mods.add(userMod.getTechnology());
-            mods.add(userMod.getCar());
-            mods.add(userMod.getMilitary());
-            mods.add(userMod.getTravel());
+            mods.add(userMod.getInternet());
+            mods.add(userMod.getPolitics());
             mods.add(userMod.getLife());
 
             for (Integer mod : mods){
@@ -53,8 +51,9 @@ public class ReckonUserGroup {
             double rate = 0;
 
             for (int i=0;i<mods.size();i++) {
-                rate = mods.get(i)/sumNum;
-                if ((double)mods.get(i)/(double)sumNum >= 0.15){
+                System.out.println((double)mods.get(i)/(double)sumNum);
+                rate = (double)mods.get(i)/(double)sumNum;
+                if (rate >= 0.15){
                     groups.add(i+1);
                 }
             }

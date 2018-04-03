@@ -22,4 +22,3 @@ dist/
 nbdist/
 .nb-gradle/
 /src/main/resources/library/merged.txt
-/src/main/resources/library/33tokenR.txt

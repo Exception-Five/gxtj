@@ -16,6 +16,8 @@ public interface UserInfoService {
 
     Integer deleteUserInfoById(Integer userId) throws Exception;
 
+    UserInfo findUserPW(String username, String password) throws Exception;
+
 //    Integer UserInfoSignUp(UserInfo userInfo) throws Exception;
 
 

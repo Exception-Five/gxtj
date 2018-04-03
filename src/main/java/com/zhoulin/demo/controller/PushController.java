@@ -83,6 +83,7 @@ public class PushController {
 
             informationList = pushService.logAnalyzForPush(userInfo.getUserId());
 
+            
             return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", informationList);
         } catch (Exception e) {
             e.printStackTrace();

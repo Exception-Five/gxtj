@@ -14,7 +14,6 @@
     <select id="getInfoByTRId" parameterType="long" resultMap="TypeRelationMap">
         SELECT * FROM type_relation
         WHERE info_id = #{infoId}
-        ORDER BY publish_date DESC
     </select>
 
     <select id="getInfoByTypeId" parameterType="int" resultMap="TypeRelationMap">
@@ -37,9 +36,9 @@
         where info_id = #{infoId,jdbcType=INTEGER}
     </update>
 
-    <select id="getCountByTypeId" parameterType="long" resultMap="TypeRelationMap">
+    <select id="getCountByTypeId" parameterType="int" resultType="int">
         SELECT COUNT(*) FROM type_relation
-        WHERE info_id = #{infoId}
+        WHERE type_id = #{typeId}
         ORDER BY publish_date DESC
     </select>
 </mapper>
