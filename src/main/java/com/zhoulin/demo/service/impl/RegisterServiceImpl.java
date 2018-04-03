@@ -51,4 +51,19 @@ public class RegisterServiceImpl implements RegisterService {
         return userInfo;
     }
 
+    @Override
+    public void findUserPassword(String emailUrl, String token) throws Exception {
+
+        String subject = "用户密码找回";
+
+        Context context = new Context();
+
+        context.setVariable("newPw", token);
+
+        String emailContent = templateEngine.process("findPassword", context);
+
+        mailService.sendHtmlMail(emailUrl, subject, emailContent);
+
+    }
+
 }

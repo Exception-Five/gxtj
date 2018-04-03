@@ -22,4 +22,6 @@ public interface UserInfoMapper {
     Integer deleteUserInfoById(Integer userId) throws Exception;
 
     boolean existEmail(String userMail) throws Exception;
+
+    UserInfo findUserPW(String username, String password) throws Exception;
 }

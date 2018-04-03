@@ -172,4 +172,24 @@ public class UserInfo implements Serializable {
     public void setUserGroup(UserGroup userGroup) {
         this.userGroup = userGroup;
     }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", userImageUrl='" + userImageUrl + '\'' +
+                ", userMail='" + userMail + '\'' +
+                ", userGroupId=" + userGroupId +
+                ", userStatus=" + userStatus +
+                ", lastLoginTime=" + lastLoginTime +
+                ", lastLoginOutTime=" + lastLoginOutTime +
+                ", gmtModified=" + gmtModified +
+                ", gmtCreate=" + gmtCreate +
+                ", roles=" + roles +
+                ", userGroup=" + userGroup +
+                '}';
+    }
 }

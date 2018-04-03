@@ -16,11 +16,8 @@ public class UserMod implements Serializable{
     //娱乐
     private int entertainment;
 
-    //政治
-    private int politics;
-
-    //体育
-    private int sports;
+    //法律
+    private int law;
 
     //经济
     private int business;
@@ -29,19 +26,13 @@ public class UserMod implements Serializable{
     private int technology;
 
     //互联网
-    private int car;
+    private int internet;
 
-    //军事
-    private int military;
-
-    //旅游
-    private int travel;
+    //政治
+    private int politics;
 
     //生活
     private int life;
-
-    //其他
-    private int other;
 
     public Integer getModId() {
         return modId;
@@ -75,14 +66,6 @@ public class UserMod implements Serializable{
         this.politics = politics;
     }
 
-    public int getSports() {
-        return sports;
-    }
-
-    public void setSports(int sports) {
-        this.sports = sports;
-    }
-
     public int getBusiness() {
         return business;
     }
@@ -99,28 +82,20 @@ public class UserMod implements Serializable{
         this.technology = technology;
     }
 
-    public int getCar() {
-        return car;
+    public int getLaw() {
+        return law;
     }
 
-    public void setCar(int car) {
-        this.car = car;
+    public void setLaw(int law) {
+        this.law = law;
     }
 
-    public int getMilitary() {
-        return military;
+    public int getInternet() {
+        return internet;
     }
 
-    public void setMilitary(int military) {
-        this.military = military;
-    }
-
-    public int getTravel() {
-        return travel;
-    }
-
-    public void setTravel(int travel) {
-        this.travel = travel;
+    public void setInternet(int internet) {
+        this.internet = internet;
     }
 
     public int getLife() {
@@ -131,11 +106,4 @@ public class UserMod implements Serializable{
         this.life = life;
     }
 
-    public int getOther() {
-        return other;
-    }
-
-    public void setOther(int other) {
-        this.other = other;
-    }
 }
