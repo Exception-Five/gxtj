@@ -37,13 +37,11 @@ public class ReckonUserGroup {
         try {
             userMod = userModService.getUserModByUserId(userId);
             mods.add(userMod.getEntertainment());
-            mods.add(userMod.getPolitics());
-            mods.add(userMod.getSports());
+            mods.add(userMod.getLaw());
             mods.add(userMod.getBusiness());
             mods.add(userMod.getTechnology());
-            mods.add(userMod.getCar());
-            mods.add(userMod.getMilitary());
-            mods.add(userMod.getTravel());
+            mods.add(userMod.getInternet());
+            mods.add(userMod.getPolitics());
             mods.add(userMod.getLife());
 
             for (Integer mod : mods){

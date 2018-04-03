@@ -1,6 +1,7 @@
 package com.zhoulin.demo.service.impl;
 
 import com.jcseg.extractor.impl.TextRankKeyphraseExtractor;
+import com.jcseg.extractor.impl.TextRankKeywordsExtractor;
 import com.jcseg.tokenizer.core.*;
 import com.zhoulin.demo.service.JcsegService;
 import org.springframework.stereotype.Component;
@@ -51,7 +52,33 @@ public class JcsegServiceImpl implements JcsegService {
     }
 
     @Override
-    public List<String> getKeywordsphrase(String content) throws Exception {
-        return null;
+    public List<String> getKeywordsphrase(String content)  {
+
+        JcsegTaskConfig config = new JcsegTaskConfig(true);
+        config.setClearStopwords(true);
+        config.setAppendCJKSyn(false);
+        config.setKeepUnregWords(false);
+        ADictionary dic = DictionaryFactory.createSingletonDictionary(config);
+
+        ISegment seg = null;
+        try {
+            seg = SegmentFactory
+                    .createJcseg(JcsegTaskConfig.COMPLEX_MODE, new Object[]{config, dic});
+            TextRankKeywordsExtractor extractor = new TextRankKeywordsExtractor(seg);
+            extractor.setMaxIterateNum(100);
+            extractor.setWindowSize(1);
+            extractor.setKeywordsNum(5);
+
+            List<String> phrases;
+            phrases = extractor.getKeywordsFromString(content);
+            return phrases;
+        } catch (JcsegException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }

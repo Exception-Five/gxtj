@@ -199,6 +199,26 @@ public class UserInfoServiceImpl implements UserInfoService{
 
     }
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    @Override
+    public UserInfo findUserPW(String username, String password) {
+
+        UserInfo userInfo = new UserInfo();
+
+        try {
+            userInfo = userInfoMapper.findUserPW(username, password);
+            return userInfo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    @Override
 //    public Integer UserInfoSignUp(UserInfo userInfo) throws Exception {
 //

@@ -19,20 +19,16 @@ public class CheckType {
         if (typeId == 1){
             userMod.setEntertainment(userMod.getEntertainment() + 1);
         }else if (typeId == 2){
-            userMod.setPolitics(userMod.getPolitics() + 1);
+            userMod.setLaw(userMod.getLaw() + 1);
         }else if (typeId == 3){
-            userMod.setSports(userMod.getSports() + 1);
-        }else if (typeId == 4){
             userMod.setBusiness(userMod.getBusiness() + 1);
-        }else if (typeId == 5){
+        }else if (typeId == 4){
             userMod.setTechnology(userMod.getTechnology() + 1);
+        }else if (typeId == 5){
+            userMod.setInternet(userMod.getInternet() + 1);
         }else if (typeId == 6){
-            userMod.setCar(userMod.getCar() + 1);
+            userMod.setPolitics(userMod.getPolitics() + 1);
         }else if (typeId == 7){
-            userMod.setMilitary(userMod.getMilitary() + 1);
-        }else if (typeId == 8){
-            userMod.setTravel(userMod.getTravel() + 1);
-        }else if (typeId == 9){
             userMod.setLife(userMod.getLife() + 1);
         }
 
@@ -58,7 +54,7 @@ public class CheckType {
                 hashMap.put(typeId, 1);
             }
         }
-        for (int i=1;i<10;i++) {
+        for (int i=1;i<8;i++) {
             if (hashMap.get(i)==null){
                 hashMap.put(i, 0);
             }
@@ -66,7 +62,7 @@ public class CheckType {
         }
         maxNum = Collections.max(list);
         System.out.println(maxNum);
-        for (int i=0;i<9;i++) {
+        for (int i=0;i<7;i++) {
             if (list.get(i).equals(maxNum)){
                 Relation relation = new Relation();
                 relation.setId(i+1);
@@ -77,7 +73,7 @@ public class CheckType {
         }
         maxNum = Collections.max(list);
         System.out.println(maxNum);
-        for (int i=0;i<9;i++) {
+        for (int i=0;i<7;i++) {
             if (list.get(i).equals(maxNum)){
                 Relation relation = new Relation();
                 relation.setId(i+1);
@@ -88,7 +84,7 @@ public class CheckType {
         }
         maxNum = Collections.max(list);
         System.out.println(maxNum);
-        for (int i=0;i<9;i++) {
+        for (int i=0;i<7;i++) {
             if (list.get(i).equals(maxNum)){
                 Relation relation = new Relation();
                 relation.setId(i+1);

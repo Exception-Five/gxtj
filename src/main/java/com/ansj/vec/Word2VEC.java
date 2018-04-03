@@ -4,8 +4,12 @@ import com.ansj.vec.domain.WordEntry;
 
 import com.ansj.vec.util.FileUtil;
 import com.ansj.vec.util.MergeFile;
+import com.jcseg.extractor.impl.TextRankKeywordsExtractor;
+import com.jcseg.tokenizer.core.*;
+import com.zhoulin.demo.service.JcsegService;
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -17,24 +21,44 @@ import static com.ansj.vec.constants.Constants.ENCODING;
 @Component
 public class Word2VEC {
 
+	@Autowired
+	private JcsegService jcsegService;
+
 	public static void dataProcess() {
 //		File commentFile = new File(Word2VEC.class.getResource("/library/word2vec.txt").getPath());
 		//010806 020806 030806
 
-		File commentFile = new File(Word2VEC.class.getResource("/library/merged.txt").getPath());
+		JcsegTaskConfig config = new JcsegTaskConfig(true);
+		config.setClearStopwords(true);
+		config.setAppendCJKSyn(false);
+		config.setKeepUnregWords(false);
+		ADictionary dic = DictionaryFactory.createSingletonDictionary(config);
+
+		File commentFile = new File(Word2VEC.class.getResource("/library/mod/aa.txt").getPath());
 		System.out.println("dasdasdasdasd");
 		long start = System.currentTimeMillis();
 		try {
+
+			ISegment seg = SegmentFactory
+					.createJcseg(JcsegTaskConfig.NLP_MODE, new Object[]{config, dic});
+
+			TextRankKeywordsExtractor extractor = new TextRankKeywordsExtractor(seg);
+			extractor.setMaxIterateNum(100);
+			extractor.setWindowSize(1);
+			extractor.setKeywordsNum(50);
+			List<String> keywords;
+
 			StringBuilder vectorSB = new StringBuilder();
 			System.out.println("dasdasdasdsd");
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
 				System.out.println("yjyjyjyjy");
-				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
+				vectorSB.append(extractor.getKeywordsFromString(line.trim()));
+//				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
 			}
 
-			File file = new File("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\comment\\21252tokenR.txt");
+			File file = new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt");
 			List<StringBuilder> list = new ArrayList<StringBuilder>();
 			list.add(vectorSB);
 			FileUtils.writeLines(file, list);
@@ -71,43 +95,43 @@ public class Word2VEC {
 	}
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-//		dataProcess();
+		dataProcess();
 //		txtMerge();
 
 		//train the model and save model
 		Learn learn = new Learn();
 		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
-		learn.saveModel(new File("D:\\Java\\generator\\src\\main\\resources\\library\\comment\\vector21252.mod"));
+		learn.saveModel(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod"));
 //
 //		//use the trained model to analyze
 
-//		Word2VEC vec = new Word2VEC();
-//		vec.loadJavaModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\vector030806.mod");
+		Word2VEC vec = new Word2VEC();
+		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod");
 //
 //		System.out.println("法律" + "\t" +
 //		Arrays.toString(vec.getWordVector("法律")));
 //
-//		String str = "法律";
+//		String str = "财经";
 //		for (int i = 0; i < 20; i++) {
 //			System.out.println(vec.distance(str));
 //
 //		}
 
-//		List<String> wordList = new ArrayList<String>();
-//		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
-//		wordList.add("娱乐");
-//		wordList.add("两会");
-//		wordList.add("体育");
-//		wordList.add("财经");
-//		wordList.add("科技");
-//		wordList.add("汽车");
-//		wordList.add("军事");
-//		wordList.add("旅游");
-//		wordList.add("生活");
-//		for (String word : wordList) {
-//			System.out.println(word + "\t" +
-//					vec.distance(word));
-//		}
+		List<String> wordList = new ArrayList<String>();
+		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
+		wordList.add("法律");
+		wordList.add("两会");
+		wordList.add("体育");
+		wordList.add("财经");
+		wordList.add("科技");
+		wordList.add("汽车");
+		wordList.add("互联网");
+		wordList.add("旅游");
+		wordList.add("国家");
+		for (String word : wordList) {
+			System.out.println(word + "\t" +
+					vec.distance(word));
+		}
 
 		//System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
