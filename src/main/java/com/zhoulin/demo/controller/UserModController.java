@@ -98,7 +98,7 @@ public class UserModController {
         TypeRelation typeRelation = new TypeRelation();
         try {
             userMod = userModService.getUserModByUserId(userId);
-            typeRelationMapper.getInfoByTRId(infoId);
+            typeRelation = typeRelationMapper.getInfoByTRId(infoId);
             userMod = checkType.checkInfoType(userMod, typeRelation.getTypeId());
             //用户模型修改
             int upStatus = userModService.updateUserMod(userMod);

@@ -10,9 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+@Component
 public class HumanListenerServiceImpl implements HumanListenerService {
 
     private static final Logger logger = LoggerFactory.getLogger(HumanListenerServiceImpl.class);
