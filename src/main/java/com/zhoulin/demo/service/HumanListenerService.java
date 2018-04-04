@@ -1,9 +1,11 @@
 package com.zhoulin.demo.service;
 
+import com.zhoulin.demo.bean.LogInfoDTO;
+
 import java.util.List;
 
 public interface HumanListenerService {
 
-    public List<Integer> userReadTime(int userId) throws Exception;
+    public List<LogInfoDTO> userReadTime(int userId) throws Exception;
 
 }
