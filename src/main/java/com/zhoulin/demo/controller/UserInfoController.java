@@ -171,7 +171,6 @@ public class UserInfoController {
      */
     @RequestMapping(value = "/getUserReadTime", method = RequestMethod.POST)
     @ResponseBody
-//    @Scheduled(fixedRate = 30000)
     public Message getUserReadTime(){
         //token中取出userInfo
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
