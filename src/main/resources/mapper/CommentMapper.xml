@@ -23,6 +23,9 @@
     <select id="getCommentById" parameterType="int" resultMap="CommentMap">
         SELECT * FROM `info_comment` u WHERE `id` = #{_parameter}  AND `status` = 0
     </select>
+    <select id="getCommentsByUserId" parameterType="int" resultMap="CommentMap">
+        SELECT * FROM `info_comment` u WHERE `user_id` = #{_parameter}  AND `status` = 0
+    </select>
     <select id="getMostLikesComments" parameterType="int" resultMap="CommentMap">
         SELECT * FROM `info_comment`  WHERE `status` = 0
         ORDER BY `like` DESC LIMIT 0, 20

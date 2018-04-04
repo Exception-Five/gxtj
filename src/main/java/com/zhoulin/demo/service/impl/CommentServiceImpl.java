@@ -112,6 +112,28 @@ public class CommentServiceImpl implements CommentService{
         }
         return commentList;
     }
+
+    @Override
+    public List<InfoComment> getCommentsByUserId(Integer userId) throws Exception {
+        List<InfoComment> commentList = new ArrayList<>();
+        BaseTableMessage tableMessage = new BaseTableMessage();
+        try {
+            commentList = commentMapper.getCommentsByUserId(userId);
+            for (InfoComment comment: commentList){
+                Integer replyUserId = comment.getReplyUserId();
+                if (replyUserId!=null) {
+                    comment.setReplyUser(userMapper.getUserInfoById(comment.getReplyUserId()));
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return commentList;
+
+    }
+
     @Override
     public InfoComment add(InfoComment comment) {
         InfoComment result = null;
