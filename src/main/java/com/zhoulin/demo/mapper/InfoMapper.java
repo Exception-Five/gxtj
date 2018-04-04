@@ -20,4 +20,6 @@ public interface InfoMapper {
 
     public List<Info> findInfoByDate(int limitNum) throws Exception;
 
+    public int allCount() throws Exception;
+
 }
