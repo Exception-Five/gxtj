@@ -357,7 +357,7 @@ public class SpiderServiceImpl implements SpiderService{
             /*分类*/
 
             //加载训练模型
-            vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector44.mod");
+            vec.loadJavaModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\vector44.mod");
             logger.info("!!! 加载训练模型完成 ");
 
             for(int i = 0; i<arr.size(); i++) {
