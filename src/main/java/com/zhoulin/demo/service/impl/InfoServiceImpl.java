@@ -3,18 +3,15 @@ package com.zhoulin.demo.service.impl;
 import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.InfoContent;
 import com.zhoulin.demo.bean.InfoImage;
-import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.mapper.InfoContentMapper;
 import com.zhoulin.demo.mapper.InfoImageMapper;
 import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.JcsegService;
-import com.zhoulin.demo.service.RedisService;
 import com.zhoulin.demo.utils.VerificationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -205,6 +202,17 @@ public class InfoServiceImpl implements InfoService{
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public int allCount() {
+        try {
+            int allNum = infoMapper.allCount();
+            return allNum;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
         }
     }
 }

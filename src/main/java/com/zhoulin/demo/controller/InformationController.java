@@ -66,8 +66,6 @@ public class InformationController {
     @ResponseBody
     public Message getUserInfoById(@PathVariable(value = "infoId") Long infoId, HttpServletRequest request){
 
-//        Information information = new Information();
-
         List<Long> infoIdList = new ArrayList<>();
 
         Integer addLStatus = 0;
@@ -78,7 +76,7 @@ public class InformationController {
 
         TypeRelation typeRelation = new TypeRelation();
 
-        UserMod userMod = new UserMod();
+//        UserMod userMod = new UserMod();
 
         List<LogInfo> logInfos = new ArrayList<>();
 
@@ -94,7 +92,7 @@ public class InformationController {
 
                 Integer userId = userInfo.getUserId();
 
-                userMod = userModService.getUserModByUserId(userId);
+//                userMod = userModService.getUserModByUserId(userId);
 
                 typeRelation = typeRelationMapper.getInfoByTRId(infoId);
 
@@ -127,10 +125,10 @@ public class InformationController {
                     }
                 }
 
-                userMod = checkType.checkInfoType(userMod, typeRelation.getTypeId());
-
-                //用户模型修改
-                userModService.updateUserMod(userMod);
+//                userMod = checkType.checkInfoType(userMod, typeRelation.getTypeId());
+//
+//                //用户模型修改
+//                userModService.updateUserMod(userMod);
 
                 info.setReads(info.getReads() + 1);
 
@@ -157,7 +155,7 @@ public class InformationController {
     @RequestMapping(value = "/findInfoByDate/{page}",method = RequestMethod.GET)
     @ResponseBody
     public Message findInfoByDate(@PathVariable(value = "page") int page){
-//        List<Information> dateInfoList = new ArrayList<>();
+
         List<Info> dateInfoList = new ArrayList<>();
         try {
             dateInfoList = infoService.findInfoByDate(page);
@@ -217,6 +215,10 @@ public class InformationController {
         }
     }
 
+    /**
+     * 获取热词
+     * @return
+     */
     @RequestMapping(value = "/getHotWords", method = RequestMethod.GET)
     @ResponseBody
     public Message getHotWords(){
@@ -229,6 +231,24 @@ public class InformationController {
 
         return new Message(Message.SUCCESS,"获取实时热词>>>>成功",hotWords);
 
+    }
+
+    /**
+     * 获取新闻总条数
+     * @return
+     */
+    @RequestMapping(value = "/getAllCount", method = RequestMethod.GET)
+    @ResponseBody
+    public Message getAllCount(){
+
+        int allNum = 0;
+        try {
+            allNum = infoService.allCount();
+            return new Message(Message.SUCCESS,"获取资讯总数>>>>>成功",allNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取资讯总数>>>>>>失败",allNum);
+        }
     }
 
 }

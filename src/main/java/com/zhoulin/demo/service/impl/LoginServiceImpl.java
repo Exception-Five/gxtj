@@ -1,8 +1,6 @@
 package com.zhoulin.demo.service.impl;
 
-import com.zhoulin.demo.bean.Message;
-import com.zhoulin.demo.bean.UserGroup;
-import com.zhoulin.demo.bean.UserInfo;
+import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.config.security.JwtTokenUtil;
 import com.zhoulin.demo.config.websocket.SocketServer;
 import com.zhoulin.demo.mapper.UserGroupMapper;
@@ -10,6 +8,8 @@ import com.zhoulin.demo.mapper.UserInfoMapper;
 import com.zhoulin.demo.service.LoginService;
 import com.zhoulin.demo.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class LoginServiceImpl implements LoginService {
@@ -34,10 +35,17 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public Message login(UserInfo userInfo, HttpServletResponse response) {
 
         UserInfo user = userInfoMapper.getUserByUsername(userInfo.getUsername());
+
+        // 从缓存中获取列表
+        String key = "" + user.getUserId();
+        ValueOperations<String, List<LogInfoDTO>> operations = redisTemplate.opsForValue();
 
         if(user != null){
             if(userInfo.getPassword().equals(user.getPassword())&&userInfo.getUsername().equals(user.getUsername())){
@@ -72,6 +80,10 @@ public class LoginServiceImpl implements LoginService {
                     e.printStackTrace();
                     loginTimeMsg = "登录时间更新异常";
                 }
+
+                //出入监听缓存
+                List<LogInfoDTO> logInfoDTOS = new ArrayList<>();
+                operations.set(key, logInfoDTOS, 1, TimeUnit.HOURS);
 
                 return new Message(Message.SUCCESS,"登陆成功" + loginTimeMsg, user);
             }else {
