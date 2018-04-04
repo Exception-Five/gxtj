@@ -1,9 +1,9 @@
 package com.zhoulin.demo.controller;
 
-import com.zhoulin.demo.bean.Message;
-import com.zhoulin.demo.bean.UserInfo;
-import com.zhoulin.demo.bean.UserMod;
+import com.zhoulin.demo.bean.*;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.UserModService;
+import com.zhoulin.demo.utils.CheckType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +14,12 @@ public class UserModController {
 
     @Autowired
     private UserModService userModService;
+
+    @Autowired
+    private TypeRelationMapper typeRelationMapper;
+
+    @Autowired
+    private CheckType checkType;
 
     @RequestMapping(value = "/getUserMod", method = RequestMethod.GET)
     @ResponseBody
@@ -75,6 +81,36 @@ public class UserModController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR, "新建对应用户模型>>>异常", e);
+        }
+    }
+
+    /**
+     * 前端达到一定时间后请求该接口
+     * 仔细阅读
+     * @param userId
+     * @param infoId
+     * @return
+     */
+    @RequestMapping(value = "/updateUserModForRead", method = RequestMethod.POST)
+    @ResponseBody
+    public Message updateUserModForRead(@RequestParam(value = "userId") Integer userId, @RequestParam(value = "infoId") Integer infoId){
+        UserMod userMod = new UserMod();
+        TypeRelation typeRelation = new TypeRelation();
+        try {
+            userMod = userModService.getUserModByUserId(userId);
+            typeRelationMapper.getInfoByTRId(infoId);
+            userMod = checkType.checkInfoType(userMod, typeRelation.getTypeId());
+            //用户模型修改
+            int upStatus = userModService.updateUserMod(userMod);
+            if (upStatus == 1){
+                return new Message(Message.SUCCESS, "更新用户模型>>>成功", upStatus);
+            }else {
+                return new Message(Message.FAILURE, "更新用户模型>>>失败", upStatus);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR, "更新用户模型>>>异常", e.getMessage());
         }
     }
 

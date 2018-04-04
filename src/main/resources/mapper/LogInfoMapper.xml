@@ -8,6 +8,7 @@
         <result column="user_id" property="userId"/>
         <result column="info_id" property="infoId"/>
         <result column="look_time" property="lookTime"/>
+        <result column="end_time" property="endTime"/>
     </resultMap>
 
     <select id="getLogInfoByUserId" parameterType="int" resultMap="LogInfoMap">
@@ -43,6 +44,9 @@
             <if test="lookTime != null">
                 look_time = #{lookTime},
             </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
         </set>
         where log_id = #{logId,jdbcType=INTEGER}
     </update>
@@ -52,8 +56,8 @@
     </delete>
 
     <insert id="addLogInfo" parameterType="LogInfo" useGeneratedKeys="true" keyProperty="logId">
-        INSERT INTO log_info (user_id, info_id, look_time)
-        VALUES (#{userId}, #{infoId}, #{lookTime})
+        INSERT INTO log_info (user_id, info_id, look_time, end_time)
+        VALUES (#{userId}, #{infoId}, #{lookTime}, #{endTime})
     </insert>
 
     <select id="getLogInfoNowadays" parameterType="int" resultMap="LogInfoMap">

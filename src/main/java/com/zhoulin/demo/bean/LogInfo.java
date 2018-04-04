@@ -16,6 +16,16 @@ public class LogInfo implements Serializable{
 
     private Date lookTime;
 
+    private Date endTime;
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     public Integer getLogId() {
         return logId;
     }
@@ -54,7 +64,8 @@ public class LogInfo implements Serializable{
                 "logId=" + logId +
                 ", userId=" + userId +
                 ", infoId=" + infoId +
-                ", lookTime='" + lookTime + '\'' +
+                ", lookTime=" + lookTime +
+                ", endTime=" + endTime +
                 '}';
     }
 }

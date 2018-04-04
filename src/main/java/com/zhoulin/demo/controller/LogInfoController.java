@@ -86,6 +86,7 @@ public class LogInfoController {
 
     }
 
+
     /**
      * 用户浏览的新闻
      * @return
@@ -129,6 +130,28 @@ public class LogInfoController {
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR,"获取用户浏览文章>>>>>异常",e.getMessage());
+        }
+
+    }
+
+    /**
+     * 实时更新阅读时间
+     */
+    @RequestMapping(value = "/getNewEndTime", method = RequestMethod.POST)
+    @ResponseBody
+    public Message getNewEndTime(@RequestBody LogInfo logInfo){
+        int upStatus = 0;
+        try {
+            upStatus = logInfoService.updateLogInfo(logInfo);
+            if (upStatus == 1){
+                return new Message(Message.SUCCESS,"更新用户浏览文章>>>>>成功",upStatus);
+            }else {
+                return new Message(Message.FAILURE,"更新用户浏览文章>>>>>失败",upStatus);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"更新用户浏览文章>>>>>异常",upStatus);
         }
 
     }

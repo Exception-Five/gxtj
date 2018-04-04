@@ -20,4 +20,6 @@ public interface InfoService {
 
     public List<String> getHotWords() throws Exception;
 
+    public int allCount() throws Exception;
+
 }

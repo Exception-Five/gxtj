@@ -22,6 +22,10 @@
         SELECT * FROM info
     </select>
 
+    <select id="allCount" resultType="int">
+        SELECT COUNT(*) FROM info
+    </select>
+
     <select id="getInfoByInfoId" parameterType="long" resultMap="InfoMap">
         SELECT * FROM info
         WHERE info_id = #{infoId}
