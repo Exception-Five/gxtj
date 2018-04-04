@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Mapper
-@Component
 public interface TypeRelationMapper {
 
     public TypeRelation getInfoByTRId(long id) throws Exception;
