@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/publish/searchLog")
+@RequestMapping("/public/searchLog")
 public class SearchLogController {
 
     @Autowired

@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class TextRankKeyword
 {
-    public static final int nKeyword = 9;
+    public static final int nKeyword = 6;
     /**
      * 阻尼系数（ＤａｍｐｉｎｇＦａｃｔｏｒ），一般取值为0.85
      */

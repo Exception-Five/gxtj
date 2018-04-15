@@ -95,25 +95,26 @@ public class Word2VEC {
 	}
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		dataProcess();
+//		dataProcess();
 //		txtMerge();
 
 		//train the model and save model
-		Learn learn = new Learn();
-		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
-		learn.saveModel(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod"));
+//		Learn learn = new Learn();
+//		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
+//		learn.saveModel(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod"));
 //
 //		//use the trained model to analyze
 
 		Word2VEC vec = new Word2VEC();
-		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod");
+//		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod");
+		vec.loadGoogleModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\Google_word2vec_zhwiki1710_300d.bin");
 //
 //		System.out.println("法律" + "\t" +
 //		Arrays.toString(vec.getWordVector("法律")));
 //
 //		String str = "财经";
 //		for (int i = 0; i < 20; i++) {
-//			System.out.println(vec.distance(str));
+//			System.out.println(vec.distance("运动"));
 //
 //		}
 
@@ -133,7 +134,7 @@ public class Word2VEC {
 					vec.distance(word));
 		}
 
-		//System.out.println(vec.analogy("证据", "离婚", "涉及"));
+		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();

@@ -250,6 +250,7 @@ import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.mapper.*;
 import com.zhoulin.demo.service.InfoService;
 import com.zhoulin.demo.service.InformationService;
+import com.zhoulin.demo.service.JcsegService;
 import com.zhoulin.demo.service.SpiderService;
 import com.zhoulin.demo.service.search.SearchService;
 import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
@@ -291,6 +292,9 @@ public class SpiderServiceImpl implements SpiderService{
     private InfoImageMapper infoImageMapper;
     @Autowired
     private TypeRelationMapper typeRelationMapper;
+
+    @Autowired
+    private JcsegService jcsegService;
 
     private static final Logger logger = LoggerFactory.getLogger(ModServiceImpl.class);
 
@@ -357,7 +361,9 @@ public class SpiderServiceImpl implements SpiderService{
             /*分类*/
 
             //加载训练模型
-            vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector44.mod");
+//            vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\vector44.mod");
+//            vec.loadGoogleModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\wiki_chinese_word2vec(Google).model");
+            vec.loadGoogleModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\Google_word2vec_zhwiki1710_300d.bin");
             logger.info("!!! 加载训练模型完成 ");
 
             for(int i = 0; i<arr.size(); i++) {
@@ -374,9 +380,9 @@ public class SpiderServiceImpl implements SpiderService{
                 InformationConvert.convert(object, information);
                 InfoConvert.convert(object, info);
                 //拼接要分析的文本
-                analyzeContent = onlyText + information.getTitle() + information.getDescription();
+                analyzeContent = information.getTitle() + information.getDescription();
                 keywords = new TextRankKeyword().getKeyword("", analyzeContent);
-
+//                keywords = jcsegService.getKeywordsphrase(analyzeContent);
 
                 for (String kw : keywords) {
                     keyword = keyword + kw + ",";
@@ -396,8 +402,7 @@ public class SpiderServiceImpl implements SpiderService{
 
                 infoId = information.getId();
 
-                //插入es
-                searchService.indexPro(infoId);
+
 
                 info.setInfoId(infoId);
                 String[] imageList = images.split(",");
@@ -416,20 +421,22 @@ public class SpiderServiceImpl implements SpiderService{
                 infoImageMapper.addInfoImage(infoImage);
                 typeRelationMapper.addTypeRelation(typeRelation);
 
-
+                //插入es
+//                searchService.indexPro(infoId);
                 //关键词存储到mysql
                 //                informationService.updateInformation(information);
                 //                infoService.updateInfo(info);
                 for (Type type : typeList) {
                     Integer matchNum = 0;
                     kws = vec.distance(type.getTypeName());
-                    logger.info("!!! 向量词 " + kws.get(0));
+//                    logger.info("!!! 向量词 " + kws.get(0));
                     logger.info("!!! 类型 " + type.getTypeName());
 
                     List<String> s = TokenizerAnalyzerUtils.getAnalyzerResult(information.getKeyword());
+//                    List<String> s = keywords;
                     //得到类型 关键词范围
                     for (String kwT : kws) {
-                        logger.info("!!! 遍历 " + kwT);
+//                        logger.info("!!! 遍历 " + kwT);
 //                        if (s.contains(kwT)) {
 //                            logger.info("!!! 匹配成功 " + kwT);
 //                            matchNum = matchNum + 1;

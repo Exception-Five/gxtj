@@ -3,9 +3,11 @@ package com.zhoulin.demo.controller;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.service.LoginService;
+import com.zhoulin.demo.utils.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -28,13 +30,13 @@ public class LoginController {
         return message;
     }
 
-//    @RequestMapping(value = "/api/user/loginOut",method = RequestMethod.POST)
-//    public Message loginOut(HttpServletResponse response){
-//
-//        Message message = loginService.loginOut(response);
-//
-//        return message;
-//    }
+    @RequestMapping(value = "/getIp", method = RequestMethod.POST)
+    @ResponseBody
+    public String getIp(HttpServletRequest request) {
+        return IpUtil.getIpAddr(request);
+    }
+
+
 
 
 }
