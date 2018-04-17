@@ -14,7 +14,7 @@
         ORDER BY look_time DESC
     </select>
 
-    <insert id="addSearchCount" parameterType="SearchLog" useGeneratedKeys="true" keyProperty="slog_id">
+    <insert id="addSearchCount" parameterType="SearchLog" useGeneratedKeys="true" keyProperty="slogId">
         INSERT INTO search_log (search_content, look_time)
         VALUES (#{searchContent}, #{lookTime})
     </insert>

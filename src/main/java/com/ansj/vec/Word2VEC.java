@@ -95,28 +95,28 @@ public class Word2VEC {
 	}
 	public static void main(String[] args) throws IOException {
 		//preprocess the original comment to tokenizer and save as tokenizerResult.txt
-		dataProcess();
+//		dataProcess();
 //		txtMerge();
 
 		//train the model and save model
-		Learn learn = new Learn();
-		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
-		learn.saveModel(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod"));
+//		Learn learn = new Learn();
+//		learn.learnFile(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\33tokenR.txt"));
+//		learn.saveModel(new File("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod"));
 //
 //		//use the trained model to analyze
 
 		Word2VEC vec = new Word2VEC();
-		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod");
-//
+		vec.loadGoogleModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\Google_word2vec_zhwiki1710_300d.bin");
+
+		//
 //		System.out.println("法律" + "\t" +
 //		Arrays.toString(vec.getWordVector("法律")));
-//
-//		String str = "财经";
+		String str = "财经";
 //		for (int i = 0; i < 20; i++) {
 //			System.out.println(vec.distance(str));
-//
-//		}
 
+//		}
+//
 		List<String> wordList = new ArrayList<String>();
 		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
 		wordList.add("法律");
@@ -133,7 +133,7 @@ public class Word2VEC {
 					vec.distance(word));
 		}
 
-		//System.out.println(vec.analogy("证据", "离婚", "涉及"));
+//		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();
