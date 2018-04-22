@@ -219,6 +219,16 @@ public class UserInfoServiceImpl implements UserInfoService{
         }
     }
 
+    @Override
+    public UserInfo getUserByUsername(String username){
+
+        UserInfo userInfo = new UserInfo();
+
+        userInfo = userInfoMapper.getUserByUsername(username);
+
+        return userInfo;
+    }
+
 //    @Override
 //    public Integer UserInfoSignUp(UserInfo userInfo) throws Exception {
 //

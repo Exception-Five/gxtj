@@ -61,6 +61,16 @@ public class UserInfo implements Serializable {
         super();
     }
 
+    public UserInfo(String username, String password, String nickname, Integer userGroupId, Integer userStatus, Date gmtModified, Date gmtCreate) {
+        this.username = username;
+        this.password = password;
+        this.nickname = nickname;
+        this.userGroupId = userGroupId;
+        this.userStatus = userStatus;
+        this.gmtModified = gmtModified;
+        this.gmtCreate = gmtCreate;
+    }
+
     public Integer getUserId() {
         return userId;
     }

@@ -45,22 +45,31 @@ public class NewSpiderServiceImpl implements SpiderService{
 
     @Autowired
     private CheckType checkType;
+
     @Autowired
     private SearchService searchService;
+
     @Autowired
     private InformationMapper informationMapper;
+
     @Autowired
     private InformationService informationService;
+
     @Autowired
     private InfoService infoService;
+
     @Autowired
     private InfoContentMapper infoContentMapper;
+
     @Autowired
     private InfoMapper infoMapper;
+
     @Autowired
     private TypeMapper typeMapper;
+
     @Autowired
     private InfoImageMapper infoImageMapper;
+
     @Autowired
     private TypeRelationMapper typeRelationMapper;
 
@@ -159,7 +168,9 @@ public class NewSpiderServiceImpl implements SpiderService{
                 analyzeContent = information.getTitle() + information.getDescription() + onlyText;
 
                 //textRank提取关键词
-                keywords = new TextRankKeyword().getKeyword("", analyzeContent);
+//                keywords = new TextRankKeyword().getKeyword("", analyzeContent);
+                keywords = jcsegService.getKeywordsphrase(analyzeContent);
+                logger.info("关键词 >>>>" + keywords.toString());
 
                 //HanLP提取摘要
                 List<String> sentenceList = HanLP.extractSummary(analyzeContent, 3);
@@ -209,8 +220,8 @@ public class NewSpiderServiceImpl implements SpiderService{
                 typeRelation.setTypeId(typeId);
                 typeRelationMapper.addTypeRelation(typeRelation);
 
-
-
+                //插入es
+                searchService.indexPro(infoId);
 
             }
         }catch (Exception e){
