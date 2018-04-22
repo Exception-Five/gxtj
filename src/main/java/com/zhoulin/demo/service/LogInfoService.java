@@ -22,4 +22,6 @@ public interface LogInfoService {
 
     public boolean isReadInfo(Integer userId, Long infoId) throws Exception;
 
+    public List<Integer> getDistinctTypeByUserId(int userId) throws Exception;
+
 }

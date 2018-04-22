@@ -97,18 +97,48 @@ public class CheckType {
         return relationList;
     }
 
-    public static void main(String[] args) {
-        List<Integer> list = new ArrayList<Integer>();
-        list.add(1);
-        list.add(1);
-        list.add(1);
-        list.add(2);
-        list.add(4);
-        list.add(7);
-        list.add(9);
 
+    public int getTypeIdByTypeName(String typeName){
+
+        int typeId = 0;
+
+        if (typeName.equals("互联网")){
+            typeId = 1;
+        } else if (typeName.equals("体育")){
+            typeId = 2;
+        } else if (typeName.equals("健康")){
+            typeId = 3;
+        } else if (typeName.equals("军事")){
+            typeId = 4;
+        } else if (typeName.equals("教育")){
+            typeId = 5;
+        } else if (typeName.equals("文化")){
+            typeId = 6;
+        } else if (typeName.equals("旅游")){
+            typeId = 7;
+        } else if (typeName.equals("汽车")){
+            typeId = 8;
+        } else if (typeName.equals("生活")){
+            typeId = 9;
+        } else if (typeName.equals("财经")){
+            typeId = 10;
+        }
+        return typeId;
+    }
+
+    public static void main(String[] args) {
+//        List<Integer> list = new ArrayList<Integer>();
+//        list.add(1);
+//        list.add(1);
+//        list.add(1);
+//        list.add(2);
+//        list.add(4);
+//        list.add(7);
+//        list.add(9);
+//
         CheckType checkType = new CheckType();
-        checkType.findMostType(list);
+//        checkType.findMostType(list);
+        System.out.println(checkType.getTypeIdByTypeName("生活"));
     }
 
 }

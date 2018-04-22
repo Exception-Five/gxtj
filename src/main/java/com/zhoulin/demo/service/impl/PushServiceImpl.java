@@ -57,6 +57,9 @@ public class PushServiceImpl implements PushService {
     @Autowired
     private InfoImageMapper infoImageMapper;
 
+    @Autowired
+    private UserReadService userReadService;
+
     @Override
     public List<Info> pushInformation(long id) {
 
@@ -118,7 +121,7 @@ public class PushServiceImpl implements PushService {
     }
 
     /**
-     * 根据 浏览日志 分析 用户兴趣点 进行推送
+     * 根据 仔细阅读 分析 用户兴趣点 进行推送
      * @param userId
      * @return
      * @throws Exception
@@ -128,10 +131,11 @@ public class PushServiceImpl implements PushService {
         List<Long> kwInfoIds = new ArrayList<>();
         List<Long> mergeInfoIds = new ArrayList<>();
         List<Long> tyInfoIds = new ArrayList<>();
-//        List<Info> typeInformationList = new ArrayList<>();
-//        List<Info> kwInformationList = new ArrayList<>();
-//        List<Info> mergeInforList = new ArrayList<>();
-        List<LogInfo> logInfos = new ArrayList<>();
+
+//        List<LogInfo> logInfos = new ArrayList<>();
+
+        //仔细阅读
+        List<UserRead> userReadList = new ArrayList<>();
         List<TypeRelation> typeRelations = new ArrayList<>();
         TypeRelation typeRelation = new TypeRelation();
         InfoSearch infoSearch = new InfoSearch();
@@ -142,16 +146,26 @@ public class PushServiceImpl implements PushService {
         String keywordsString = "";
 
         try {
-            logInfos = logInfoService.getLogInfoByUserId(userId);
-            for (LogInfo logInfo: logInfos) {
+//            logInfos = logInfoService.getLogInfoByUserId(userId);
+            userReadList = userReadService.getUserReadByUserId(userId);
+
+            for (UserRead userRead: userReadList) {
                 //查找对应新闻的详细信息
-                typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
-                Info info = infoService.getInfoByInfoId(logInfo.getInfoId());
+                typeRelation = typeRelationMapper.getInfoByTRId(userRead.getInfoId());
+                Info info = infoService.getInfoByInfoId(userRead.getInfoId());
                 keywords = keywords + info.getKeyword();
-//                Type type = typeMapper.getTypeByTypeId(typeRelation.getTypeId());
                 types.add(typeRelation.getTypeId());
-                infoIds.add(logInfo.getInfoId());
+                infoIds.add(userRead.getInfoId());
             }
+
+//            for (LogInfo logInfo: logInfos) {
+//                //查找对应新闻的详细信息
+//                typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
+//                Info info = infoService.getInfoByInfoId(logInfo.getInfoId());
+//                keywords = keywords + info.getKeyword();
+//                types.add(typeRelation.getTypeId());
+//                infoIds.add(logInfo.getInfoId());
+//            }
 
             List<String> finalKeywords = new TextRankKeyword().getKeyword("", keywords);
             for (String kw : finalKeywords) {

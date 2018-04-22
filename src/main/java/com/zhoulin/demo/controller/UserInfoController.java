@@ -1,6 +1,7 @@
 package com.zhoulin.demo.controller;
 
 import com.zhoulin.demo.bean.LogInfoDTO;
+import com.zhoulin.demo.bean.LogInfoDTO;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.service.HumanListenerService;
@@ -9,11 +10,13 @@ import com.zhoulin.demo.service.UserInfoService;
 import com.zhoulin.demo.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -175,10 +178,11 @@ public class UserInfoController {
         //token中取出userInfo
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         List<LogInfoDTO> logInfoDTOList = new ArrayList<>();
+        HashMap<Integer, List<LogInfoDTO>> hashMap = new HashMap<>();
         try {
-            logInfoDTOList = humanListenerService.userReadTime(userInfo.getUserId());
-
-            return new Message(Message.SUCCESS,"获取资讯阅读时间>>>成功",logInfoDTOList);
+//            logInfoDTOList = humanListenerService.userReadTime(userInfo.getUserId());
+            hashMap = humanListenerService.userReadTime(userInfo.getUserId());
+            return new Message(Message.SUCCESS,"获取资讯阅读时间>>>成功",hashMap);
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR,"获取资讯阅读时间>>>异常！",null);

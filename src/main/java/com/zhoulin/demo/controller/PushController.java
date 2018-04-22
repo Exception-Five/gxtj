@@ -1,25 +1,22 @@
 package com.zhoulin.demo.controller;
 
-import com.zhoulin.demo.bean.Info;
-import com.zhoulin.demo.bean.Information;
-import com.zhoulin.demo.bean.Message;
-import com.zhoulin.demo.bean.UserInfo;
-import com.zhoulin.demo.service.InfoService;
-import com.zhoulin.demo.service.InformationService;
-import com.zhoulin.demo.service.LogInfoService;
-import com.zhoulin.demo.service.PushService;
+import com.zhoulin.demo.bean.*;
+import com.zhoulin.demo.service.*;
+import com.zhoulin.demo.service.impl.LogInfoServiceImpl;
 import com.zhoulin.demo.service.search.SearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 //@RequestMapping("/api/push")
 public class PushController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PushController.class);
     @Autowired
     private PushService pushService;
 
@@ -31,6 +28,10 @@ public class PushController {
 
     @Autowired
     private LogInfoService logInfoService;
+
+    @Autowired
+    private HumanListenerService humanListenerService;
+
     /**
      * 推送功能
      * @param id 资讯id
@@ -65,6 +66,7 @@ public class PushController {
     /**
      * 根据浏览日志抓取
      * 登录即可推送
+     * 加入递进式推送终止机制
      * @return
      */
     @RequestMapping(value = "/api/push/pushUserByLogInfo", method = RequestMethod.POST)
@@ -73,17 +75,52 @@ public class PushController {
 
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         List<Info> informationList = new ArrayList<>();
+        HashMap hashMap = new HashMap<Integer, List<LogInfoDTO>>();
+        //hash<类型Id, 是否低于时间阈值>
+        HashMap isThresholdMap = new HashMap<Integer, Boolean>();
+
+        boolean isWantThreshold = false;
         try {
 
-            if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1){
+            hashMap = humanListenerService.userReadTime(userInfo.getUserId());
+
+            Iterator<Map.Entry<Integer, List<LogInfoDTO>>> iterator = hashMap.entrySet().iterator();
+            while(iterator.hasNext()){
+                Map.Entry<Integer, List<LogInfoDTO>> entry = iterator.next();
+                long timeSum = 0;
+                List<LogInfoDTO> list = entry.getValue();
+                //达到5条以上才进行阈值判断
+                if (list.size() >= 5){
+                    for (int i=0;i<list.size();i++) {
+                        //获取最新5次记录作为终止依据
+                        if (i < 6){
+                            timeSum = timeSum + list.get(i).getTimeDifference();
+                            continue;
+                        }
+                    }
+                    //获得平均时间
+                    long averageTime = timeSum/5;
+                    LOGGER.info("averageTime >>> " + averageTime);
+                    boolean isThreshold = false;
+                    //计算平均时间&&是否达到阈值
+                    if (averageTime <= 300000){
+                        isThreshold = true;
+                        isWantThreshold = true;
+                    }
+                    isThresholdMap.put(entry.getKey(), isThreshold);
+                    LOGGER.info("isThreshold >>> " + isThreshold);
+                }
+                LOGGER.info("isWantThreshold >>> " + isWantThreshold);
+            }
+
+            //加入递进式推送终止机制
+            if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1 || isWantThreshold == true){
                 //最新的20条
                 informationList = infoService.findInfoByDate(1);
                 return new Message(Message.SUCCESS, "实时热点>>>>>推送>>>>>成功", informationList);
             }
-
             informationList = pushService.logAnalyzForPush(userInfo.getUserId());
 
-            
             return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", informationList);
         } catch (Exception e) {
             e.printStackTrace();

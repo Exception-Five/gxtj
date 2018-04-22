@@ -6,21 +6,24 @@ public class LogInfoDTO implements Serializable{
 
     private LogInfo logInfo;
 
-    private TypeRelation typeRelation;
+    private int typeId;
 
     private long timeDifference;
+
+    //时间阈值定义为30s
+    private long threshold = 30000;
 
     public LogInfoDTO() {
     }
 
-    public LogInfoDTO(LogInfo logInfo, TypeRelation typeRelation) {
+    public LogInfoDTO(LogInfo logInfo, int typeId) {
         this.logInfo = logInfo;
-        this.typeRelation = typeRelation;
+        this.typeId = typeId;
     }
 
-    public LogInfoDTO(LogInfo logInfo, TypeRelation typeRelation, long timeDifference) {
+    public LogInfoDTO(LogInfo logInfo, int typeId, long timeDifference) {
         this.logInfo = logInfo;
-        this.typeRelation = typeRelation;
+        this.typeId = typeId;
         this.timeDifference = timeDifference;
     }
 
@@ -40,11 +43,25 @@ public class LogInfoDTO implements Serializable{
         this.logInfo = logInfo;
     }
 
-    public TypeRelation getTypeRelation() {
-        return typeRelation;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setTypeRelation(TypeRelation typeRelation) {
-        this.typeRelation = typeRelation;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    public long getThreshold() {
+        return threshold;
+    }
+
+    @Override
+    public String toString() {
+        return "LogInfoDTO{" +
+                "logInfo=" + logInfo +
+                ", typeId=" + typeId +
+                ", timeDifference=" + timeDifference +
+                ", threshold=" + threshold +
+                '}';
     }
 }

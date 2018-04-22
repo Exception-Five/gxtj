@@ -7,15 +7,7 @@ public class TypeDTO implements Serializable {
 
     private int typeId;
 
-    private List<Integer> typeTime;
-
-    public TypeDTO() {
-    }
-
-    public TypeDTO(int typeId, List<Integer> typeTime) {
-        this.typeId = typeId;
-        this.typeTime = typeTime;
-    }
+    private List<Object> objectList;
 
     public int getTypeId() {
         return typeId;
@@ -25,19 +17,19 @@ public class TypeDTO implements Serializable {
         this.typeId = typeId;
     }
 
-    public List<Integer> getTypeTime() {
-        return typeTime;
+    public List<Object> getObjectList() {
+        return objectList;
     }
 
-    public void setTypeTime(List<Integer> typeTime) {
-        this.typeTime = typeTime;
+    public void setObjectList(List<Object> objectList) {
+        this.objectList = objectList;
     }
 
     @Override
     public String toString() {
         return "TypeDTO{" +
                 "typeId=" + typeId +
-                ", typeTime=" + typeTime +
+                ", objectList=" + objectList +
                 '}';
     }
 }

@@ -40,22 +40,22 @@ public class LogInfoServiceImpl implements LogInfoService{
     public List<LogInfo> getLogInfoByUserId(Integer userId){
 
         // 从缓存中获取列表
-        String key = "infoList_" + new Date();
-        ValueOperations<String, List<LogInfo>> operations = redisTemplate.opsForValue();
+//        String key = "infoList_" + new Date();
+//        ValueOperations<String, List<LogInfo>> operations = redisTemplate.opsForValue();
 
         // 缓存存在
-        boolean hasKey = redisTemplate.hasKey(key);
-        if (hasKey) {
-            List<LogInfo> infoList = operations.get(key);
-            LOGGER.info("从缓存中获取了浏览日志列表 >> " + infoList.toString());
-            return infoList;
-        }
+//        boolean hasKey = redisTemplate.hasKey(key);
+//        if (hasKey) {
+//            List<LogInfo> infoList = operations.get(key);
+//            LOGGER.info("从缓存中获取了浏览日志列表 >> " + infoList.toString());
+//            return infoList;
+//        }
 
         try {
             List<LogInfo> infoList = logInfoMapper.getLogInfoByUserId(userId);
 
-            operations.set(key, infoList, 5, TimeUnit.HOURS);
-            LOGGER.info("浏览日志列表插入缓存 >> " + infoList.toString());
+//            operations.set(key, infoList, 5, TimeUnit.HOURS);
+//            LOGGER.info("浏览日志列表插入缓存 >> " + infoList.toString());
             return infoList;
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,5 +223,25 @@ public class LogInfoServiceImpl implements LogInfoService{
         }
 
 
+    }
+
+    /**
+     * 去重
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public List<Integer> getDistinctTypeByUserId(int userId){
+
+        List<Integer> typeIdList = new ArrayList<>();
+
+        try {
+            typeIdList = logInfoMapper.getDistinctTypeByUserId(userId);
+            return typeIdList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

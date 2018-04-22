@@ -18,6 +18,8 @@ public interface UserInfoService {
 
     UserInfo findUserPW(String username, String password) throws Exception;
 
+    UserInfo getUserByUsername(String username) throws Exception;
+
 //    Integer UserInfoSignUp(UserInfo userInfo) throws Exception;
 
 

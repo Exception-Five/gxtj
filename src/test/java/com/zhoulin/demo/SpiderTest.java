@@ -19,8 +19,11 @@ public class SpiderTest extends DemoApplicationTests{
     private static final Logger logger = LoggerFactory.getLogger(ModServiceImpl.class);
 
 //  private InformationService informationService;
+//    @Autowired
+//    private SpiderService spiderService;
+
     @Autowired
-    private SpiderService spiderService;
+    private SpiderService newSpiderService;
 
     @Autowired
     private ReckonUserGroup reckonUserGroup;
@@ -36,9 +39,9 @@ public class SpiderTest extends DemoApplicationTests{
 
     @Test
     public void test() {
-        for(int i=2;i<=5;i++){
-            spiderService.run(i);
-        }
+//        for(int i=1;i<=5;i++){
+            newSpiderService.run(1);
+//        }
 
 
     }
