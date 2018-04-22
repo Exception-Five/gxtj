@@ -1,6 +1,7 @@
 package com.zhoulin.demo.controller;
 
 import com.zhoulin.demo.bean.LogInfoDTO;
+import com.zhoulin.demo.bean.LogInfoDTO;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
 import com.zhoulin.demo.service.HumanListenerService;
@@ -9,6 +10,7 @@ import com.zhoulin.demo.service.UserInfoService;
 import com.zhoulin.demo.utils.CheckUtils;
 import org.springframework.beans.factory.annotation.Autowired;;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
