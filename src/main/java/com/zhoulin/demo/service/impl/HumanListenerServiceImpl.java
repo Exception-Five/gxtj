@@ -1,9 +1,6 @@
 package com.zhoulin.demo.service.impl;
 
-import com.zhoulin.demo.bean.LogInfo;
-import com.zhoulin.demo.bean.LogInfoDTO;
-import com.zhoulin.demo.bean.TypeDTO;
-import com.zhoulin.demo.bean.TypeRelation;
+import com.zhoulin.demo.bean.*;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.HumanListenerService;
 import com.zhoulin.demo.service.LogInfoService;
@@ -14,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
+/**
+ * 时间阈值
+ */
 @Component
 public class HumanListenerServiceImpl implements HumanListenerService {
 
@@ -25,62 +25,57 @@ public class HumanListenerServiceImpl implements HumanListenerService {
     @Autowired
     private LogInfoService logInfoService;
 
+
     @Override
-    public List<LogInfoDTO> userReadTime(int userId) {
+    public HashMap<Integer, List<LogInfoDTO>> userReadTime(int userId) {
         List<LogInfoDTO> logInfoDTOS = new ArrayList<>();
-        List<TypeDTO> typeDTOS = new ArrayList<>();
-        List<Integer> typeList = new ArrayList<>();
-        List<Integer> allList = new ArrayList<>();
-        Map<Integer,List> map = new HashMap<Integer,List>();
-//        List<Integer>
-
-        // 从缓存中获取列表
-//        String key = "" + userId;
-//        ValueOperations<String, List<LogInfoDTO>> operations = redisTemplate.opsForValue();
-
+        List<Integer> types = new ArrayList<>();
         try {
             List<LogInfo> logInfos = logInfoService.getLogInfoByUserId(userId);
             for (LogInfo logInfo:logInfos) {
                 //得到阅读时间
-                long timeDiff = logInfo.getLookTime().getTime() - logInfo.getEndTime().getTime();
-
+                long timeDiff =logInfo.getEndTime().getTime() - logInfo.getLookTime().getTime();
+                //获得新闻类型
                 TypeRelation typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
 
+                //类型列表
+                types.add(typeRelation.getTypeId());
+
                 //DTO封装
-                LogInfoDTO logInfoDTO = new LogInfoDTO(logInfo, typeRelation, timeDiff);
+                LogInfoDTO logInfoDTO = new LogInfoDTO(logInfo, typeRelation.getTypeId(), timeDiff);
                 logInfoDTOS.add(logInfoDTO);
             }
-//            //清空
-//            redisTemplate.delete(key);
-//            //重新填充
-//            operations.set(key, logInfoDTOS, 1, TimeUnit.HOURS);
-            //去重
-            HashSet h = new HashSet(typeList);
-            typeList.clear();
-            typeList.addAll(h);
+
+            HashSet hashSet = new HashSet(types);
+            types.clear();
+            types.addAll(hashSet);
+
+            HashMap hashMap = new HashMap<Integer, List<LogInfoDTO>>();
 
             //动态生成list
-//            for (Integer typeId:typeList) {
-//                List list = new ArrayList();
-//                TypeDTO typeDTO = new TypeDTO();
-//                typeDTO.setTypeId(typeId);
-//                //阅读时间列表
-//                List<Integer> integerList = new ArrayList<>();
-//                for (Integer allTypeId:allList){
-//                    if (typeId.equals(allTypeId)){
-//                        integerList.add(logInfoDTO.ge)
-//                    }
-//                }
-//                map.put(typeId, list);
-//            }
-//            for (LogInfoDTO logInfoDTO:logInfoDTOS) {
-//                for (:
-//                     ) {
-//
-//                }
-//            }
+            for (int i=0;i<types.size();i++){
+                List<LogInfoDTO> list = new ArrayList<>();
+                hashMap.put(types.get(i), list);
+            }
 
-            return logInfoDTOS;
+            //判断归类 生成list
+            for (LogInfoDTO logInfoDTO :logInfoDTOS) {
+                for (int i=0;i<types.size();i++){
+                    if(logInfoDTO.getTypeId() == types.get(i)){
+                        List<LogInfoDTO> list = (List<LogInfoDTO>) hashMap.get(types.get(i));
+                        list.add(logInfoDTO);
+                        hashMap.put(logInfoDTO.getTypeId(), list);
+                    }
+                }
+            }
+//            logger.info("typeList>>>" + types.get(0).toString() + types.get(1).toString());
+//            List<LogInfoDTO> list_0 = (List<LogInfoDTO>) hashMap.get(0);
+//            List<LogInfoDTO> list_1 = (List<LogInfoDTO>) hashMap.get(1);
+//            logger.info("hashMap   " + list_0.get(0).toString() + list_0.get(1).toString());
+//            logger.info("hashMap   " + list_1.get(0).toString());
+
+//            return logInfoDTOS;
+            return hashMap;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

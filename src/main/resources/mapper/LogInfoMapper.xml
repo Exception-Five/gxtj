@@ -14,6 +14,7 @@
     <select id="getLogInfoByUserId" parameterType="int" resultMap="LogInfoMap">
         SELECT * FROM log_info
         WHERE user_id = #{userId}
+        ORDER BY look_time DESC
     </select>
 
     <select id="getLogInfoByLogId" parameterType="int" resultMap="LogInfoMap">
@@ -63,6 +64,13 @@
     <select id="getLogInfoNowadays" parameterType="int" resultMap="LogInfoMap">
         SELECT * FROM log_info
         WHERE user_id = #{userId}
+        ORDER BY look_time DESC
+    </select>
+    
+    <select id="getDistinctTypeByUserId" parameterType="int">
+        SELECT DISTINCT type_id FROM log_info l, type_relation t
+        WHERE l.info_id = t.info_id
+        AND user_id = #{userId}
         ORDER BY look_time DESC
     </select>
 

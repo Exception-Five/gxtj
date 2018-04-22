@@ -118,21 +118,21 @@ public class Word2VEC {
 //
 //		}
 
-		List<String> wordList = new ArrayList<String>();
+//		List<String> wordList = new ArrayList<String>();
 		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
-		wordList.add("法律");
-		wordList.add("两会");
-		wordList.add("体育");
-		wordList.add("财经");
-		wordList.add("科技");
-		wordList.add("汽车");
-		wordList.add("互联网");
-		wordList.add("旅游");
-		wordList.add("国家");
-		for (String word : wordList) {
-			System.out.println(word + "\t" +
-					vec.distance(word));
-		}
+//		wordList.add("法律");
+//		wordList.add("两会");
+//		wordList.add("体育");
+//		wordList.add("财经");
+//		wordList.add("科技");
+//		wordList.add("汽车");
+//		wordList.add("互联网");
+//		wordList.add("旅游");
+//		wordList.add("国家");
+//		for (String word : wordList) {
+//			System.out.println(word + "\t" +
+//					vec.distance(word));
+//		}
 
 		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}

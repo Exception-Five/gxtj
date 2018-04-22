@@ -76,7 +76,7 @@ public class NewSpiderServiceImpl implements SpiderService{
     /**
      * 模型保存路径
      */
-    public static final String MODEL_PATH = "data/test/classification-model.ser";
+    public static final String MODEL_PATH = "data/test/classification-model2.ser";
 
     @Override
     public void run(int page) {

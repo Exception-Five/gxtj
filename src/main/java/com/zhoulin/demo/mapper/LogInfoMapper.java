@@ -24,4 +24,6 @@ public interface LogInfoMapper {
 
     public int isReadInfo(Integer userId, Long infoId) throws Exception;
 
+    public List<Integer> getDistinctTypeByUserId(int userId) throws Exception;
+
 }
