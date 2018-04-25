@@ -159,7 +159,9 @@ public class PushServiceImpl implements PushService {
                     keywords = keywords + info.getKeyword();
                     types.add(typeRelation.getTypeId());
                     infoIds.add(userRead.getInfoId());
-                    logger.info("调用 >>>> 仔细阅读记录");
+                    logger.info("调用 >>>> 仔细阅读记录！");
+
+
                 }
             }else {
                 for (LogInfo logInfo: logInfos) {
@@ -169,7 +171,7 @@ public class PushServiceImpl implements PushService {
                     keywords = keywords + info.getKeyword();
                     types.add(typeRelation.getTypeId());
                     infoIds.add(logInfo.getInfoId());
-                    logger.info("调用 >>>> 历史阅读记录");
+                    logger.info("调用 >>>> 历史阅读记录！");
                 }
             }
 
