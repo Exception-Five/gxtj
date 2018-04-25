@@ -104,6 +104,7 @@ public class InformationController {
 
                 if (infoIdList.contains(infoId)){
                     logInfo.setLookTime(new Date());
+                    logInfo.setEndTime(new Date());
                     upLStatus = logInfoService.updateLogInfo(logInfo);
                     if (upLStatus==1){
                         logger.info("浏览日志>>>>>修改成功");
@@ -112,6 +113,7 @@ public class InformationController {
                     logInfo.setUserId(userId);
                     logInfo.setInfoId(infoId);
                     logInfo.setLookTime(new Date());
+                    logInfo.setEndTime(new Date());
 
                     //通过日志 判断文章是否已读
                     boolean isRead = logInfoService.isReadInfo(userId, infoId);
