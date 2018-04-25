@@ -2,8 +2,10 @@ package com.zhoulin.demo.controller;
 
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.UserInfo;
+import com.zhoulin.demo.bean.UserMod;
 import com.zhoulin.demo.service.LoginService;
 import com.zhoulin.demo.service.UserInfoService;
+import com.zhoulin.demo.service.UserModService;
 import com.zhoulin.demo.utils.IpUtil;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class LoginController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private UserModService userModService;
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Message login(@RequestBody UserInfo user, HttpSession session, HttpServletResponse response){
@@ -60,10 +65,14 @@ public class LoginController {
             else {
                 int addStatus = userInfoService.addUserInfo(userInfo);
 
-                if (addStatus == 1){
+                UserMod userMod = new UserMod();
+
+                int addModStatus = userModService.addUserModForRegister(userMod);
+
+                if (addStatus == 1 && addModStatus == 1){
                     return new Message(Message.SUCCESS, "IP注册 >>>> 成功 >>>> IP :" + userIp , userInfo);
                 }
-                return new Message(Message.SUCCESS, "IP注册 >>>> 失败 >>>> IP :" + userIp , addStatus);
+                return new Message(Message.FAILURE, "IP注册 >>>> 失败 >>>> IP :" + userIp , addStatus);
             }
         } catch (Exception e) {
             e.printStackTrace();
