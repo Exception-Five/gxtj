@@ -62,6 +62,7 @@ public class InformationServiceImpl implements InformationService {
 
         try {
             information = informationMapper.getInfoByInfoId(infoId);
+
 //            operations.set(key, information, 6, TimeUnit.HOURS);
 //            logger.info("资讯信息插入缓存 >> " + information.toString());
             return information;

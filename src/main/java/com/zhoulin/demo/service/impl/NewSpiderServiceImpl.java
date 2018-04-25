@@ -39,6 +39,9 @@ import java.util.Map;
 
 /**
  * New实时爬虫模块
+ *
+ *
+ *
  */
 @Component
 public class NewSpiderServiceImpl implements SpiderService{
@@ -143,7 +146,6 @@ public class NewSpiderServiceImpl implements SpiderService{
             List<String> kws = new ArrayList<>();
             List<Type> typeList = new ArrayList<>();
 
-
             typeList = typeMapper.findAll();
             /*分类*/
 
@@ -167,7 +169,7 @@ public class NewSpiderServiceImpl implements SpiderService{
                 //拼接要分析的文本
                 analyzeContent = information.getTitle() + information.getDescription() + onlyText;
 
-                //textRank提取关键词
+                //textRank提取关键词 8 个
 //                keywords = new TextRankKeyword().getKeyword("", analyzeContent);
                 keywords = jcsegService.getKeywordsphrase(analyzeContent);
                 logger.info("关键词 >>>>" + keywords.toString());
@@ -181,14 +183,14 @@ public class NewSpiderServiceImpl implements SpiderService{
                     keyword = keyword + kw + ",";
                 }
 
-                tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
-                for (String kw : tokenizerResult) {
-                    result = keyword + kw + ",";
-                }
-                information.setKeyword(result);
-                info.setKeyword(result);
+//                tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
+//                for (String kw : tokenizerResult) {
+//                    result = keyword + kw + ",";
+//                }
+                information.setKeyword(keyword);
+                info.setKeyword(keyword);
                 keyword = "";
-                logger.info("获取的关键词为 >>>>> " + tokenizerResult);
+//                logger.info("获取的关键词为 >>>>> " + tokenizerResult);
 
                 //插入mysql
                 informationMapper.addInformation(information);

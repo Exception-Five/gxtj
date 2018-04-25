@@ -35,7 +35,7 @@ public class keyWordTest extends DemoApplicationTests{
         try {
             informationList = informationService.findAll();
             for (Information information: informationList) {
-                isSuccess = modService.modAnalyse(information.getId());
+//                isSuccess = modService.modAnalyse(information.getId());
                 Assert.assertTrue(isSuccess);
             }
 
