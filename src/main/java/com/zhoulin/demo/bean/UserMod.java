@@ -13,31 +13,34 @@ public class UserMod implements Serializable{
     //用户id
     private Integer userId;
 
-    //娱乐
+    //互联网
     private int internet;
+
+    //体育
     private int sports;
 
-    //法律
+    //健康
     private int health;
 
-    //经济
+    //军事
     private int military;
 
-    //科技
+    //教育
     private int education;
 
-    //互联网
+    //文化
     private int culture;
 
-    //政治
+    //旅游
     private int travel;
 
-    //生活
+    //汽车
     private int car;
 
+    //生活
     private int life;
 
-    //政治
+    //财经
     private int business;
 
     public UserMod() {
