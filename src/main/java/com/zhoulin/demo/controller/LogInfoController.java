@@ -69,6 +69,7 @@ public class LogInfoController {
 
         logInfo.setUserId(userId);
         logInfo.setLookTime(lookTime);
+        logInfo.setEndTime(lookTime);
 
         Integer addStatus = 0;
         try {
@@ -106,8 +107,6 @@ public class LogInfoController {
         List<Info> infoList = new ArrayList<>();
 
         List<LogInfo> logInfos = new ArrayList<>();
-
-//        LogInfo logInfo = new LogInfo();
 
         try {
             logInfos = logInfoService.getLogInfoNowadays(userId);

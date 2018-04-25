@@ -29,7 +29,7 @@ public class ModTest extends DemoApplicationTests {
         try {
             informationList = informationService.findAll();
             for (Information information:informationList) {
-                finalType = modService.modForInfoType(information.getId(), type);
+//                finalType = modService.modForInfoType(information.getId(), type);
                 System.out.println("类型>>>>>>>>>>>" + finalType);
             }
 
@@ -51,7 +51,7 @@ public class ModTest extends DemoApplicationTests {
         try {
             informationList = informationService.findAll();
             for (Information information:informationList) {
-                finalType = modService.modForInfoType(information.getId(), type);
+//                finalType = modService.modForInfoType(information.getId(), type);
                 System.out.println("类型>>>>>>>>>>>" + finalType);
             }
 
@@ -73,7 +73,7 @@ public class ModTest extends DemoApplicationTests {
         try {
 //            informationList = informationService.findAll();
 //            for (Information information:informationList) {
-                finalType = modService.modForInfoType(22163, type);
+//                finalType = modService.modForInfoType(22163, type);
                 System.out.println("类型>>>>>>>>>>>" + finalType);
 //            }
 

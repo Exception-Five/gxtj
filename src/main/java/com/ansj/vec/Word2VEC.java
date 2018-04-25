@@ -35,7 +35,7 @@ public class Word2VEC {
 		ADictionary dic = DictionaryFactory.createSingletonDictionary(config);
 
 		File commentFile = new File(Word2VEC.class.getResource("/library/mod/aa.txt").getPath());
-		System.out.println("dasdasdasdasd");
+
 		long start = System.currentTimeMillis();
 		try {
 
@@ -49,10 +49,10 @@ public class Word2VEC {
 			List<String> keywords;
 
 			StringBuilder vectorSB = new StringBuilder();
-			System.out.println("dasdasdasdsd");
+
 			List<String> lineList = FileUtils.readLines(commentFile, ENCODING);
 			for (String line : lineList) {
-				System.out.println("yjyjyjyjy");
+
 				vectorSB.append(extractor.getKeywordsFromString(line.trim()));
 //				vectorSB.append(ModTokenizerAnalyzerUtil.getAnalyzerResult(line.trim()) + "\r\n");
 				System.out.println("Parsing comment: " + line);
