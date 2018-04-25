@@ -121,7 +121,8 @@ public class PushServiceImpl implements PushService {
     }
 
     /**
-     * 根据 仔细阅读 分析 用户兴趣点 进行推送
+     * 根据 仔细阅读 && 历史阅读 分析 用户兴趣点 进行推送
+     * 若是 用户仔细阅读记录 为空 则
      * @param userId
      * @return
      * @throws Exception
@@ -132,9 +133,10 @@ public class PushServiceImpl implements PushService {
         List<Long> mergeInfoIds = new ArrayList<>();
         List<Long> tyInfoIds = new ArrayList<>();
 
-//        List<LogInfo> logInfos = new ArrayList<>();
+        //历史阅读记录
+        List<LogInfo> logInfos = new ArrayList<>();
 
-        //仔细阅读
+        //仔细阅读记录
         List<UserRead> userReadList = new ArrayList<>();
         List<TypeRelation> typeRelations = new ArrayList<>();
         TypeRelation typeRelation = new TypeRelation();
@@ -146,38 +148,44 @@ public class PushServiceImpl implements PushService {
         String keywordsString = "";
 
         try {
-//            logInfos = logInfoService.getLogInfoByUserId(userId);
+            logInfos = logInfoService.getLogInfoByUserId(userId);
             userReadList = userReadService.getUserReadByUserId(userId);
 
-            for (UserRead userRead: userReadList) {
-                //查找对应新闻的详细信息
-                typeRelation = typeRelationMapper.getInfoByTRId(userRead.getInfoId());
-                Info info = infoService.getInfoByInfoId(userRead.getInfoId());
-                keywords = keywords + info.getKeyword();
-                types.add(typeRelation.getTypeId());
-                infoIds.add(userRead.getInfoId());
+            if(userReadList.size()>0){
+                for (UserRead userRead: userReadList) {
+                    //查找对应新闻的详细信息
+                    typeRelation = typeRelationMapper.getInfoByTRId(userRead.getInfoId());
+                    Info info = infoService.getInfoByInfoId(userRead.getInfoId());
+                    keywords = keywords + info.getKeyword();
+                    types.add(typeRelation.getTypeId());
+                    infoIds.add(userRead.getInfoId());
+                    logger.info("调用 >>>> 仔细阅读记录");
+                }
+            }else {
+                for (LogInfo logInfo: logInfos) {
+                    //查找对应新闻的详细信息
+                    typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
+                    Info info = infoService.getInfoByInfoId(logInfo.getInfoId());
+                    keywords = keywords + info.getKeyword();
+                    types.add(typeRelation.getTypeId());
+                    infoIds.add(logInfo.getInfoId());
+                    logger.info("调用 >>>> 历史阅读记录");
+                }
             }
-
-//            for (LogInfo logInfo: logInfos) {
-//                //查找对应新闻的详细信息
-//                typeRelation = typeRelationMapper.getInfoByTRId(logInfo.getInfoId());
-//                Info info = infoService.getInfoByInfoId(logInfo.getInfoId());
-//                keywords = keywords + info.getKeyword();
-//                types.add(typeRelation.getTypeId());
-//                infoIds.add(logInfo.getInfoId());
-//            }
 
             List<String> finalKeywords = new TextRankKeyword().getKeyword("", keywords);
             for (String kw : finalKeywords) {
                 keywordsString = keywordsString + kw + ",";
             }
             logger.info("最终关键词为 :  " + keywordsString);
+
             //取出三个看得较多的类型的新闻
             List<Relation> rl = checkType.findMostType(types);
 
             for (Relation relation : rl) {
                 typeIds.add(relation.getId());
             }
+
 
             List<TypeRelation> typeRelations1 = typeRelationMapper.getInfoByTypeId(rl.get(0).getId());
             List<TypeRelation> typeRelations2 = typeRelationMapper.getInfoByTypeId(rl.get(1).getId());
