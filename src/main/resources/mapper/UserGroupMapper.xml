@@ -11,7 +11,7 @@
 
     <select id="getByUserId" parameterType="int" resultMap="UserGroupMap">
         SELECT * FROM user_group
-        WHERE user_group_id = #{user_group_id}
+        WHERE user_group_id = #{userGroupId}
     </select>
 
 </mapper>

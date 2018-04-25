@@ -69,5 +69,9 @@ public interface CommentMapper {
      */
     public List<InfoComment> getMostLikesComments() throws Exception;
 
+    /**
+     * 获取某个用户文章
+     */
+    public List<InfoComment> getCommentsByUserId(Integer userId) throws Exception;
 
 }
