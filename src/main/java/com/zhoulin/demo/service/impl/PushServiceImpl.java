@@ -278,6 +278,7 @@ public class PushServiceImpl implements PushService {
 
             for (TypeRelation typeRelation : typeRelations) {
                 Info info = infoService.getInfoByInfoId(typeRelation.getInfoId());
+                info.setInfoContent(null);
                 infoList.add(info);
             }
             return infoList;

@@ -17,18 +17,24 @@ public class CheckType {
     public UserMod checkInfoType(UserMod userMod, Integer typeId){
 
         if (typeId == 1){
-            userMod.setEntertainment(userMod.getEntertainment() + 1);
-        }else if (typeId == 2){
-            userMod.setLaw(userMod.getLaw() + 1);
-        }else if (typeId == 3){
-            userMod.setBusiness(userMod.getBusiness() + 1);
-        }else if (typeId == 4){
-            userMod.setTechnology(userMod.getTechnology() + 1);
-        }else if (typeId == 5){
             userMod.setInternet(userMod.getInternet() + 1);
+        }else if (typeId == 2){
+            userMod.setSports(userMod.getSports() + 1);
+        }else if (typeId == 3){
+            userMod.setHealth(userMod.getHealth() + 1);
+        }else if (typeId == 4){
+            userMod.setMilitary(userMod.getMilitary() + 1);
+        }else if (typeId == 5){
+            userMod.setEducation(userMod.getEducation() + 1);
         }else if (typeId == 6){
-            userMod.setPolitics(userMod.getPolitics() + 1);
+            userMod.setCulture(userMod.getCulture() + 1);
         }else if (typeId == 7){
+            userMod.setTravel(userMod.getTravel() + 1);
+        }else if (typeId == 8){
+            userMod.setCar(userMod.getCar() + 1);
+        }else if (typeId == 9){
+            userMod.setLife(userMod.getLife() + 1);
+        }else if (typeId == 10){
             userMod.setLife(userMod.getLife() + 1);
         }
 

@@ -43,18 +43,18 @@ public class UserInfoServiceImpl implements UserInfoService{
         ValueOperations<String, List<UserInfo>> operations = redisTemplate.opsForValue();
 
         // 缓存存在
-        boolean hasKey = redisTemplate.hasKey(key);
-        if (hasKey) {
-            List<UserInfo> userInfoList = operations.get(key);
-            LOGGER.info("serInfoMapper.getAllUserInfo(): 从缓存中获取了用户列表 >> " + userInfoList.toString());
-            return userInfoList;
-        }
+//        boolean hasKey = redisTemplate.hasKey(key);
+//        if (hasKey) {
+//            List<UserInfo> userInfoList = operations.get(key);
+//            LOGGER.info("serInfoMapper.getAllUserInfo(): 从缓存中获取了用户列表 >> " + userInfoList.toString());
+//            return userInfoList;
+//        }
 
         try {
             List<UserInfo> userInfoList = userInfoMapper.getAllUserInfo();
             //Redis有效时间设置为6个小时
-            operations.set(key, userInfoList, 6, TimeUnit.HOURS);
-            LOGGER.info("serInfoMapper.getAllUserInfo(): 用户列表插入缓存 >> " + userInfoList.toString());
+//            operations.set(key, userInfoList, 6, TimeUnit.HOURS);
+//            LOGGER.info("serInfoMapper.getAllUserInfo(): 用户列表插入缓存 >> " + userInfoList.toString());
             return userInfoList;
         } catch (Exception e) {
             e.printStackTrace();

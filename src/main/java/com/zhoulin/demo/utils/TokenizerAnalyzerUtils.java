@@ -58,7 +58,7 @@ public class TokenizerAnalyzerUtils {
 
     private static List<String> getStopWordsList(){
         List<String> stopWordList = null;
-        File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/comment/1.txt").getPath());
+        File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/comment/stopwords.dic").getPath());
 //          File stopWordFile = new File(TokenizerAnalyzerUtils.class.getResource("/library/stopwords/swresult_withoutnature.txt").getPath());
         try {
              stopWordList = FileUtils.readLines(stopWordFile, Constants.ENCODING);

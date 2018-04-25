@@ -106,35 +106,34 @@ public class Word2VEC {
 //		//use the trained model to analyze
 
 		Word2VEC vec = new Word2VEC();
-//		vec.loadJavaModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\vector21252.mod");
-		vec.loadGoogleModel("D:\\Java\\generator\\gxtj\\src\\main\\resources\\library\\mod\\Google_word2vec_zhwiki1710_300d.bin");
-//
+		vec.loadGoogleModel("C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\resources\\library\\Google_word2vec_zhwiki1710_300d.bin");
+
+		//
 //		System.out.println("法律" + "\t" +
 //		Arrays.toString(vec.getWordVector("法律")));
-//
-//		String str = "财经";
+		String str = "财经";
 //		for (int i = 0; i < 20; i++) {
-//			System.out.println(vec.distance("运动"));
+//			System.out.println(vec.distance(str));
+
+//		}
 //
-//		}
-
-//		List<String> wordList = new ArrayList<String>();
+		List<String> wordList = new ArrayList<String>();
 		//娱乐 1 两会 2 体育 3 财经 4 科技 5 汽车 6 军事 7 旅游 8 生活 9 其他 10
-//		wordList.add("法律");
-//		wordList.add("两会");
-//		wordList.add("体育");
-//		wordList.add("财经");
-//		wordList.add("科技");
-//		wordList.add("汽车");
-//		wordList.add("互联网");
-//		wordList.add("旅游");
-//		wordList.add("国家");
-//		for (String word : wordList) {
-//			System.out.println(word + "\t" +
-//					vec.distance(word));
-//		}
+		wordList.add("法律");
+		wordList.add("两会");
+		wordList.add("体育");
+		wordList.add("财经");
+		wordList.add("科技");
+		wordList.add("汽车");
+		wordList.add("互联网");
+		wordList.add("旅游");
+		wordList.add("国家");
+		for (String word : wordList) {
+			System.out.println(word + "\t" +
+					vec.distance(word));
+		}
 
-		System.out.println(vec.analogy("证据", "离婚", "涉及"));
+//		System.out.println(vec.analogy("证据", "离婚", "涉及"));
 	}
 
 	private HashMap<String, float[]> wordMap = new HashMap<String, float[]>();

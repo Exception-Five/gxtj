@@ -36,13 +36,16 @@ public class ReckonUserGroup {
         Integer sumNum = 0;
         try {
             userMod = userModService.getUserModByUserId(userId);
-            mods.add(userMod.getEntertainment());
-            mods.add(userMod.getLaw());
-            mods.add(userMod.getBusiness());
-            mods.add(userMod.getTechnology());
             mods.add(userMod.getInternet());
-            mods.add(userMod.getPolitics());
+            mods.add(userMod.getSports());
+            mods.add(userMod.getHealth());
+            mods.add(userMod.getMilitary());
+            mods.add(userMod.getEducation());
+            mods.add(userMod.getCulture());
+            mods.add(userMod.getTravel());
+            mods.add(userMod.getCar());
             mods.add(userMod.getLife());
+            mods.add(userMod.getBusiness());
 
             for (Integer mod : mods){
                 sumNum = sumNum + mod;

@@ -92,4 +92,21 @@ public class CommentController {
             return new Message(Message.ERROR,"修改资讯评论失败！",null);
         }
     }
+    /**
+     * 查询用户评论
+     * @param
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/information/user/{userId}/comment", method = RequestMethod.POST)
+    @ResponseBody
+    public Message add(@PathVariable(value = "userId") Integer userId){
+        try {
+            List<InfoComment> comments = commentService.getCommentsByUserId(userId);
+            return new Message(Message.SUCCESS,"增加资讯评论成功！",comments);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"增加资讯评论失败！",null);
+        }
+    }
 }

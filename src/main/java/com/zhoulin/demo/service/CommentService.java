@@ -41,6 +41,14 @@ public interface CommentService {
     public List<InfoComment> getListByInfoId(Integer infoId) throws Exception;
 
     /**
+     * 根据用户id获取评论列表
+     * @param userId
+     * @return
+     * @throws Exception
+     */
+    public List<InfoComment> getCommentsByUserId(Integer userId) throws Exception;
+
+    /**
      * 根据id获取资讯评论
      * @param id
      * @return
