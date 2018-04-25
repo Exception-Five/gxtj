@@ -67,7 +67,7 @@ public class JcsegServiceImpl implements JcsegService {
             TextRankKeywordsExtractor extractor = new TextRankKeywordsExtractor(seg);
             extractor.setMaxIterateNum(100);
             extractor.setWindowSize(1);
-            extractor.setKeywordsNum(5);
+            extractor.setKeywordsNum(8);
 
             List<String> phrases;
             phrases = extractor.getKeywordsFromString(content);
