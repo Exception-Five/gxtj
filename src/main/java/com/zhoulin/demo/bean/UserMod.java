@@ -46,6 +46,20 @@ public class UserMod implements Serializable{
     public UserMod() {
     }
 
+    public UserMod(Integer userId, int internet, int sports, int health, int military, int education, int culture, int travel, int car, int life, int business) {
+        this.userId = userId;
+        this.internet = internet;
+        this.sports = sports;
+        this.health = health;
+        this.military = military;
+        this.education = education;
+        this.culture = culture;
+        this.travel = travel;
+        this.car = car;
+        this.life = life;
+        this.business = business;
+    }
+
     public UserMod(Integer modId, Integer userId, int internet, int sports, int health, int military, int education, int culture, int travel, int car, int life, int business) {
         this.modId = modId;
         this.userId = userId;

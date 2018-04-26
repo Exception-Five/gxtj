@@ -170,7 +170,7 @@ public class InfoServiceImpl implements InfoService{
     }
 
     @Override
-    @Scheduled(fixedRate = 600000)
+//    @Scheduled(fixedRate = 600000)
     public List<String> getHotWords(){
 
         List<Info> dateList = new ArrayList<>();

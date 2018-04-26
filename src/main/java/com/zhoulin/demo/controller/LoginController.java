@@ -66,12 +66,14 @@ public class LoginController {
             else {
                 int addStatus = userInfoService.addUserInfo(userInfo);
 
-                UserMod userMod = new UserMod();
-
-                int addModStatus = userModService.addUserModForRegister(userMod);
-
-                if (addStatus == 1 && addModStatus == 1){
-                    return new Message(Message.SUCCESS, "IP注册 >>>> 成功 >>>> IP :" + userIp , userInfo);
+                if (addStatus == 1 ){
+                    int userId = userInfoService.getUserByUsername(userInfo.getUsername()).getUserId();
+                    UserMod userMod = new UserMod();
+                    userMod.setUserId(userId);
+                    int addModStatus = userModService.addUserModForRegister(userMod);
+                    if (addModStatus == 1){
+                        return new Message(Message.SUCCESS, "IP注册 && 用户模型 >>>> 成功 >>>> IP :" + userIp , userInfo);
+                    }
                 }
                 return new Message(Message.FAILURE, "IP注册 >>>> 失败 >>>> IP :" + userIp , addStatus);
             }
