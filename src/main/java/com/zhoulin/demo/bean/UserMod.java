@@ -13,34 +13,51 @@ public class UserMod implements Serializable{
     //用户id
     private Integer userId;
 
-    //娱乐
+    //互联网
     private int internet;
+
+    //体育
     private int sports;
 
-    //法律
+    //健康
     private int health;
 
-    //经济
+    //军事
     private int military;
 
-    //科技
+    //教育
     private int education;
 
-    //互联网
+    //文化
     private int culture;
 
-    //政治
+    //旅游
     private int travel;
 
-    //生活
+    //汽车
     private int car;
 
+    //生活
     private int life;
 
-    //政治
+    //财经
     private int business;
 
     public UserMod() {
+    }
+
+    public UserMod(Integer userId, int internet, int sports, int health, int military, int education, int culture, int travel, int car, int life, int business) {
+        this.userId = userId;
+        this.internet = internet;
+        this.sports = sports;
+        this.health = health;
+        this.military = military;
+        this.education = education;
+        this.culture = culture;
+        this.travel = travel;
+        this.car = car;
+        this.life = life;
+        this.business = business;
     }
 
     public UserMod(Integer modId, Integer userId, int internet, int sports, int health, int military, int education, int culture, int travel, int car, int life, int business) {
