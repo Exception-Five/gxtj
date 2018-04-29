@@ -234,7 +234,6 @@ public class InformationController {
         return new Message(Message.SUCCESS,"获取实时热词>>>>成功",hotWords);
 
     }
-
     /**
      * 获取新闻总条数
      * @return
@@ -252,5 +251,38 @@ public class InformationController {
             return new Message(Message.ERROR,"获取资讯总数>>>>>>失败",allNum);
         }
     }
+    /**
+     * 点赞
+     * @return
+     */
+    @RequestMapping(value = "/likeInformation", method = RequestMethod.POST)
+    @ResponseBody
+    public Message likeInformation(@RequestBody Info info){
 
+        int allNum = 0;
+        try {
+            allNum = infoService.allCount();
+            return new Message(Message.SUCCESS,"获取资讯总数>>>>>成功",allNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取资讯总数>>>>>>失败",allNum);
+        }
+    }
+    /**
+     * 点踩
+     * @return
+     */
+    @RequestMapping(value = "/dislikeInformation", method = RequestMethod.POST)
+    @ResponseBody
+    public Message dislikeInformation(@RequestBody Info info){
+//        informationService.updateInformation();
+        int allNum = 0;
+        try {
+            allNum = infoService.allCount();
+            return new Message(Message.SUCCESS,"获取资讯总数>>>>>成功",allNum);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取资讯总数>>>>>>失败",allNum);
+        }
+    }
 }
