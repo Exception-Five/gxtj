@@ -20,7 +20,22 @@ public class CommentController {
     private UserInfoService userInfoService;
     @Autowired
     private CommentService commentService;
-
+    /**
+     * 查询所有点赞记录
+     * @return
+     */
+    @RequestMapping(value = "/comment/all", method = RequestMethod.GET)
+    @ResponseBody
+    public Message userLikeList(){
+        List<InfoComment> infoCommentList = new ArrayList<>();
+        try {
+            infoCommentList = commentService.getAll();
+            return new Message(Message.SUCCESS,"获取评论成功！", infoCommentList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"获取评论失败！",null);
+        }
+    }
     /**
      * 查询一篇资讯的所有评论
      * @param id

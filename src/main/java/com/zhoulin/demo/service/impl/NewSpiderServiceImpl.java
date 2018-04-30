@@ -25,6 +25,7 @@ import com.zhoulin.demo.utils.TokenizerAnalyzerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -88,146 +89,150 @@ public class NewSpiderServiceImpl implements SpiderService{
     /**
      * 模型保存路径
      */
-    public static final String MODEL_PATH = "data/test/classification-model2.ser";
+    public static final String MODEL_PATH = "C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\java\\com\\zhoulin\\demo\\service\\impl\\classification-model.ser";
 
     @Override
-    public void run(int page) {
-        //查询Ip信息的接口，返回json
-        String baseUrl="http://www.textvalve.com/htdatasub/subscribe/articles/toPublish/v2?userId=82&size=100&rnd0.456121920803368=&page="+page;
+//    @Scheduled(fixedRate = 10800000)
+    public void run() {
+        for(int j=0;j<10;j++) {
 
-        String result = "";
-        BufferedReader in = null;
-        Long infoId = 0L;
-        try {
-            String urlNameString = baseUrl;
-            URL realUrl = new URL(urlNameString);
-            // 打开和URL之间的连接
-            URLConnection connection = realUrl.openConnection();
+            //查询Ip信息的接口，返回json
+            String baseUrl = "http://www.textvalve.com/htdatasub/subscribe/articles/toPublish/v2?userId=82&size=100&rnd0.456121920803368=&page=" + j;
 
-            // 建立实际的连接
-            connection.connect();
-            // 获取所有响应头字段
-            Map<String, List<String>> map = connection.getHeaderFields();
-            // 定义 BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream(),"UTF-8"));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result += line;
-            }
-        } catch (Exception e) {
-            System.out.println("发送GET请求出现异常！" + e);
-            e.printStackTrace();
-        }
-        // 使用finally块来关闭输入流
-        finally {
+            String result = "";
+            BufferedReader in = null;
+            Long infoId = 0L;
             try {
-                if (in != null) {
-                    in.close();
+                String urlNameString = baseUrl;
+                URL realUrl = new URL(urlNameString);
+                // 打开和URL之间的连接
+                URLConnection connection = realUrl.openConnection();
+
+                // 建立实际的连接
+                connection.connect();
+                // 获取所有响应头字段
+                Map<String, List<String>> map = connection.getHeaderFields();
+                // 定义 BufferedReader输入流来读取URL的响应
+                in = new BufferedReader(new InputStreamReader(
+                        connection.getInputStream(), "UTF-8"));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result += line;
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (Exception e) {
+                System.out.println("发送GET请求出现异常！" + e);
+                e.printStackTrace();
             }
-        }
-        try{
-            Integer status = 0;
-            Integer maxNum = 0;
-            boolean sentence = false;
-            List<String> tokenizerResult = new ArrayList<>();
-            String analyzeContent = "";
-            List<String> keywords = new ArrayList<>();
-            //得到的json数据
-            //System.out.println(result);
-            //解析,
-            JSONObject jsonObj = JSON.parseObject(result);
-            //得到资讯数组
-            JSONArray arr =  jsonObj.getJSONObject("data").getJSONArray("list");
-            String keyword = "";
-            List<String> kws = new ArrayList<>();
-            List<Type> typeList = new ArrayList<>();
-
-            typeList = typeMapper.findAll();
-            /*分类*/
-
-            //初始化朴素贝叶斯
-            IClassifier classifier = new NaiveBayesClassifier(trainOrLoadModel());
-
-            for(int i = 0; i<arr.size(); i++) {
-                List<Integer> matchList = new ArrayList<>();
-                JSONObject object = (JSONObject) arr.get(i);
-                Information information = new Information();
-                Info info = new Info();
-                TypeRelation typeRelation = new TypeRelation();
-                InfoContent infoContent = new InfoContent();
-                InfoImage infoImage = new InfoImage();
-                String onlyText = getHtml.getOnlyText(object.getString("source_url"));
-                String content = getHtml.getContent(object.getString("source_url"));
-                String images = object.getString("image_list");
-                InformationConvert.convert(object, information);
-                InfoConvert.convert(object, info);
-
-                //拼接要分析的文本
-                analyzeContent = information.getTitle() + information.getDescription() + onlyText;
-
-                //textRank提取关键词 8 个
-//                keywords = new TextRankKeyword().getKeyword("", analyzeContent);
-                keywords = jcsegService.getKeywordsphrase(analyzeContent);
-                logger.info("关键词 >>>>" + keywords.toString());
-
-                //HanLP提取摘要
-                List<String> sentenceList = HanLP.extractSummary(analyzeContent, 3);
-                String summary = sentenceList.toString();
-                logger.info("提取文章摘要>>>>" + summary);
-
-                for (String kw : keywords) {
-                    keyword = keyword + kw + ",";
+            // 使用finally块来关闭输入流
+            finally {
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
                 }
+            }
+            try {
+                Integer status = 0;
+                Integer maxNum = 0;
+                boolean sentence = false;
+                List<String> tokenizerResult = new ArrayList<>();
+                String analyzeContent = "";
+                List<String> keywords = new ArrayList<>();
+                //得到的json数据
+                //System.out.println(result);
+                //解析,
+                JSONObject jsonObj = JSON.parseObject(result);
+                //得到资讯数组
+                JSONArray arr = jsonObj.getJSONObject("data").getJSONArray("list");
+                String keyword = "";
+                List<String> kws = new ArrayList<>();
+                List<Type> typeList = new ArrayList<>();
+
+                typeList = typeMapper.findAll();
+                /*分类*/
+
+                //初始化朴素贝叶斯
+                IClassifier classifier = new NaiveBayesClassifier(trainOrLoadModel());
+
+                for (int i = 0; i < arr.size(); i++) {
+                    List<Integer> matchList = new ArrayList<>();
+                    JSONObject object = (JSONObject) arr.get(i);
+                    Information information = new Information();
+                    Info info = new Info();
+                    TypeRelation typeRelation = new TypeRelation();
+                    InfoContent infoContent = new InfoContent();
+                    InfoImage infoImage = new InfoImage();
+                    String onlyText = getHtml.getOnlyText(object.getString("source_url"));
+                    String content = getHtml.getContent(object.getString("source_url"));
+                    String images = object.getString("image_list");
+                    InformationConvert.convert(object, information);
+                    InfoConvert.convert(object, info);
+
+                    //拼接要分析的文本
+                    analyzeContent = information.getTitle() + information.getDescription() + onlyText;
+
+                    //textRank提取关键词 8 个
+//                keywords = new TextRankKeyword().getKeyword("", analyzeContent);
+                    keywords = jcsegService.getKeywordsphrase(analyzeContent);
+                    logger.info("关键词 >>>>" + keywords.toString());
+
+                    //HanLP提取摘要
+                    List<String> sentenceList = HanLP.extractSummary(analyzeContent, 3);
+                    String summary = sentenceList.toString();
+                    logger.info("提取文章摘要>>>>" + summary);
+
+                    for (String kw : keywords) {
+                        keyword = keyword + kw + ",";
+                    }
 
 //                tokenizerResult = TokenizerAnalyzerUtils.getAnalyzerResult(keyword);
 //                for (String kw : tokenizerResult) {
 //                    result = keyword + kw + ",";
 //                }
-                information.setKeyword(keyword);
-                info.setKeyword(keyword);
-                keyword = "";
+                    information.setKeyword(keyword);
+                    info.setKeyword(keyword);
+                    keyword = "";
 //                logger.info("获取的关键词为 >>>>> " + tokenizerResult);
 
-                //插入mysql
-                informationMapper.addInformation(information);
+                    //插入mysql
+                    informationMapper.addInformation(information);
 
-                infoId = information.getId();
+                    infoId = information.getId();
 
-                info.setInfoId(infoId);
-                String[] imageList = images.split(",");
-                if (imageList.length > 0) {
-                    infoImage.setImage(imageList[0]);
+                    info.setInfoId(infoId);
+                    String[] imageList = images.split(",");
+                    if (imageList.length > 0) {
+                        infoImage.setImage(imageList[0]);
+                    }
+                    infoImage.setInfoId(infoId);
+                    infoContent.setInfoId(infoId);
+                    infoContent.setContent(content);
+                    typeRelation.setInfoId(infoId);
+                    typeRelation.setOnlyText(onlyText);
+                    typeRelation.setPublishDate(DateUtil.dateFormat(getHtml.getPublishDate(object.getString("source_url"))));
+                    /*插入数据库*/
+                    infoContentMapper.addInfoContent(infoContent);
+                    infoMapper.addInfo(info);
+                    infoImageMapper.addInfoImage(infoImage);
+
+
+                    //分类
+                    String typeName = classifier.classify(summary);
+                    logger.info("获取的资讯类型为 >>>>> " + typeName);
+
+                    int typeId = checkType.getTypeIdByTypeName(typeName);
+                    typeRelation.setTypeId(typeId);
+                    typeRelationMapper.addTypeRelation(typeRelation);
+
+                    //插入es
+                    searchService.indexPro(infoId);
+
                 }
-                infoImage.setInfoId(infoId);
-                infoContent.setInfoId(infoId);
-                infoContent.setContent(content);
-                typeRelation.setInfoId(infoId);
-                typeRelation.setOnlyText(onlyText);
-                typeRelation.setPublishDate(DateUtil.dateFormat(getHtml.getPublishDate(object.getString("source_url"))));
-                /*插入数据库*/
-                infoContentMapper.addInfoContent(infoContent);
-                infoMapper.addInfo(info);
-                infoImageMapper.addInfoImage(infoImage);
-
-
-                //分类
-                String typeName = classifier.classify(summary);
-                logger.info("获取的资讯类型为 >>>>> " + typeName);
-
-                int typeId = checkType.getTypeIdByTypeName(typeName);
-                typeRelation.setTypeId(typeId);
-                typeRelationMapper.addTypeRelation(typeRelation);
-
-                //插入es
-                searchService.indexPro(infoId);
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 
