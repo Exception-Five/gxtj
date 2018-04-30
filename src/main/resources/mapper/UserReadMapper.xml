@@ -18,7 +18,7 @@
     </select>
 
     <select id="findUserReadExist" resultMap="UserReadMap">
-        SELECT COUNT* FROM user_read
+        SELECT COUNT(*) FROM user_read
         WHERE user_id = #{arg0}
         AND info_id = #{arg1}
     </select>

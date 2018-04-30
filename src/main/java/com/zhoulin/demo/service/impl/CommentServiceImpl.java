@@ -53,6 +53,20 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
+    public List<InfoComment> getAll() throws Exception {
+        List<InfoComment> infoCommentList = new ArrayList<>();
+
+        try {
+            infoCommentList = commentMapper.getAll();
+
+            return infoCommentList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public List<InfoComment> getList(int page, int limit) {
 //        List<InfoComment> commentList = new ArrayList<>();
 //        BaseTableMessage tableMessage = new BaseTableMessage();

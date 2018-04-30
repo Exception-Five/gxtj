@@ -16,7 +16,7 @@
         <result column="create_time" property="createTime"/>
     </resultMap>
 
-    <select id="findAll" resultMap="CommentMap">
+    <select id="getAll" resultMap="CommentMap">
         SELECT * FROM `info_comment`
     </select>
 
