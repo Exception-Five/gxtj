@@ -3,6 +3,7 @@ package com.zhoulin.demo;
 import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.Information;
 import com.zhoulin.demo.bean.TypeRelation;
+import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.mapper.InformationMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InfoService;
@@ -15,6 +16,10 @@ public class InfoServiceTest extends DemoApplicationTests {
 
     @Autowired
     private InfoService infoService;
+
+    @Autowired
+    private InfoMapper infoMapper;
+
     @Autowired
     private TypeRelationMapper typeRelationMapper;
     @Autowired
@@ -38,7 +43,8 @@ public class InfoServiceTest extends DemoApplicationTests {
     public void dateFindTest(){
 
         try {
-            List<Info> infoList = infoService.findInfoByDate(0);
+//            List<Info> infoList = infoService.findInfoByDate(0);
+            List<Info> infoList = infoMapper.findInfoByDate(0);
             for (Info info: infoList) {
                 System.out.println("!!!!" + info.toString());
             }
