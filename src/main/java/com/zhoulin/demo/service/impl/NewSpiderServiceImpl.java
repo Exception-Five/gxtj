@@ -92,7 +92,7 @@ public class NewSpiderServiceImpl implements SpiderService{
     public static final String MODEL_PATH = "C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\java\\com\\zhoulin\\demo\\service\\impl\\classification-model.ser";
 
     @Override
-    @Scheduled(fixedRate = 10800000)
+//    @Scheduled(fixedRate = 10800000)
     public void run() {
         for(int j=0;j<10;j++) {
 
