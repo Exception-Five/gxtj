@@ -15,7 +15,7 @@ public interface CommentService {
      * @return
      * @throws Exception
      */
-//    public List<InfoComment> getAll() throws Exception;
+    public List<InfoComment> getAll() throws Exception;
 
     /**
      * 获取资讯评论列表
