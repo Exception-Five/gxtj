@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -71,7 +72,7 @@ public class PushController {
      */
     @RequestMapping(value = "/api/push/pushUserByLogInfo", method = RequestMethod.POST)
     @ResponseBody
-    public Message pushUserByLogInfo(){
+    public Message pushUserByLogInfo(HttpServletRequest request){
 
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         List<Info> informationList = new ArrayList<>();
@@ -121,7 +122,22 @@ public class PushController {
             }
             informationList = pushService.logAnalyzForPush(userInfo.getUserId());
 
-            return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", informationList);
+            int page = Integer.valueOf(request.getHeader("page"));
+            if (informationList.size()>20){
+                List<Info> finalList  = new ArrayList<>();
+                int maxNum = page*20;
+                int minNum = (page-1) * 20;
+                if ((informationList.size() - 20*page) < 20){
+                    finalList = informationList.subList(minNum, informationList.size()-1);
+                    return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功>>>>>"+finalList.size(), finalList);
+                }
+                finalList = informationList.subList(minNum, maxNum);
+                return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功"+finalList.size(), finalList);
+
+            }else {
+                return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功"+informationList.size(), informationList);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             return new Message(Message.ERROR, "日志兴趣点抓取成功>>>>>推送>>>>>失败", e);

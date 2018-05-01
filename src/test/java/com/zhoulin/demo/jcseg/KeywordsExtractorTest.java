@@ -19,7 +19,7 @@ public class KeywordsExtractorTest {
         
         try {
             ISegment seg = SegmentFactory
-                    .createJcseg(JcsegTaskConfig.NLP_MODE, new Object[]{config, dic});
+                    .createJcseg(JcsegTaskConfig.DETECT_MODE, new Object[]{config, dic});
             
             TextRankKeywordsExtractor extractor = new TextRankKeywordsExtractor(seg);
             extractor.setMaxIterateNum(100);
