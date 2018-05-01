@@ -23,7 +23,7 @@ public class JwtTokenUtil {
     /**
      * token过期时间
      */
-    @Value("${jwt.validityTime}")
+    @Value("${jwt.validity-time}")
     private long validityTime = 60 * 60 * 2 * 1000; // 2 hours  validity
     /**
      * header中标识

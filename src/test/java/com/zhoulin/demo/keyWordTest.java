@@ -1,11 +1,15 @@
 package com.zhoulin.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hankcs.hanlp.HanLP;
 import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InformationService;
+import com.zhoulin.demo.service.JcsegService;
 import com.zhoulin.demo.service.ModService;
 import org.elasticsearch.search.SearchHit;
 import org.junit.Assert;
@@ -17,85 +21,37 @@ import java.util.List;
 
 public class keyWordTest extends DemoApplicationTests{
 
-    @Autowired
-    private ModService modService;
 
     @Autowired
-    private InformationService informationService;
+    private JcsegService jcsegService;
+
+    @Autowired
+    private TypeRelationMapper typeRelationMapper;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    public void kwTest(){
-
-        List<Information> informationList = new ArrayList<>();
-
-        boolean isSuccess = false;
-        try {
-            informationList = informationService.findAll();
-            for (Information information: informationList) {
-//                isSuccess = modService.modAnalyse(information.getId());
-                Assert.assertTrue(isSuccess);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-//        long id = 21316;
-//
-//        boolean isSuccess = false;
-//
-//        try {
-//            isSuccess = modService.modAnalyse(id);
-//
-//            Assert.assertTrue(isSuccess);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-    }
-
-    /**
-     * 多字段抓取
-     */
-    @Test
-    public void queryMutiTest(){
-
-        InfoSearch infoSearch = new InfoSearch();
-
-        String keywords = "";
-
-        long id = 25886;
-
-        List<Information> informationList = new ArrayList<>();
+    public void getFineGrain(){
 
         try {
-            Information information = informationService.getInfoByInfoId(id);
-
-            keywords = information.getKeyword();
-
-            infoSearch.setMutiContent(keywords);
-
-            ServiceMultiResult<Long> multiResult = modService.queryMuti(infoSearch);
-
-            multiResult.getResult();
-
-            for (Long rs:multiResult.getResult()) {
-//                System.out.println(rs);
-//                Info information1 = objectMapper.readValue(rs, Info.class);
-//                System.out.println("转换结果："  +  information1.toString());
+            for(int i=1;i<11;i++){
+                List<TypeRelation> typeRelations = typeRelationMapper.getInfoByTypeId(i);
+                String content = "";
+                for (TypeRelation typeRelation:typeRelations) {
+                    content = content + typeRelation.getOnlyText();
+                }
+//                List<String> fineGrain = HanLP.extractPhrase(content,5);
+                System.out.println(content);
+                List<String> fineGrain = jcsegService.getKeyphrase(content);
+                System.out.println(fineGrain.toString());
             }
-
-            System.out.println("<><><>" + multiResult.getTotal() );
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
+
 
 
 }
