@@ -151,7 +151,7 @@ public class InfoServiceImpl implements InfoService{
         InfoImage infoImage = new InfoImage();
 
         try {
-            dateList = infoMapper.findInfoByDate(limitNum);
+            dateList = infoMapper.findInfoByDate(offset);
 
             for (Info info : dateList) {
 //                infoContent = infoContentMapper.getInfoContentByInfoId(info.getId());
