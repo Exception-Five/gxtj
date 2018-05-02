@@ -33,11 +33,44 @@ public class Information implements Serializable{
 
     private Date feedTime;
 
+    private String typeName;
+
     private String userAddFlag;
 
     private InfoImage infoImage;
 
     public Information() {
+    }
+
+    @Override
+    public String toString() {
+        return "Information{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", description='" + description + '\'' +
+                ", reads=" + reads +
+                ", likes=" + likes +
+                ", keyword='" + keyword + '\'' +
+                ", score=" + score +
+                ", content='" + content + '\'' +
+                ", sourceUrl='" + sourceUrl + '\'' +
+                ", sourceSite='" + sourceSite + '\'' +
+                ", publishDate=" + publishDate +
+                ", contentTime=" + contentTime +
+                ", feedTime=" + feedTime +
+                ", typeName='" + typeName + '\'' +
+                ", userAddFlag='" + userAddFlag + '\'' +
+                ", infoImage=" + infoImage +
+                '}';
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
     public InfoImage getInfoImage() {
@@ -168,24 +201,4 @@ public class Information implements Serializable{
         this.sourceSite = sourceSite;
     }
 
-    @Override
-    public String toString() {
-        return "Information{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", description='" + description + '\'' +
-                ", reads=" + reads +
-                ", likes=" + likes +
-                ", keyword='" + keyword + '\'' +
-                ", score=" + score +
-                ", content='" + content + '\'' +
-                ", sourceUrl='" + sourceUrl + '\'' +
-                ", sourceSite='" + sourceSite + '\'' +
-                ", publishDate=" + publishDate +
-                ", contentTime=" + contentTime +
-                ", feedTime=" + feedTime +
-                ", userAddFlag='" + userAddFlag + '\'' +
-                '}';
-    }
 }

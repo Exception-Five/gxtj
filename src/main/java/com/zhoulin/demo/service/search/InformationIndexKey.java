@@ -35,5 +35,7 @@ public class InformationIndexKey {
 
     public static final String KEYWORD = "keyword";
 
+    public static final String TYPE_NAME = "type_name";
+
 
 }

@@ -1,9 +1,13 @@
 package com.zhoulin.demo.controller;
 
 import com.zhoulin.demo.bean.*;
+import com.zhoulin.demo.bean.form.InfoSearch;
+import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.TypeMapper;
 import com.zhoulin.demo.service.*;
 import com.zhoulin.demo.service.impl.LogInfoServiceImpl;
 import com.zhoulin.demo.service.search.SearchService;
+import com.zhoulin.demo.utils.CheckType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,7 @@ public class PushController {
     private PushService pushService;
 
     @Autowired
-    private SearchService searchService;
+    private ModService modService;
 
     @Autowired
     private InfoService infoService;
@@ -32,6 +36,9 @@ public class PushController {
 
     @Autowired
     private HumanListenerService humanListenerService;
+
+    @Autowired
+    private TypeMapper typeMapper;
 
     /**
      * 推送功能
@@ -73,6 +80,8 @@ public class PushController {
     @RequestMapping(value = "/api/push/pushUserByLogInfo", method = RequestMethod.POST)
     @ResponseBody
     public Message pushUserByLogInfo(HttpServletRequest request){
+
+        int page = Integer.valueOf(request.getHeader("page"));
 
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         List<Info> informationList = new ArrayList<>();
@@ -154,12 +163,26 @@ public class PushController {
 
         List<Info> infoList = new ArrayList<>();
 
+        List<Long> infoIdList = new ArrayList<>();
+
         try {
-            infoList = pushService.pushInfoByTypeId(typeId);
-            return new Message(Message.SUCCESS, "日志兴趣点抓取成功>>>>>推送>>>>>成功", infoList);
+            String typeName = typeMapper.getTypeByTypeId(typeId).getTypeName();
+
+//            infoList = pushService.pushInfoByTypeId(typeId);
+            InfoSearch infoSearch = new InfoSearch();
+            infoSearch.setTypeName(typeName);
+            ServiceMultiResult<Long> multiResult2 = modService.queryTypeName(infoSearch);
+            infoIdList = multiResult2.getResult();
+
+            for (Long infoId:infoIdList) {
+                Info info = infoService.getInfoByInfoIdForImage(infoId);
+                infoList.add(info);
+            }
+
+            return new Message(Message.SUCCESS, typeName + " 类型资讯成功>>>>>推送>>>>>成功>>>>> " + infoList.size(), infoList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new Message(Message.ERROR, "日志兴趣点抓取成功>>>>>推送>>>>>失败", e);
+            return new Message(Message.ERROR, "类型资讯成功>>>>>推送>>>>>失败", e);
         }
 
     }
