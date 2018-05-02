@@ -31,7 +31,7 @@ public class ReckonUserGroup {
 
         UserMod userMod = new UserMod();
         List<Integer> mods = new ArrayList<>();
-        List<Integer> throwList = new ArrayList<>();
+
         List<Integer> groups = new ArrayList<>();
         Integer sumNum = 0;
         try {
@@ -54,7 +54,7 @@ public class ReckonUserGroup {
             double rate = 0;
 
             for (int i=0;i<mods.size();i++) {
-                System.out.println((double)mods.get(i)/(double)sumNum);
+
                 rate = (double)mods.get(i)/(double)sumNum;
                 if (rate >= 0.15){
                     groups.add(i+1);

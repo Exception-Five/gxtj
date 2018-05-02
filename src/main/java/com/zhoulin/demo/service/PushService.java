@@ -16,4 +16,6 @@ public interface PushService {
 
     public List<Info> pushInfoByTypeId(Integer typeId) throws Exception;
 
+    public List<Info> pushInfoByUserGroup(Integer userId) throws Exception;
+
 }

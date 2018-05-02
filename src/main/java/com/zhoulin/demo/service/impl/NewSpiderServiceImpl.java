@@ -94,7 +94,7 @@ public class NewSpiderServiceImpl implements SpiderService{
     @Override
 //    @Scheduled(fixedRate = 10800000)
     public void run() {
-        for(int j=0;j<10;j++) {
+        for(int j=2;j<3;j++) {
 
             //查询Ip信息的接口，返回json
             String baseUrl = "http://www.textvalve.com/htdatasub/subscribe/articles/toPublish/v2?userId=82&size=100&rnd0.456121920803368=&page=" + j;
