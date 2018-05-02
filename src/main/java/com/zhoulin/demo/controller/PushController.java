@@ -186,4 +186,29 @@ public class PushController {
 
     }
 
+    /**
+     * 用户隐性分组
+     * 资讯推送
+     */
+    @RequestMapping(value = "/api/push/pushInfoByUserGroup", method = RequestMethod.POST)
+    @ResponseBody
+    public Message pushInfoByUserGroup(){
+
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
+        try {
+            List<Info> infos = pushService.pushInfoByUserGroup(userInfo.getUserId());
+            if (infos!=null){
+                return new Message(Message.SUCCESS," 用户隐性分组>>>>>推送>>>>>成功>>>>> " + infos.size(), infos);
+            }else{
+                return new Message(Message.FAILURE," 用户隐性分组>>>>>推送>>>>>失败>>>>> " + null, null);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Message(Message.ERROR,"用户隐性分组>>>>>推送>>>>>异常", e);
+        }
+
+    }
+
+
 }

@@ -42,7 +42,7 @@ public class PushUserGroupServiceImpl implements PushUserGroupService {
 
         List<TypeRelation> typeRelations = new ArrayList<>();
 
-        int size[] = new int[9];
+        int size[] = new int[10];
 //        redisTemplate.delete("size_1");
 //        redisTemplate.delete("size_2");
 //        redisTemplate.delete("size_3");
@@ -54,7 +54,7 @@ public class PushUserGroupServiceImpl implements PushUserGroupService {
 //        redisTemplate.delete("size_9");
         try {
             ValueOperations<String, Integer> operations = redisTemplate.getRedisTemplate().opsForValue();
-            for (int i=0;i<9;i++){
+            for (int i=0;i<10;i++){
                 String key = "size_" + (i+1);
                 boolean hasKey = redisTemplate.getRedisTemplate().hasKey(key);
                 size[i] = typeRelationMapper.getCountByTypeId(i+1);
@@ -68,9 +68,10 @@ public class PushUserGroupServiceImpl implements PushUserGroupService {
                         logger.info("插入缓存" + size[i]);
                         typeList.add(i);
                     }
+                }else{
+                    operations.set(key, size[i], 6, TimeUnit.HOURS);
+                    typeList.add(i);
                 }
-                operations.set(key, size[i], 6, TimeUnit.HOURS);
-                typeList.add(i);
             }
             return typeList;
         } catch (Exception e) {

@@ -121,6 +121,7 @@ public class ModServiceImpl implements ModService{
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(boolQuery)
                 .setExplain(true)
+                .setSize(100)
                 .setFetchSource(InformationIndexKey.ID, null)
                 ;
         logger.info("！！！" + requestBuilder);
@@ -159,7 +160,8 @@ public class ModServiceImpl implements ModService{
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchPhraseQuery("typeName", infoSearch.getTypeName()))
                 .setExplain(true)
-//                .setSize(1000)
+                .setSize(100)
+                .addSort("publishDate", SortOrder.DESC)
                 .setFetchSource(InformationIndexKey.ID, null)
                 ;
         logger.info("！！！" + requestBuilder);
@@ -183,8 +185,6 @@ public class ModServiceImpl implements ModService{
 //            logger.info("详细信息" + hit.getSourceAsString());
 //            infoList.add(hit.getSourceAsString());
         }
-
-
 
 //        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
         return new ServiceMultiResult<Long>(searchResponse.getHits().totalHits, infoIds);
