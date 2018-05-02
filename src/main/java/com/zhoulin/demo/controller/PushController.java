@@ -113,16 +113,16 @@ public class PushController {
                 }
                 LOGGER.info("isWantThreshold >>> " + isWantThreshold);
             }
+            int page = Integer.valueOf(request.getHeader("page"));
 
             //加入递进式推送终止机制
             if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1 || isWantThreshold == true){
                 //最新的20条
-                informationList = infoService.findInfoByDate(1);
+                informationList = infoService.findInfoByDate(page);
                 return new Message(Message.SUCCESS, "实时热点>>>>>推送>>>>>成功", informationList);
             }
             informationList = pushService.logAnalyzForPush(userInfo.getUserId());
 
-            int page = Integer.valueOf(request.getHeader("page"));
             if (informationList.size()>20){
                 List<Info> finalList  = new ArrayList<>();
                 int maxNum = page*20;
