@@ -1,6 +1,8 @@
 package com.zhoulin.demo;
 
 import com.zhoulin.demo.bean.Information;
+import com.zhoulin.demo.bean.form.InfoSearch;
+import com.zhoulin.demo.bean.form.ServiceMultiResult;
 import com.zhoulin.demo.service.InformationService;
 import com.zhoulin.demo.service.ModService;
 import org.junit.Test;
@@ -39,48 +41,23 @@ public class ModTest extends DemoApplicationTests {
 
     }
 
-    @Test
-    public void modForInfo1(){
-
-        List<Information> informationList = new ArrayList<>();
-
-        String type = "法律";
-
-        String finalType = "";
-
-        try {
-            informationList = informationService.findAll();
-            for (Information information:informationList) {
-//                finalType = modService.modForInfoType(information.getId(), type);
-                System.out.println("类型>>>>>>>>>>>" + finalType);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     @Test
-    public void modForInfo2(){
+    public void queryMutiAndTypeNameTest(){
 
-        List<Information> informationList = new ArrayList<>();
+        InfoSearch infoSearch = new InfoSearch("舒淇","文化");
 
-        String type = "生活";
+        ServiceMultiResult<Long> multiResult = modService.queryMutiAndTypeName(infoSearch);
 
-        String finalType = "";
+        System.out.println("queryMutiAndTypeName >>>> " + multiResult.getResult().size() + " size " + multiResult.getTotal());
 
-        try {
-//            informationList = informationService.findAll();
-//            for (Information information:informationList) {
-//                finalType = modService.modForInfoType(22163, type);
-                System.out.println("类型>>>>>>>>>>>" + finalType);
-//            }
+        ServiceMultiResult<Long> multiResult1 = modService.queryMuti(infoSearch);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("queryMuti >>>> " + multiResult1.getResult().size() + " size " + multiResult1.getTotal());
 
+        ServiceMultiResult<Long> multiResult2 = modService.queryTypeName(infoSearch);
+
+        System.out.println("queryTypeName >>>> " + multiResult2.getResult() + " size " + multiResult2.getTotal());
     }
 
 }

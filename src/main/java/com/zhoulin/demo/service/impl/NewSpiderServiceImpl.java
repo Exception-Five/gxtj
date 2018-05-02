@@ -89,7 +89,7 @@ public class NewSpiderServiceImpl implements SpiderService{
     /**
      * 模型保存路径
      */
-    public static final String MODEL_PATH = "C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\java\\com\\zhoulin\\demo\\service\\impl\\classification-model.ser";
+    public static final String MODEL_PATH = "D:\\Java\\generator\\gxtj\\data\\test\\classification-model2.ser";
 
     @Override
 //    @Scheduled(fixedRate = 10800000)

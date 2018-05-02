@@ -73,16 +73,14 @@ public class SearchServiceTest extends DemoApplicationTests {
 
         InfoSearch infoSearch = new InfoSearch();
 
-        infoSearch.setTitleSearch("经济");
-        infoSearch.setStart(0);
-        infoSearch.setSize(10);
+        infoSearch.setTypeName("文化");
 
         searchService.query(infoSearch);
 
         ServiceMultiResult<Long> multiResult = searchService.query(infoSearch);
 
 //        Assert.assertEquals(1, multiResult.getTotal());
-        System.out.println("dasdasdasdasdas:      " + multiResult.getTotal());
+        System.out.println("dasdasdasdasdas:      " + multiResult.getResult().size() + "  " + multiResult.getTotal());
     }
 
     @Test

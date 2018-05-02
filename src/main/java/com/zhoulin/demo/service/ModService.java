@@ -9,4 +9,8 @@ public interface ModService {
 
     public ServiceMultiResult<Long> queryMuti(InfoSearch infoSearch);
 
+    public ServiceMultiResult<Long> queryMutiAndTypeName(InfoSearch infoSearch);
+
+    public ServiceMultiResult<Long> queryTypeName(InfoSearch infoSearch);
+
 }

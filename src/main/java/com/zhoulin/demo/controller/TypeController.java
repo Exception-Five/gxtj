@@ -9,6 +9,7 @@ package com.zhoulin.demo.controller;
 import com.zhoulin.demo.bean.Message;
 import com.zhoulin.demo.bean.Type;
 import com.zhoulin.demo.service.TypeService;
+import com.zhoulin.demo.utils.CheckType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +22,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/public/type")
 public class TypeController {
+
     @Autowired
     private TypeService typeService;
+
+    @Autowired
+    private CheckType checkType;
 
     /**
      * 获取所有type记录
@@ -56,6 +61,8 @@ public class TypeController {
         Type type = new Type();
         try {
             type = typeService.getTypeById(typeId);
+
+
             if (type != null){
                 return new Message(Message.SUCCESS,"获取类别信息--成功",type);
             } else {
