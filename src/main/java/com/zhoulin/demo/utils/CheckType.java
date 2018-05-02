@@ -35,7 +35,7 @@ public class CheckType {
         }else if (typeId == 9){
             userMod.setLife(userMod.getLife() + 1);
         }else if (typeId == 10){
-            userMod.setLife(userMod.getLife() + 1);
+            userMod.setBusiness(userMod.getBusiness() + 1);
         }
 
         return userMod;
@@ -103,6 +103,51 @@ public class CheckType {
         return relationList;
     }
 
+    public List<Integer> getUserModNum(UserMod userMod){
+
+        int allNum = userMod.getLife() + userMod.getCar()
+                + userMod.getCulture() + userMod.getEducation()
+                + userMod.getMilitary() + userMod.getHealth()
+                + userMod.getBusiness() + userMod.getTravel()
+                + userMod.getSports() + userMod.getInternet();
+
+        List<Integer> finalTypes = new ArrayList<>();
+
+        System.out.println("<><><>" + (double) (20)/(double) (21));
+
+        if ((float) (userMod.getInternet())/(float) (allNum)>=0.15){
+            finalTypes.add(1);
+        }
+        if ((float) (userMod.getSports())/(float) (allNum)>=0.15){
+            finalTypes.add(2);
+        }
+        if ((float) (userMod.getHealth())/(float) (allNum)>=0.15){
+            finalTypes.add(3);
+        }
+        if ((float) (userMod.getMilitary())/(float) (allNum)>=0.15){
+            finalTypes.add(4);
+        }
+        if ((float) (userMod.getEducation())/(float) (allNum)>=0.15){
+            finalTypes.add(5);
+        }
+        if ((float) (userMod.getCulture())/(float) (allNum)>=0.15){
+            finalTypes.add(6);
+        }
+        if ((float) (userMod.getTravel())/(float) (allNum)>=0.15){
+            finalTypes.add(7);
+        }
+        if ((float) (userMod.getCar())/(float) (allNum)>=0.15){
+            finalTypes.add(8);
+        }
+        if ((float) (userMod.getLife())/(float) (allNum)>=0.15){
+            finalTypes.add(9);
+        }
+        if ((float) (userMod.getBusiness())/(float) (allNum)>=0.15){
+            finalTypes.add(10);
+        }
+
+        return finalTypes;
+    }
 
     public int getTypeIdByTypeName(String typeName){
 

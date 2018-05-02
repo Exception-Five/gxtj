@@ -46,6 +46,9 @@ public class PushServiceImpl implements PushService {
     private InfoService infoService;
 
     @Autowired
+    private JcsegService jcsegService;
+
+    @Autowired
     private TypeMapper typeMapper;
 
     @Autowired
@@ -59,6 +62,9 @@ public class PushServiceImpl implements PushService {
 
     @Autowired
     private UserReadService userReadService;
+
+    @Autowired
+    private UserModService userModService;
 
     @Override
     public List<Info> pushInformation(long id) {
@@ -150,6 +156,7 @@ public class PushServiceImpl implements PushService {
         try {
             logInfos = logInfoService.getLogInfoByUserId(userId);
             userReadList = userReadService.getUserReadByUserId(userId);
+            UserMod userMod = userModService.getUserModByUserId(userId);
 
             if(userReadList.size()>0){
                 for (UserRead userRead: userReadList) {
@@ -160,8 +167,6 @@ public class PushServiceImpl implements PushService {
                     types.add(typeRelation.getTypeId());
                     infoIds.add(userRead.getInfoId());
                     logger.info("调用 >>>> 仔细阅读记录！");
-
-
                 }
             }else {
                 for (LogInfo logInfo: logInfos) {
@@ -175,39 +180,12 @@ public class PushServiceImpl implements PushService {
                 }
             }
 
-            List<String> finalKeywords = new TextRankKeyword().getKeyword("", keywords);
+            List<String> finalKeywords = jcsegService.getKeywordsphrase(keywords);
+//            List<String> finalKeywords = new TextRankKeyword().getKeyword("", keywords);
             for (String kw : finalKeywords) {
                 keywordsString = keywordsString + kw + ",";
             }
             logger.info("最终关键词为 :  " + keywordsString);
-
-            //取出三个看得较多的类型的新闻
-            List<Relation> rl = checkType.findMostType(types);
-
-            for (Relation relation : rl) {
-                typeIds.add(relation.getId());
-            }
-
-
-            List<TypeRelation> typeRelations1 = typeRelationMapper.getInfoByTypeId(rl.get(0).getId());
-            List<TypeRelation> typeRelations2 = typeRelationMapper.getInfoByTypeId(rl.get(1).getId());
-            List<TypeRelation> typeRelations3 = typeRelationMapper.getInfoByTypeId(rl.get(2).getId());
-
-
-            for (TypeRelation type : typeRelations1) {
-                typeRelations.add(type);
-            }
-            for (TypeRelation type : typeRelations2) {
-                typeRelations.add(type);
-            }
-            for (TypeRelation type : typeRelations3) {
-                typeRelations.add(type);
-            }
-
-            for (TypeRelation type : typeRelations) {
-                //通过类型找到的新闻列表
-                tyInfoIds.add(infoService.getInfoByInfoId(type.getInfoId()).getInfoId());
-            }
 
             //根据关键词
             infoSearch.setMutiContent(keywordsString);
@@ -216,42 +194,35 @@ public class PushServiceImpl implements PushService {
 
             kwInfoIds = multiResult.getResult();
 
-            for (int i=0;i<kwInfoIds.size();i++){
-                for (int j=0;j<tyInfoIds.size();j++){
-                    if (tyInfoIds.get(j).equals(kwInfoIds.get(i))){
-                        logger.info("匹配到交叉内容 ！！！ " );
-//                        mergeInforList.add(kwInformationList.get(i));
-                        mergeInfoIds.add(kwInfoIds.get(i));
-                    }
-                }
+            List<Info> typeAndLogInfoList = new ArrayList<>();
+
+            List<Long> typeInfoIds = new ArrayList<>();
+
+            List<Integer> userTypes = checkType.getUserModNum(userMod);
+
+            for (Integer typeId:userTypes) {
+                Type type = typeMapper.getTypeByTypeId(typeId);
+                InfoSearch infoSearch1 = new InfoSearch();
+                infoSearch1.setTypeName(type.getTypeName());
+                ServiceMultiResult<Long> typeRS = modService.queryTypeName(infoSearch1);
+
+                List<Long> list = typeRS.getResult();
+
+                typeInfoIds.addAll(list);
             }
 
-            Set set = new HashSet();
 
-            for (Long z : kwInfoIds){
-                set.add(z);
-            }
+            typeInfoIds.removeAll(kwInfoIds);
 
-            for(Long z : tyInfoIds){
-                set.add(z);
-            }
-            ArrayList<Long> l3 = new ArrayList<Long>(set);
+            kwInfoIds.addAll(typeInfoIds);
 
-            l3.removeAll(mergeInfoIds);
 
-            mergeInfoIds.addAll(l3);
-
-            mergeInfoIds.removeAll(infoIds);
-
-            List<Info> afterMergeInfoList = new ArrayList<>();
-
-            for (Long infoId:mergeInfoIds) {
+            for (long infoId:kwInfoIds) {
                 Info info = infoService.getInfoByInfoIdForImage(infoId);
-
-                afterMergeInfoList.add(info);
+                typeAndLogInfoList.add(info);
             }
 
-            return afterMergeInfoList;
+            return typeAndLogInfoList;
 
         } catch (Exception e) {
             e.printStackTrace();

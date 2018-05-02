@@ -3,9 +3,11 @@ package com.zhoulin.demo.service.search;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.primitives.Longs;
 import com.zhoulin.demo.bean.InfoSort;
+import com.zhoulin.demo.bean.Type;
 import com.zhoulin.demo.bean.TypeRelation;
 import com.zhoulin.demo.bean.form.InfoSearch;
 import com.zhoulin.demo.bean.form.ServiceMultiResult;
+import com.zhoulin.demo.mapper.TypeMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -64,6 +66,9 @@ public class SearchServiceImpl implements SearchService{
 
     @Autowired
     private TypeRelationMapper typeRelationMapper;
+
+    @Autowired
+    private TypeMapper typeMapper;
 
     @Autowired
     private TransportClient esClient;
@@ -340,7 +345,9 @@ public class SearchServiceImpl implements SearchService{
                 return false;
             }
             typeRelation = typeRelationMapper.getInfoByTRId(id);
+            Type type = typeMapper.getTypeByTypeId(typeRelation.getTypeId());
             information.setContent(typeRelation.getOnlyText());
+            information.setTypeName(type.getTypeName());
             InformationIndexTemplate indexTemplate = new InformationIndexTemplate();
             modelMapper.map(information, indexTemplate);
             SearchRequestBuilder requestBuilder = this.esClient

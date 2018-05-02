@@ -68,6 +68,10 @@
         },
         "userAddFlag": {
           "type": "keyword"
+        },
+        "typeName": {
+          "type": "keyword",
+          "index": "true"
         }
       }
     }

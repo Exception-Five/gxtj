@@ -20,6 +20,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
@@ -63,6 +64,7 @@ public class ModServiceImpl implements ModService{
 
     /**
      * ElasticSearch全文本检索
+     * 针对关键词的进行 描述 标题 内容 进行全域检索
      * @param infoSearch
      * @return json
      */
@@ -74,6 +76,7 @@ public class ModServiceImpl implements ModService{
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content").type("best_fields").operator(Operator.OR))
                 .setExplain(true)
+                .setSize(100)
                 .setFetchSource(InformationIndexKey.ID, null)
                 ;
         logger.info("！！！" + requestBuilder);
@@ -103,6 +106,88 @@ public class ModServiceImpl implements ModService{
 //        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
         return new ServiceMultiResult<Long>(searchResponse.getHits().totalHits, infoIds);
 
+    }
+
+    @Override
+    public ServiceMultiResult<Long> queryMutiAndTypeName(InfoSearch infoSearch) {
+
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+
+        boolQuery.must(QueryBuilders.multiMatchQuery(infoSearch.getMutiContent(), "description","title","content").type("best_fields").operator(Operator.OR).boost(2))
+                 .must(QueryBuilders.matchPhraseQuery("typeName", infoSearch.getTypeName()).boost(1));
+
+        SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
+                .setTypes(INDEX_TYPE)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(boolQuery)
+                .setExplain(true)
+                .setFetchSource(InformationIndexKey.ID, null)
+                ;
+        logger.info("！！！" + requestBuilder);
+
+        logger.debug(requestBuilder.toString());
+
+        List<String> infoList = new ArrayList<>();
+
+        List<Long> infoIds = new ArrayList<>();
+
+        SearchResponse searchResponse = requestBuilder.get();
+
+        if(searchResponse.status() != RestStatus.OK){
+            logger.warn("Search status is no ok for " + requestBuilder);
+            return new ServiceMultiResult<>(0, infoIds);
+        }
+
+        for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug(String.valueOf(hit.getSource()));
+            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+//            logger.info("详细信息" + hit.getSourceAsString());
+//            infoList.add(hit.getSourceAsString());
+        }
+
+
+
+//        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+        return new ServiceMultiResult<Long>(searchResponse.getHits().totalHits, infoIds);
+    }
+
+    @Override
+    public ServiceMultiResult<Long> queryTypeName(InfoSearch infoSearch) {
+
+        SearchRequestBuilder requestBuilder = this.esClient.prepareSearch(INDEX_NAME)
+                .setTypes(INDEX_TYPE)
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.matchPhraseQuery("typeName", infoSearch.getTypeName()))
+                .setExplain(true)
+//                .setSize(1000)
+                .setFetchSource(InformationIndexKey.ID, null)
+                ;
+        logger.info("！！！" + requestBuilder);
+
+        logger.debug(requestBuilder.toString());
+
+        List<String> infoList = new ArrayList<>();
+
+        List<Long> infoIds = new ArrayList<>();
+
+        SearchResponse searchResponse = requestBuilder.get();
+
+        if(searchResponse.status() != RestStatus.OK){
+            logger.warn("Search status is no ok for " + requestBuilder);
+            return new ServiceMultiResult<>(0, infoIds);
+        }
+
+        for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug(String.valueOf(hit.getSource()));
+            infoIds.add(Longs.tryParse(String.valueOf(hit.getSource().get(InformationIndexKey.ID))));
+//            logger.info("详细信息" + hit.getSourceAsString());
+//            infoList.add(hit.getSourceAsString());
+        }
+
+
+
+//        return new ServiceMultiResult<String>(searchResponse.getHits().totalHits, infoList);
+        return new ServiceMultiResult<Long>(searchResponse.getHits().totalHits, infoIds);
     }
 
 

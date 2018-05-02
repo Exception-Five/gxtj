@@ -42,7 +42,9 @@ public class InfoSearch {
 
     private int infoId;
 
-    private String MutiContent;
+    private String mutiContent;
+
+    private String typeName;
 
     public Map result(){
         Map map = new HashMap();
@@ -51,12 +53,20 @@ public class InfoSearch {
         return map;
     }
 
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
     public String getMutiContent() {
-        return MutiContent;
+        return mutiContent;
     }
 
     public void setMutiContent(String mutiContent) {
-        MutiContent = mutiContent;
+        this.mutiContent = mutiContent;
     }
 
     public String getContent() {
@@ -84,13 +94,13 @@ public class InfoSearch {
     }
 
     public int getSize() {
-//        if (this.size < 1) {
-//            return 5;
-//        } else if (this.size > 100) {
-//            return 100;
-//        } else {
+        if (this.size < 1) {
+            return 5;
+        } else if (this.size > 100) {
+            return 100;
+        } else {
             return this.size;
-//        }
+        }
     }
 
     public void setSize(int size) {
@@ -199,6 +209,19 @@ public class InfoSearch {
 
     public void setLikesSearch(Integer likesSearch) {
         this.likesSearch = likesSearch;
+    }
+
+    public InfoSearch() {
+
+    }
+
+    public InfoSearch(String mutiContent, String typeName) {
+        this.mutiContent = mutiContent;
+        this.typeName = typeName;
+    }
+
+    public InfoSearch(String typeName) {
+        this.typeName = typeName;
     }
 
     @Override
