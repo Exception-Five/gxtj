@@ -11,13 +11,17 @@ import com.zhoulin.demo.mapper.TypeMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.*;
 import com.zhoulin.demo.utils.CheckType;
+import com.zhoulin.demo.utils.ReckonUserGroup;
 import com.zhoulin.demo.utils.Relation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 推送功能模块
@@ -55,16 +59,16 @@ public class PushServiceImpl implements PushService {
     private CheckType checkType;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private InfoImageMapper infoImageMapper;
+    private RedisTemplate redisTemplate;
 
     @Autowired
     private UserReadService userReadService;
 
     @Autowired
     private UserModService userModService;
+
+    @Autowired
+    private ReckonUserGroup reckonUserGroup;
 
     @Override
     public List<Info> pushInformation(long id) {
@@ -257,6 +261,40 @@ public class PushServiceImpl implements PushService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 针对用户隐性组进行推送
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Info> pushInfoByUserGroup(Integer userId) {
+
+        ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
+        List<Info> infoList = new ArrayList<>();
+
+        try {
+            List<Integer> groups = reckonUserGroup.reckonTypeArea(userId);
+            for (int typeId:groups) {
+                String key = "size_" + typeId;
+                int size = typeRelationMapper.getCountByTypeId(typeId);
+                Type type = typeMapper.getTypeByTypeId(typeId);
+                if (size != operations.get(key)){
+                    List<Long> infoIds = modService.queryTypeName(new InfoSearch(type.getTypeName())).getResult();
+                    for (Long infoId:infoIds) {
+                        Info info = infoService.getInfoByInfoIdForImage(infoId);
+                        infoList.add(info);
+                    }
+                    return infoList;
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     /**
