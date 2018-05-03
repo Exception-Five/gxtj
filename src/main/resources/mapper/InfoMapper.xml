@@ -17,11 +17,12 @@
         <result column="source_site" property="sourceSite"/>
         <result column="publish_date" property="publishDate"/>
     </resultMap>
-
     <select id="findAll" resultMap="InfoMap">
         SELECT * FROM info
     </select>
-
+    <select id="getCountByTitle" parameterType="String">
+        SELECT COUNT(title) FROM `info` WHERE title=#{_parameter}
+    </select>
     <select id="allCount" resultType="int">
         SELECT COUNT(*) FROM info
     </select>

@@ -89,6 +89,8 @@ public class SpiderUtil {
             InfoConvert.convert(object, info);
             System.out.println(information);
             try {
+                int count = infoMapper.getCountByTitle(information.getTitle());
+                if(count>0){return;}
                 infoId = informationMapper.addInformation(information);
                 info.setInfoId(infoId);
                 String onlyText = getHtml.getOnlyText(object.getString("source_url"));

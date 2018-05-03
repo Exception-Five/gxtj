@@ -22,4 +22,5 @@ public interface InfoMapper {
 
     public int allCount() throws Exception;
 
+    public int getCountByTitle(String title) throws Exception;
 }
