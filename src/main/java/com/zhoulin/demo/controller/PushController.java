@@ -122,7 +122,6 @@ public class PushController {
                 }
                 LOGGER.info("isWantThreshold >>> " + isWantThreshold);
             }
-            int page = Integer.valueOf(request.getHeader("page"));
 
             //加入递进式推送终止机制
             if(logInfoService.getLogInfoByUserId(userInfo.getUserId()).size()<1 || isWantThreshold == true){

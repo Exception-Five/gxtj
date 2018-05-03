@@ -89,12 +89,12 @@ public class NewSpiderServiceImpl implements SpiderService{
     /**
      * 模型保存路径
      */
-    public static final String MODEL_PATH = "D:\\Java\\generator\\gxtj\\data\\test\\classification-model2.ser";
+    public static final String MODEL_PATH = "C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\java\\com\\zhoulin\\demo\\service\\impl\\classification-model.ser";
 
     @Override
 //    @Scheduled(fixedRate = 10800000)
     public void run() {
-        for(int j=0;j<10;j++) {
+        for(int j=0;j<=10;j++) {
 
             //查询Ip信息的接口，返回json
             String baseUrl = "http://www.textvalve.com/htdatasub/subscribe/articles/toPublish/v2?userId=82&size=100&rnd0.456121920803368=&page=" + j;

@@ -159,7 +159,7 @@ public class ModServiceImpl implements ModService{
                 .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                 .setQuery(QueryBuilders.matchPhraseQuery("typeName", infoSearch.getTypeName()))
                 .setExplain(true)
-//                .setSize(1000)
+                .setSize(100)
                 .setFetchSource(InformationIndexKey.ID, null)
                 ;
         logger.info("！！！" + requestBuilder);
