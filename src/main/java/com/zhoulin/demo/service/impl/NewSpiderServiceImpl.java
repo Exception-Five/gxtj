@@ -89,12 +89,12 @@ public class NewSpiderServiceImpl implements SpiderService{
     /**
      * 模型保存路径
      */
-    public static final String MODEL_PATH = "C:\\Users\\84972\\Desktop\\gxtj\\src\\main\\java\\com\\zhoulin\\demo\\service\\impl\\classification-model.ser";
+    public static final String MODEL_PATH = "D:\\Java\\generator\\gxtj\\data\\test\\classification-model.ser";
 
     @Override
 //    @Scheduled(fixedRate = 10800000)
     public void run() {
-        for(int j=0;j<=10;j++) {
+        for(int j=0;j<=0;j++) {
 
             //查询Ip信息的接口，返回json
             String baseUrl = "http://www.textvalve.com/htdatasub/subscribe/articles/toPublish/v2?userId=82&size=100&rnd0.456121920803368=&page=" + j;
@@ -170,6 +170,10 @@ public class NewSpiderServiceImpl implements SpiderService{
                     InformationConvert.convert(object, information);
                     InfoConvert.convert(object, info);
 
+                    int count = infoMapper.getCountByTitle(information.getTitle());
+                    if(count>0){
+                        logger.info(information.getTitle() + " >>>> 新闻重复不执行事务操作！");
+                    }else{
                     //拼接要分析的文本
                     analyzeContent = information.getTitle() + information.getDescription() + onlyText;
 
@@ -228,7 +232,8 @@ public class NewSpiderServiceImpl implements SpiderService{
 
                     //插入es
                     searchService.indexPro(infoId);
-
+                    logger.info(information.getTitle() + " >>>>> 新闻已执行事务操作！");
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

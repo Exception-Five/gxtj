@@ -7,6 +7,7 @@ import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.mapper.InformationMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InfoService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -62,6 +63,18 @@ public class InfoServiceTest extends DemoApplicationTests {
         try {
             Info info = infoService.getInfoByInfoId(id);
             System.out.println(info.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void isExistInfo(){
+
+        try {
+            int count = infoMapper.getCountByTitle("裸僧门");
+            System.out.println("count >>>" + count);
         } catch (Exception e) {
             e.printStackTrace();
         }

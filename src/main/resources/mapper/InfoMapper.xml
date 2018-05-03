@@ -20,7 +20,7 @@
     <select id="findAll" resultMap="InfoMap">
         SELECT * FROM info
     </select>
-    <select id="getCountByTitle" parameterType="String">
+    <select id="getCountByTitle" parameterType="String" resultType="int">
         SELECT COUNT(title) FROM `info` WHERE title=#{_parameter}
     </select>
     <select id="allCount" resultType="int">

@@ -90,7 +90,9 @@ public class SpiderUtil {
             System.out.println(information);
             try {
                 int count = infoMapper.getCountByTitle(information.getTitle());
-                if(count>0){return;}
+                if(count>0){
+                    System.out.println("!!!   重复   !!!");
+                }
                 infoId = informationMapper.addInformation(information);
                 info.setInfoId(infoId);
                 String onlyText = getHtml.getOnlyText(object.getString("source_url"));

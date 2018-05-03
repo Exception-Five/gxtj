@@ -41,6 +41,10 @@ public class SpiderTest extends DemoApplicationTests{
     public void test() {
 //        for(int i=1;i<=5;i++){
             newSpiderService.run();
+
+//            System.out.println("爬虫执行完一次。。。。。");
+//
+//            newSpiderService.run();
 //        }
 
 
