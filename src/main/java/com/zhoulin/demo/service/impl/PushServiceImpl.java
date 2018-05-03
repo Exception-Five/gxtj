@@ -271,8 +271,8 @@ public class PushServiceImpl implements PushService {
     @Override
     public List<Info> pushInfoByUserGroup(Integer userId) {
 
-        ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
-        List<Info> infoList = new ArrayList<>();
+//        ValueOperations<String, Integer> operations = redisTemplate.opsForValue();
+        List<Info> finalInfoList = new ArrayList<>();
 
         try {
             List<Integer> groups = reckonUserGroup.reckonTypeArea(userId);
@@ -280,16 +280,22 @@ public class PushServiceImpl implements PushService {
                 String key = "size_" + typeId;
                 int size = typeRelationMapper.getCountByTypeId(typeId);
                 Type type = typeMapper.getTypeByTypeId(typeId);
-                if (size != operations.get(key)){
+                List<Info> infoList = new ArrayList<>();
+//                if (size != operations.get(key)){
                     List<Long> infoIds = modService.queryTypeName(new InfoSearch(type.getTypeName())).getResult();
                     for (Long infoId:infoIds) {
                         Info info = infoService.getInfoByInfoIdForImage(infoId);
                         infoList.add(info);
                     }
-                    return infoList;
-                }
+                    if (infoList.size()<6){
+                        finalInfoList.addAll(infoList);
+                    }else{
+                        finalInfoList.addAll(infoList.subList(0,4));
+                    }
+//                    return infoList;
+//                }
             }
-            return null;
+            return finalInfoList;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
