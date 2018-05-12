@@ -197,10 +197,11 @@ public class PushController {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getDetails();
         try {
             List<Info> infos = pushService.pushInfoByUserGroup(userInfo.getUserId());
-            if (infos!=null){
+            if (infos.size()!=0){
                 return new Message(Message.SUCCESS," 用户隐性分组>>>>>推送>>>>>成功>>>>> " + infos.size(), infos);
             }else{
-                return new Message(Message.FAILURE," 用户隐性分组>>>>>推送>>>>>失败>>>>> " + null, null);
+                List<Info> infoList = infoService.findInfoByDate(1);
+                return new Message(Message.SUCCESS," 用户隐性分组>>>>>热点推送>>>>>成功>>>>> " + infoList.size(), infoList);
             }
 
         } catch (Exception e) {

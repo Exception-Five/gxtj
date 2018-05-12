@@ -36,7 +36,7 @@ public class UserModServiceImpl implements UserModService {
         UserMod userMod = new UserMod();
 
         String key = "userMod_" + userId;
-        ValueOperations<String, UserMod> operations = redisTemplate.opsForValue();
+//        ValueOperations<String, UserMod> operations = redisTemplate.opsForValue();
 
         boolean haskey = redisTemplate.hasKey(key);
 
@@ -48,8 +48,8 @@ public class UserModServiceImpl implements UserModService {
 
         try {
             userMod = userModMapper.getUserModByUserId(userId);
-            operations.set(key, userMod, 6, TimeUnit.HOURS);
-            logger.info("缓存中插入用户模型>>>>>" + userMod);
+//            operations.set(key, userMod, 6, TimeUnit.HOURS);
+//            logger.info("缓存中插入用户模型>>>>>" + userMod);
             return userMod;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,22 +63,22 @@ public class UserModServiceImpl implements UserModService {
 
         Integer upStatus = -1;
 
-        String key = "userMod_" + userMod.getUserId();
-        ValueOperations<String, UserMod> operations = redisTemplate.opsForValue();
+//        String key = "userMod_" + userMod.getUserId();
+//        ValueOperations<String, UserMod> operations = redisTemplate.opsForValue();
 
-        boolean hasKey = redisTemplate.hasKey(key);
+//        boolean hasKey = redisTemplate.hasKey(key);
 
         try {
             upStatus = verificationUtils.verification(userModMapper.updateUserMod(userMod));
 
-            if (upStatus==1){
-                if (hasKey){
-                    redisTemplate.delete(key);
-                    logger.info("从缓存中删除用户模型>>>>>" + userMod.getUserId());
-                }
-                operations.set(key, userMod, 6, TimeUnit.HOURS);
-                logger.info("从缓存中重新插入用户模型>>>>>" + userMod);
-            }
+//            if (upStatus==1){
+//                if (hasKey){
+//                    redisTemplate.delete(key);
+//                    logger.info("从缓存中删除用户模型>>>>>" + userMod.getUserId());
+//                }
+//                operations.set(key, userMod, 6, TimeUnit.HOURS);
+//                logger.info("从缓存中重新插入用户模型>>>>>" + userMod);
+//            }
             return upStatus;
         } catch (Exception e) {
             e.printStackTrace();

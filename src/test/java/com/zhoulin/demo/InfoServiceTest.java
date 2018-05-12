@@ -7,6 +7,7 @@ import com.zhoulin.demo.mapper.InfoMapper;
 import com.zhoulin.demo.mapper.InformationMapper;
 import com.zhoulin.demo.mapper.TypeRelationMapper;
 import com.zhoulin.demo.service.InfoService;
+import com.zhoulin.demo.service.PushService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class InfoServiceTest extends DemoApplicationTests {
     private TypeRelationMapper typeRelationMapper;
     @Autowired
     private InformationMapper informationMapper;
+
+    @Autowired
+    private PushService pushService;
 
     @Test
     public void tyFindTest(){
@@ -45,7 +49,7 @@ public class InfoServiceTest extends DemoApplicationTests {
 
         try {
 //            List<Info> infoList = infoService.findInfoByDate(0);
-            List<Info> infoList = infoMapper.findInfoByDate(0);
+            List<Info> infoList = infoMapper.findInfoByDate(1);
             for (Info info: infoList) {
                 System.out.println("!!!!" + info.toString());
             }
@@ -73,8 +77,8 @@ public class InfoServiceTest extends DemoApplicationTests {
     public void isExistInfo(){
 
         try {
-            int count = infoMapper.getCountByTitle("裸僧门");
-            System.out.println("count >>>" + count);
+            List<Info> infos = pushService.pushInfoByUserGroup(1);
+            System.out.println("count >>>" + infos.size());
         } catch (Exception e) {
             e.printStackTrace();
         }

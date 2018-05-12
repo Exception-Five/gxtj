@@ -1,5 +1,6 @@
 package com.zhoulin.demo.service.impl;
 
+import com.hankcs.hanlp.HanLP;
 import com.zhoulin.demo.bean.Info;
 import com.zhoulin.demo.bean.InfoContent;
 import com.zhoulin.demo.bean.InfoImage;
@@ -142,7 +143,7 @@ public class InfoServiceImpl implements InfoService{
     @Override
     public List<Info> findInfoByDate(int limitNum){
 
-        int offset = limitNum * 20;
+        int offset = (limitNum - 1) * 20;
 
         List<Info> dateList = new ArrayList<>();
 
@@ -186,7 +187,7 @@ public class InfoServiceImpl implements InfoService{
         }
 
         try {
-            dateList = infoMapper.findInfoByDate(0);
+            dateList = infoMapper.findInfoByDate(1);
             for (Info info:dateList) {
                 String content = info.getTitle() + info.getDescription();
                 List<String> phrase = jcsegService.getKeyphrase(content);

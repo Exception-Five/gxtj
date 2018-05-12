@@ -135,24 +135,24 @@ public class UserInfoServiceImpl implements UserInfoService{
     @Override
     public UserInfo updateUserInfo(UserInfo userInfo) {
 
-        ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
+//        ValueOperations<String, UserInfo> operations = redisTemplate.opsForValue();
 
         Integer updateStatus = 0;
 
-        String key = "userInfo_" + userInfo.getUserId();
-        boolean hasKey = redisTemplate.hasKey(key);
-
-        if (hasKey) {
-            redisTemplate.delete(key);
-            LOGGER.info("userInfoMapper.updateUserInfo() : 从缓存中删除用户信息 >> " + userInfo.toString());
-        }
+//        String key = "userInfo_" + userInfo.getUserId();
+//        boolean hasKey = redisTemplate.hasKey(key);
+//
+//        if (hasKey) {
+//            redisTemplate.delete(key);
+//            LOGGER.info("userInfoMapper.updateUserInfo() : 从缓存中删除用户信息 >> " + userInfo.toString());
+//        }
 
         try {
             updateStatus = userInfoMapper.updateUserInfo(userInfo);
             if (updateStatus == 1){
                 updateStatus = 1;
-                operations.set(key, userInfo, 6, TimeUnit.HOURS);
-                LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
+//                operations.set(key, userInfo, 6, TimeUnit.HOURS);
+//                LOGGER.info("userInfoMapper.getUserInfoById(userId) : 用户信息插入缓存 >> " + userInfo.toString());
                 return userInfo;
             }
 
